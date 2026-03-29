@@ -35,10 +35,16 @@ interface Review {
   fetched_at: string;
 }
 
+interface Profile {
+  business_name?: string;
+  full_name?: string;
+  plan?: string;
+}
+
 interface DashboardClientProps {
-  user: any;
-  profile: any;
-  locations: any[];
+  user: { email?: string };
+  profile: Profile | null;
+  locations: { id: string }[];
   reviews: Review[];
   avgRating: string;
   responseRate: number;

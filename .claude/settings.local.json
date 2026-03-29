@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__server-filesystem__directory_tree",
+      "Bash(find . -type d -not -path */node_modules/* -not -path */.next/*)",
+      "Bash(wc -l src/**/*.tsx src/**/*.ts src/app/*.css)",
+      "Bash(wmic logicaldisk:*)",
+      "Bash(powershell \"Get-PSDrive F | Select Used,Free\")",
+      "Bash(vercel --version)",
+      "Bash(vercel --yes)",
+      "Bash(vercel login:*)",
+      "Bash(vercel --yes --prod)",
+      "Bash(vercel logs:*)",
+      "Bash(npx next:*)",
+      "Bash(npm cache:*)",
+      "Bash(rm -rf C:/Users/Starstruck/AppData/Local/npm-cache/_cacache)",
+      "Bash(rm -rf C:/Users/Starstruck/AppData/Local/npm-cache/_logs)",
+      "Bash(npm install:*)",
+      "Bash(rm -rf node_modules)",
+      "Bash(rm -f package-lock.json)",
+      "Bash(npm ls:*)",
+      "Bash(NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=eyJplaceholder npx next build)"
+    ]
+  }
+}

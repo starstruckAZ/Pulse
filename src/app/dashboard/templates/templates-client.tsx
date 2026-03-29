@@ -25,9 +25,15 @@ interface Template {
   created_at: string;
 }
 
+interface Profile {
+  business_name?: string;
+  full_name?: string;
+  plan?: string;
+}
+
 interface TemplatesClientProps {
-  user: any;
-  profile: any;
+  user: { id: string; email?: string };
+  profile: Profile | null;
   templates: Template[];
 }
 

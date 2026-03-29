@@ -4,10 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { MessageSquare } from "lucide-react";
-import { useRouter } from "next/navigation";
 
 export default function SignupPage() {
-  const router = useRouter();
   const supabase = createClient();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");

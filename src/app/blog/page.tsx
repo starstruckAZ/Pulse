@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   },
 };
 
-export interface BlogPost {
+interface BlogPost {
   slug: string;
   title: string;
   excerpt: string;
@@ -25,7 +25,7 @@ export interface BlogPost {
   category: string;
 }
 
-export const blogPosts: BlogPost[] = [
+const blogPosts: BlogPost[] = [
   {
     slug: "why-online-reviews-matter-local-business",
     title: "Why Online Reviews Matter More Than Ever for Local Businesses",
