@@ -1,22 +1,16 @@
 import { notFound } from "next/navigation";
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import Link from "next/link";
 import ReviewsClient from "./reviews-client";
 
 export const dynamic = "force-dynamic";
 
-// NOTE: RLS on `locations` and `reviews` tables filters by user_id.
-// For this public page to work, you must add a public read policy, e.g.:
-//   CREATE POLICY "Public read locations" ON locations FOR SELECT USING (true);
-//   CREATE POLICY "Public read reviews"   ON reviews   FOR SELECT USING (true);
-// Or scope it with a `public` boolean column on locations if you prefer opt-in.
-
+// Use service role to bypass RLS for public review pages
 function createPublicSupabase() {
-  return createServerClient(
+  return createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
-    { cookies: { getAll: () => [], setAll: () => {} } }
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 }
 

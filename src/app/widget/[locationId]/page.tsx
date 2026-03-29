@@ -1,4 +1,4 @@
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 
 export const dynamic = "force-dynamic";
 
@@ -29,10 +29,9 @@ export default async function WidgetEmbedPage({ params, searchParams }: PageProp
   // Consider adding a policy like:
   //   CREATE POLICY "Allow public widget read" ON reviews FOR SELECT
   //   USING (location_id IN (SELECT id FROM locations WHERE widget_enabled = true));
-  const supabase = createServerClient(
+  const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
-    { cookies: { getAll: () => [], setAll: () => {} } }
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
   const { data: location } = await supabase

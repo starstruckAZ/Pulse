@@ -1,4 +1,4 @@
-import { createServerClient } from "@supabase/ssr";
+import { createClient } from "@supabase/supabase-js";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { Star, MapPin, CheckCircle, MessageSquare } from "lucide-react";
@@ -6,14 +6,11 @@ import BusinessReviewsClient from "./business-reviews-client";
 
 export const dynamic = "force-dynamic";
 
-// Note: Run this SQL in Supabase: ALTER TABLE reviews ADD COLUMN IF NOT EXISTS featured boolean DEFAULT false;
-
-// Use anon key, no cookies — public page
+// Use service role to bypass RLS for public profile pages
 const createPublicClient = () =>
-  createServerClient(
+  createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY!,
-    { cookies: { getAll: () => [], setAll: () => {} } }
+    process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
 interface Review {
