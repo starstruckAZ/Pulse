@@ -8,6 +8,7 @@ import {
   Shield,
   Zap,
   BarChart3,
+  Quote,
 } from "lucide-react";
 
 export default function Home() {
@@ -27,6 +28,18 @@ export default function Home() {
             <a href="#pricing" className="text-sm text-gray-400 transition hover:text-white">
               Pricing
             </a>
+            <Link href="/how-it-works" className="text-sm text-gray-400 transition hover:text-white">
+              How It Works
+            </Link>
+            <Link href="/blog" className="text-sm text-gray-400 transition hover:text-white">
+              Blog
+            </Link>
+            <Link
+              href="/login"
+              className="text-sm text-gray-400 transition hover:text-white"
+            >
+              Log In
+            </Link>
             <Link
               href="/signup"
               className="btn-glow rounded-lg px-4 py-2 text-sm font-medium text-white"
@@ -45,7 +58,6 @@ export default function Home() {
 
       {/* Hero */}
       <section className="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32">
-        {/* Background gradient blobs */}
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-indigo-500/10 blur-[120px]" />
           <div className="absolute right-1/4 top-20 h-[400px] w-[400px] rounded-full bg-purple-500/10 blur-[120px]" />
@@ -74,12 +86,12 @@ export default function Home() {
             >
               Get Started Free <ArrowRight className="h-4 w-4" />
             </Link>
-            <a
-              href="#features"
+            <Link
+              href="/how-it-works"
               className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-8 py-3.5 text-base font-medium text-gray-300 transition hover:border-white/20 hover:text-white"
             >
               See How It Works
-            </a>
+            </Link>
           </div>
 
           <p className="mt-4 text-sm text-gray-500">
@@ -143,6 +155,43 @@ export default function Home() {
             <span className="flex items-center gap-2">
               <Star className="h-5 w-5 text-blue-500" /> Facebook Reviews
             </span>
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section id="testimonials" className="py-20 md:py-28">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 text-center">
+            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
+              Loved by{" "}
+              <span className="gradient-text">local businesses</span>
+            </h2>
+            <p className="mx-auto max-w-xl text-gray-400">
+              See how businesses like yours are saving time and winning more customers
+              with ReviewPulse.
+            </p>
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            <TestimonialCard
+              quote="We went from spending 3 hours a week on reviews to 15 minutes. The AI responses are shockingly good — I just tweak a few words and hit send."
+              name="Maria C."
+              role="Owner, Bella's Italian Kitchen"
+              rating={5}
+            />
+            <TestimonialCard
+              quote="Our Google rating went from 3.6 to 4.4 in four months. The biggest change? We actually started responding to every single review. ReviewPulse made that possible."
+              name="James T."
+              role="Manager, Precision Auto Care"
+              rating={5}
+            />
+            <TestimonialCard
+              quote="I manage 8 locations. Before ReviewPulse, I had no idea what was happening with reviews. Now I catch every negative review within minutes and my team can respond fast."
+              name="Sarah K."
+              role="Regional Director, FreshFit Dental"
+              rating={5}
+            />
           </div>
         </div>
       </section>
@@ -257,25 +306,48 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-white/5 py-12">
         <div className="mx-auto max-w-6xl px-6">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <div className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-indigo-500" />
-              <span className="text-sm font-semibold">ReviewPulse</span>
+          <div className="grid gap-8 md:grid-cols-4">
+            <div>
+              <div className="mb-4 flex items-center gap-2">
+                <MessageSquare className="h-5 w-5 text-indigo-500" />
+                <span className="text-sm font-semibold">ReviewPulse</span>
+              </div>
+              <p className="text-sm text-gray-500">
+                Review management for local businesses. All your reviews, one dashboard.
+              </p>
             </div>
-            <div className="flex gap-6 text-sm text-gray-500">
-              <a href="#" className="transition hover:text-white">
-                Privacy
-              </a>
-              <a href="#" className="transition hover:text-white">
-                Terms
-              </a>
-              <a href="#" className="transition hover:text-white">
-                Contact
-              </a>
+            <div>
+              <h4 className="mb-3 text-sm font-semibold text-gray-300">Product</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><a href="#features" className="transition hover:text-white">Features</a></li>
+                <li><a href="#pricing" className="transition hover:text-white">Pricing</a></li>
+                <li><Link href="/how-it-works" className="transition hover:text-white">How It Works</Link></li>
+              </ul>
             </div>
+            <div>
+              <h4 className="mb-3 text-sm font-semibold text-gray-300">Resources</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><Link href="/blog" className="transition hover:text-white">Blog</Link></li>
+                <li><Link href="/faq" className="transition hover:text-white">FAQ</Link></li>
+                <li><Link href="/blog/google-review-management-guide" className="transition hover:text-white">Google Reviews Guide</Link></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="mb-3 text-sm font-semibold text-gray-300">Company</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><Link href="/signup" className="transition hover:text-white">Sign Up</Link></li>
+                <li><Link href="/login" className="transition hover:text-white">Log In</Link></li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
             <p className="text-sm text-gray-600">
-              &copy; {new Date().getFullYear()} ReviewPulse
+              &copy; {new Date().getFullYear()} ReviewPulse. All rights reserved.
             </p>
+            <div className="flex gap-6 text-sm text-gray-600">
+              <a href="#" className="transition hover:text-white">Privacy Policy</a>
+              <a href="#" className="transition hover:text-white">Terms of Service</a>
+            </div>
           </div>
         </div>
       </footer>
@@ -299,6 +371,39 @@ function FeatureCard({
       </div>
       <h3 className="mb-2 text-lg font-semibold">{title}</h3>
       <p className="text-sm leading-relaxed text-gray-400">{description}</p>
+    </div>
+  );
+}
+
+function TestimonialCard({
+  quote,
+  name,
+  role,
+  rating,
+}: {
+  quote: string;
+  name: string;
+  role: string;
+  rating: number;
+}) {
+  return (
+    <div className="glow-card rounded-2xl p-8 transition">
+      <div className="mb-4 flex gap-0.5">
+        {[1, 2, 3, 4, 5].map((i) => (
+          <Star
+            key={i}
+            className={`h-4 w-4 ${
+              i <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-600"
+            }`}
+          />
+        ))}
+      </div>
+      <Quote className="mb-3 h-5 w-5 text-indigo-500/40" />
+      <p className="mb-6 text-sm leading-relaxed text-gray-300">{quote}</p>
+      <div>
+        <p className="text-sm font-semibold">{name}</p>
+        <p className="text-xs text-gray-500">{role}</p>
+      </div>
     </div>
   );
 }
