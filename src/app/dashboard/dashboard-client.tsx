@@ -1,13 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef, useEffect } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import {
   MessageSquare, Star, TrendingUp, Clock, LogOut, Link2, ChevronRight,
-  ExternalLink, ThumbsUp, Minus, ThumbsDown, X, Zap, FileText,
-  BarChart3, Filter, ChevronDown, MapPin, Settings, LayoutDashboard,
+  ExternalLink, ThumbsUp, Minus, ThumbsDown, X, FileText,
+  BarChart3, Filter, ChevronDown, MapPin, Settings, LayoutDashboard, Code2, Bookmark,
 } from "lucide-react";
 
 interface Review {
@@ -21,12 +21,21 @@ interface Review {
   response_text: string | null;
   sentiment: string;
   fetched_at: string;
+  // Note: Run this SQL in Supabase: ALTER TABLE reviews ADD COLUMN IF NOT EXISTS featured boolean DEFAULT false;
+  featured?: boolean;
 }
 
 interface Profile {
   business_name?: string;
   full_name?: string;
   plan?: string;
+}
+
+interface Template {
+  id: string;
+  name: string;
+  template_text: string;
+  sentiment_filter: string | null;
 }
 
 interface DashboardClientProps {
@@ -36,12 +45,13 @@ interface DashboardClientProps {
   reviews: Review[];
   avgRating: string;
   responseRate: number;
+  templates: Template[];
 }
 
 type SortKey = "newest" | "oldest" | "rating-high" | "rating-low";
 
 export default function DashboardClient({
-  user, profile, locations, reviews: initialReviews, avgRating, responseRate,
+  user, profile, locations, reviews: initialReviews, avgRating, responseRate, templates,
 }: DashboardClientProps) {
   const router = useRouter();
   const supabase = createClient();
@@ -60,7 +70,19 @@ export default function DashboardClient({
   const [replyingTo, setReplyingTo] = useState<Review | null>(null);
   const [replyText, setReplyText] = useState("");
   const [replySaving, setReplySaving] = useState(false);
-  const [replyGenerating, setReplyGenerating] = useState(false);
+  const [showTemplateDropdown, setShowTemplateDropdown] = useState(false);
+  const templateDropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close template dropdown on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (templateDropdownRef.current && !templateDropdownRef.current.contains(e.target as Node)) {
+        setShowTemplateDropdown(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, []);
 
   const handleLogout = async () => { await supabase.auth.signOut(); router.push("/"); };
 
@@ -86,20 +108,21 @@ export default function DashboardClient({
 
   const clearFilters = () => { setFilterSource("all"); setFilterSentiment("all"); setFilterRating("all"); setFilterStatus("all"); setSortBy("newest"); };
 
-  const handleReply = (review: Review) => { setReplyingTo(review); setReplyText(review.response_text || ""); };
-
-  const generateAIReply = () => {
-    setReplyGenerating(true);
-    const templates: Record<string, string> = {
-      positive: `Thank you so much for the wonderful review, ${replyingTo?.reviewer_name || "there"}! We're thrilled to hear about your positive experience and look forward to welcoming you back soon!`,
-      neutral: `Thank you for sharing your feedback, ${replyingTo?.reviewer_name || "there"}. We appreciate your honest review and are always looking for ways to improve. Please don't hesitate to reach out.`,
-      negative: `Thank you for your feedback, ${replyingTo?.reviewer_name || "there"}. We're sorry your experience didn't meet expectations. We'd like the opportunity to make things right — please reach out to us directly.`,
-    };
-    setTimeout(() => {
-      setReplyText(templates[replyingTo?.sentiment || "neutral"] || templates.neutral);
-      setReplyGenerating(false);
-    }, 800);
+  const handleReply = (review: Review) => {
+    setReplyingTo(review);
+    setReplyText(review.response_text || "");
+    setShowTemplateDropdown(false);
   };
+
+  const toggleFeatured = async (review: Review) => {
+    const next = !review.featured;
+    await supabase.from("reviews").update({ featured: next }).eq("id", review.id);
+    setReviews((prev) => prev.map((r) => r.id === review.id ? { ...r, featured: next } : r));
+  };
+
+  const filteredTemplates = replyingTo
+    ? templates.filter((t) => !t.sentiment_filter || t.sentiment_filter === replyingTo.sentiment)
+    : templates;
 
   const saveReply = async () => {
     if (!replyingTo || !replyText.trim()) return;
@@ -134,7 +157,7 @@ export default function DashboardClient({
   const renderStars = (rating: number) => (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((i) => (
-        <Star key={i} className={`h-3.5 w-3.5 ${i <= rating ? "fill-orange-400 text-orange-400" : "text-zinc-700"}`} />
+        <Star key={i} className={`h-3.5 w-3.5 ${i <= rating ? "fill-[#ff6b4a] text-[#ff6b4a]" : "text-zinc-700"}`} />
       ))}
     </div>
   );
@@ -159,7 +182,7 @@ export default function DashboardClient({
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
           <div className="flex items-center gap-5">
             <Link href="/" className="flex items-center gap-2 text-sm font-bold">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
                 <MessageSquare className="h-3.5 w-3.5 text-white" />
               </div>
               <span className="font-display hidden sm:inline">ReviewPulse</span>
@@ -168,33 +191,36 @@ export default function DashboardClient({
               <Link href="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium text-white bg-white/5">
                 <LayoutDashboard className="h-3.5 w-3.5" /> Dashboard
               </Link>
-              <Link href="/dashboard/analytics" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-zinc-500 transition hover:text-white hover:bg-white/5">
+              <Link href="/dashboard/analytics" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[#8b8b9e] transition hover:text-white hover:bg-white/5">
                 <BarChart3 className="h-3.5 w-3.5" /> Analytics
               </Link>
-              <Link href="/dashboard/locations" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-zinc-500 transition hover:text-white hover:bg-white/5">
+              <Link href="/dashboard/locations" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[#8b8b9e] transition hover:text-white hover:bg-white/5">
                 <MapPin className="h-3.5 w-3.5" /> Locations
               </Link>
-              <Link href="/dashboard/templates" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-zinc-500 transition hover:text-white hover:bg-white/5">
+              <Link href="/dashboard/templates" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[#8b8b9e] transition hover:text-white hover:bg-white/5">
                 <FileText className="h-3.5 w-3.5" /> Templates
               </Link>
-              <Link href="/dashboard/settings" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-zinc-500 transition hover:text-white hover:bg-white/5">
+              <Link href="/dashboard/widget" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[#8b8b9e] transition hover:text-white hover:bg-white/5">
+                <Code2 className="h-3.5 w-3.5" /> Widget
+              </Link>
+              <Link href="/dashboard/settings" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[#8b8b9e] transition hover:text-white hover:bg-white/5">
                 <Settings className="h-3.5 w-3.5" /> Settings
               </Link>
             </div>
           </div>
           <div className="flex items-center gap-3">
             {plan === "free" && (
-              <Link href="#" className="badge text-orange-400 border-orange-500/20 bg-orange-500/5 text-xs hidden sm:inline-flex">Upgrade to Pro</Link>
+              <Link href="/dashboard/upgrade" className="badge text-[#ff6b4a] border-[#ff6b4a]/20 bg-[#ff6b4a]/10 text-xs hidden sm:inline-flex">Upgrade to Pro</Link>
             )}
             <div className="relative">
               <button onClick={() => setShowUserMenu(!showUserMenu)} className="flex items-center gap-2 rounded-xl px-2 py-1 text-sm transition hover:bg-white/5">
-                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500/20 to-amber-500/20 text-xs font-bold text-orange-400">
+                <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b4a]/20 to-[#ff3d71]/20 text-xs font-bold text-[#ff6b4a]">
                   {(displayName?.[0] || "U").toUpperCase()}
                 </div>
               </button>
               {showUserMenu && (
                 <div className="absolute right-0 top-full mt-2 w-48 glass rounded-2xl p-2 shadow-2xl">
-                  <div className="px-3 py-2 text-xs text-zinc-500 border-b border-white/5 mb-1">{user.email}</div>
+                  <div className="px-3 py-2 text-xs text-zinc-500 border-b border-white/[0.04] mb-1">{user.email}</div>
                   <Link href="/dashboard/settings" className="flex w-full items-center gap-2 rounded-xl px-3 py-2.5 text-sm text-zinc-300 transition hover:bg-white/5">
                     <Settings className="h-4 w-4" /> Settings
                   </Link>
@@ -213,6 +239,23 @@ export default function DashboardClient({
           <div>
             <h1 className="font-display text-2xl font-bold">Welcome back, {displayName.split(" ")[0]}</h1>
             <p className="text-sm text-zinc-500">Here&apos;s what&apos;s happening with your reviews.</p>
+            {/* View Profile links per location */}
+            {locations.length > 0 && (
+              <div className="mt-2 flex flex-wrap gap-2">
+                {locations.map((loc) => (
+                  <Link
+                    key={loc.id}
+                    href={`/business/${loc.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 rounded-xl border border-[#ff6b4a]/20 bg-[#ff6b4a]/5 px-3 py-1 text-xs text-[#ff6b4a] transition hover:bg-[#ff6b4a]/10"
+                  >
+                    <ExternalLink className="h-3 w-3" />
+                    View Profile{locations.length > 1 ? `: ${loc.name}` : ""}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
           {/* Mobile nav */}
           <div className="flex gap-2 md:hidden">
@@ -238,7 +281,7 @@ export default function DashboardClient({
         {/* Stats */}
         <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
           {[
-            { icon: <Star className="h-5 w-5" />, label: "Total Reviews", value: reviews.length.toString(), color: "text-orange-400", bg: "bg-orange-500/10" },
+            { icon: <Star className="h-5 w-5" />, label: "Total Reviews", value: reviews.length.toString(), color: "text-[#ff6b4a]", bg: "bg-[#ff6b4a]/10" },
             { icon: <TrendingUp className="h-5 w-5" />, label: "Avg Rating", value: avgRating, color: "text-emerald-400", bg: "bg-emerald-500/10" },
             { icon: <MessageSquare className="h-5 w-5" />, label: "Response Rate", value: `${responseRate}%`, color: "text-violet-400", bg: "bg-violet-500/10" },
             { icon: <Clock className="h-5 w-5" />, label: "This Week", value: thisWeekCount.toString(), color: "text-amber-400", bg: "bg-amber-500/10" },
@@ -256,7 +299,7 @@ export default function DashboardClient({
           {reviews.length > 0 && (
             <div className="bento p-6">
               <div className="mb-4 flex items-center gap-2">
-                <BarChart3 className="h-5 w-5 text-orange-400" />
+                <BarChart3 className="h-5 w-5 text-[#ff6b4a]" />
                 <h2 className="font-display font-semibold">Sentiment</h2>
               </div>
               <div className="space-y-3">
@@ -280,7 +323,7 @@ export default function DashboardClient({
           )}
           <div className="grid grid-cols-2 gap-4 content-start">
             {[
-              { href: "/dashboard/analytics", icon: <BarChart3 className="h-5 w-5 text-orange-400" />, title: "Analytics", sub: "Trends & insights", bg: "bg-orange-500/10" },
+              { href: "/dashboard/analytics", icon: <BarChart3 className="h-5 w-5 text-[#ff6b4a]" />, title: "Analytics", sub: "Trends & insights", bg: "bg-[#ff6b4a]/10" },
               { href: "/dashboard/locations", icon: <MapPin className="h-5 w-5 text-emerald-400" />, title: "Locations", sub: "Manage locations", bg: "bg-emerald-500/10" },
               { href: "/dashboard/templates", icon: <FileText className="h-5 w-5 text-violet-400" />, title: "Templates", sub: "Response templates", bg: "bg-violet-500/10" },
               { href: "/dashboard/settings", icon: <Settings className="h-5 w-5 text-zinc-400" />, title: "Settings", sub: "Account & billing", bg: "bg-zinc-500/10" },
@@ -299,7 +342,7 @@ export default function DashboardClient({
         {/* Reviews Table */}
         <div className="glass overflow-hidden rounded-3xl">
           {/* Header + Filters */}
-          <div className="border-b border-white/5 px-6 py-4">
+          <div className="border-b border-white/[0.04] px-6 py-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <h2 className="font-display font-semibold">Reviews</h2>
@@ -308,7 +351,7 @@ export default function DashboardClient({
               <div className="flex items-center gap-2">
                 <button
                   onClick={() => setShowFilters(!showFilters)}
-                  className={`btn-ghost inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs ${activeFilterCount > 0 ? "border-orange-500/30 text-orange-400" : ""}`}
+                  className={`btn-ghost inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs ${activeFilterCount > 0 ? "border-[#ff6b4a]/30 text-[#ff6b4a]" : ""}`}
                 >
                   <Filter className="h-3.5 w-3.5" />
                   Filters {activeFilterCount > 0 && `(${activeFilterCount})`}
@@ -373,7 +416,7 @@ export default function DashboardClient({
               )}
             </div>
           ) : (
-            <div className="divide-y divide-white/5">
+            <div className="divide-y divide-white/[0.04]">
               {filteredReviews.map((review) => (
                 <div key={review.id} className="flex items-start gap-4 px-6 py-4 transition hover:bg-white/[0.02]">
                   {sourceIcon(review.source)}
@@ -388,6 +431,16 @@ export default function DashboardClient({
                     <p className="mt-1 text-xs text-zinc-600">{new Date(review.fetched_at).toLocaleDateString()}</p>
                   </div>
                   <div className="flex shrink-0 items-center gap-2">
+                    {/* Feature toggle — marks review as featured on public profile */}
+                    <button
+                      onClick={() => toggleFeatured(review)}
+                      title={review.featured ? "Remove from featured" : "Feature on public profile"}
+                      className="rounded-xl p-2 transition hover:bg-white/5"
+                    >
+                      <Bookmark
+                        className={`h-3.5 w-3.5 transition ${review.featured ? "fill-[#ff6b4a] text-[#ff6b4a]" : "text-zinc-600 hover:text-zinc-400"}`}
+                      />
+                    </button>
                     {!review.responded && (
                       <button onClick={() => handleReply(review)} className="btn-ghost rounded-xl px-3 py-1.5 text-xs">Reply</button>
                     )}
@@ -405,10 +458,10 @@ export default function DashboardClient({
 
         {/* Upgrade */}
         {plan === "free" && (
-          <div className="mt-8 glass rounded-3xl border-orange-500/10 p-8 text-center">
+          <div className="mt-8 glass rounded-3xl border-[#ff6b4a]/10 p-8 text-center">
             <h3 className="mb-1 font-display font-bold">Unlock Yelp, Facebook & Unlimited AI</h3>
             <p className="mb-4 text-sm text-zinc-400">Upgrade to Pro for $49/mo.</p>
-            <button className="btn-primary rounded-2xl px-6 py-3 text-sm">Upgrade to Pro <ChevronRight className="inline h-4 w-4" /></button>
+            <Link href="/dashboard/upgrade" className="btn-primary inline-flex items-center rounded-2xl px-6 py-3 text-sm">Upgrade to Pro <ChevronRight className="inline h-4 w-4 ml-1" /></Link>
           </div>
         )}
       </main>
@@ -419,9 +472,9 @@ export default function DashboardClient({
           <div className="w-full max-w-lg glass rounded-3xl p-8 shadow-2xl">
             <div className="mb-6 flex items-center justify-between">
               <h2 className="font-display text-lg font-bold">Reply to Review</h2>
-              <button onClick={() => { setReplyingTo(null); setReplyText(""); }} className="rounded-xl p-1 text-zinc-500 transition hover:bg-white/5 hover:text-white"><X className="h-5 w-5" /></button>
+              <button onClick={() => { setReplyingTo(null); setReplyText(""); setShowTemplateDropdown(false); }} className="rounded-xl p-1 text-zinc-500 transition hover:bg-white/5 hover:text-white"><X className="h-5 w-5" /></button>
             </div>
-            <div className="mb-6 rounded-2xl border border-white/5 bg-white/[0.02] p-4">
+            <div className="mb-6 rounded-2xl border border-white/[0.04] bg-white/[0.02] p-4">
               <div className="mb-2 flex items-center gap-2">
                 {sourceIcon(replyingTo.source)}
                 <span className="text-sm font-medium">{replyingTo.reviewer_name || "Anonymous"}</span>
@@ -433,14 +486,42 @@ export default function DashboardClient({
             <div className="mb-4">
               <div className="mb-2 flex items-center justify-between">
                 <label className="text-sm font-medium text-zinc-300">Your Response</label>
-                <button onClick={generateAIReply} disabled={replyGenerating} className="badge text-orange-400 border-orange-500/20 bg-orange-500/5 text-xs cursor-pointer hover:bg-orange-500/10 transition disabled:opacity-50">
-                  <Zap className="h-3 w-3" /> {replyGenerating ? "Generating..." : "Generate with AI"}
-                </button>
+                {/* Template dropdown */}
+                <div className="relative" ref={templateDropdownRef}>
+                  <button
+                    onClick={() => setShowTemplateDropdown((v) => !v)}
+                    className="badge text-[#ff6b4a] border-[#ff6b4a]/20 bg-[#ff6b4a]/[0.08] text-xs cursor-pointer hover:bg-[#ff6b4a]/10 transition inline-flex items-center gap-1"
+                  >
+                    <FileText className="h-3 w-3" /> Use Template <ChevronDown className="h-3 w-3" />
+                  </button>
+                  {showTemplateDropdown && (
+                    <div className="absolute right-0 top-full mt-1 w-64 glass rounded-2xl p-1.5 shadow-2xl z-10">
+                      {filteredTemplates.length === 0 ? (
+                        <div className="px-3 py-2.5 text-xs text-zinc-500">
+                          No templates yet — <Link href="/dashboard/templates" className="text-[#ff6b4a] hover:underline" onClick={() => setShowTemplateDropdown(false)}>create one in Templates</Link>
+                        </div>
+                      ) : (
+                        filteredTemplates.map((t) => (
+                          <button
+                            key={t.id}
+                            onClick={() => { setReplyText(t.template_text); setShowTemplateDropdown(false); }}
+                            className="flex w-full flex-col items-start rounded-xl px-3 py-2 text-left transition hover:bg-white/5"
+                          >
+                            <span className="text-xs font-medium text-zinc-200">{t.name}</span>
+                            {t.sentiment_filter && (
+                              <span className="text-[10px] text-zinc-500 capitalize">{t.sentiment_filter}</span>
+                            )}
+                          </button>
+                        ))
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
               <textarea value={replyText} onChange={(e) => setReplyText(e.target.value)} rows={5} className="input w-full" placeholder="Write your response..." />
             </div>
             <div className="flex justify-end gap-3">
-              <button onClick={() => { setReplyingTo(null); setReplyText(""); }} className="btn-ghost rounded-2xl px-5 py-2.5 text-sm">Cancel</button>
+              <button onClick={() => { setReplyingTo(null); setReplyText(""); setShowTemplateDropdown(false); }} className="btn-ghost rounded-2xl px-5 py-2.5 text-sm">Cancel</button>
               <button onClick={saveReply} disabled={replySaving || !replyText.trim()} className="btn-primary rounded-2xl px-6 py-2.5 text-sm disabled:opacity-50">
                 {replySaving ? "Saving..." : "Save Response"}
               </button>

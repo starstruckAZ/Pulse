@@ -66,6 +66,12 @@ export default async function DashboardPage() {
       ? Math.round((respondedCount / reviews.length) * 100)
       : 0;
 
+  const { data: templates } = await supabase
+    .from("response_templates")
+    .select("*")
+    .eq("user_id", user.id)
+    .order("created_at", { ascending: false });
+
   return (
     <DashboardClient
       user={user}
@@ -74,6 +80,7 @@ export default async function DashboardPage() {
       reviews={reviews}
       avgRating={avgRating}
       responseRate={responseRate}
+      templates={templates || []}
     />
   );
 }
