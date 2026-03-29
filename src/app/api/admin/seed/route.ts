@@ -23,8 +23,7 @@ interface ReviewSeed {
   sentiment: string;
   responded: boolean;
   response_text: string | null;
-  created_at: string;
-  status: string;
+  fetched_at: string;
 }
 
 const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
@@ -39,8 +38,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     responded: true,
     response_text:
       "Thank you so much, Sarah! We're thrilled you're loving your new setup. Enjoy every movie night!",
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "responded",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "James T.",
@@ -51,8 +49,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Maria G.",
@@ -64,8 +61,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     responded: true,
     response_text:
       "Maria, thank you for taking the time to leave this review! Helping customers find the perfect display is what we love to do. Enjoy your OLED!",
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "responded",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "David L.",
@@ -76,8 +72,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Jennifer R.",
@@ -89,8 +84,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     responded: true,
     response_text:
       "Jennifer, we appreciate your loyalty so much! Glad the new soundbar bundle is hitting all the right notes. See you for your next upgrade!",
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "responded",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Mike S.",
@@ -101,8 +95,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   // 4-star reviews (4 total)
   {
@@ -114,8 +107,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Tom B.",
@@ -126,8 +118,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Rachel H.",
@@ -138,8 +129,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Carlos V.",
@@ -150,8 +140,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   // 3-star reviews (2 total)
   {
@@ -163,8 +152,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "neutral",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   {
     reviewer_name: "Kevin P.",
@@ -175,8 +163,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "neutral",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   // 2-star review (1 total)
   {
@@ -188,8 +175,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "negative",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   // 1-star review (1 total)
   {
@@ -201,8 +187,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "negative",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
   // Extra 5-star to balance (Nicole F.)
   {
@@ -214,8 +199,7 @@ const reviewSeeds: Omit<ReviewSeed, "location_id">[] = [
     sentiment: "positive",
     responded: false,
     response_text: null,
-    created_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
-    status: "new",
+    fetched_at: new Date(Date.now() - Math.random() * 90 * 86400000).toISOString(),
   },
 ];
 
@@ -263,7 +247,6 @@ export async function POST() {
             name: "Starstruck TV",
             address: "Phoenix, AZ",
             google_place_id: "test_place_123",
-            platform: "google",
           })
           .select("id")
           .single();

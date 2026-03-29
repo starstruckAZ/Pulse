@@ -22,7 +22,17 @@
       "Bash(NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=eyJplaceholder npx next build)",
       "Bash(vercel inspect:*)",
       "Bash(vercel ls:*)",
-      "WebSearch"
+      "WebSearch",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(npx vercel:*)",
+      "Bash(wc -l F:/ReviewPulse/src/app/dashboard/widget/page.tsx F:/ReviewPulse/src/app/dashboard/widget/widget-client.tsx F:/ReviewPulse/src/app/widget/[locationId]/page.tsx F:/ReviewPulse/src/app/dashboard/upgrade/page.tsx F:/ReviewPulse/src/app/dashboard/upgrade/upgrade-client.tsx F:/ReviewPulse/src/app/api/stripe/checkout/route.ts F:/ReviewPulse/src/app/api/stripe/webhook/route.ts F:/ReviewPulse/src/lib/stripe.ts)",
+      "Bash(node -e \"const Stripe = require\\(''''stripe''''\\); const s = new Stripe\\(''''sk_test_x''''\\); console.log\\(Object.keys\\(s\\)\\)\")",
+      "Bash(node -e \"const pkg = require\\(''''./node_modules/stripe/package.json''''\\); console.log\\(pkg.version\\)\")",
+      "Bash(ls F:/ReviewPulse/.env*)",
+      "Bash(node -e \":*)",
+      "Bash(ls F:/ReviewPulse/src/app/business/[locationId]/)",
+      "Bash(source .env.local)",
+      "Bash(npx supabase:*)"
     ]
   }
 }
