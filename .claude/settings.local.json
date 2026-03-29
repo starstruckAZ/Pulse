@@ -19,7 +19,10 @@
       "Bash(rm -rf node_modules)",
       "Bash(rm -f package-lock.json)",
       "Bash(npm ls:*)",
-      "Bash(NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=eyJplaceholder npx next build)"
+      "Bash(NEXT_PUBLIC_SUPABASE_URL=https://placeholder.supabase.co NEXT_PUBLIC_SUPABASE_PUBLISHABLE_DEFAULT_KEY=eyJplaceholder npx next build)",
+      "Bash(vercel inspect:*)",
+      "Bash(vercel ls:*)",
+      "WebSearch"
     ]
   }
 }

@@ -22,15 +22,9 @@ export const metadata: Metadata = {
     "sentiment analysis",
     "review monitoring",
     "reputation management software",
-    "review aggregator",
-    "local SEO",
-    "business reputation",
-    "customer feedback management",
-    "review reply tool",
   ],
   authors: [{ name: "ReviewPulse" }],
   creator: "ReviewPulse",
-  publisher: "ReviewPulse",
   robots: {
     index: true,
     follow: true,
@@ -49,7 +43,7 @@ export const metadata: Metadata = {
     siteName: "ReviewPulse",
     title: "ReviewPulse — Review Management for Local Businesses",
     description:
-      "Google, Yelp, Facebook — all your reviews in one dashboard. AI-powered responses. Sentiment tracking. Never miss a review again.",
+      "Google, Yelp, Facebook — all your reviews in one dashboard. AI-powered responses. Sentiment tracking.",
     images: [
       {
         url: `${siteUrl}/og-image.png`,
@@ -66,9 +60,7 @@ export const metadata: Metadata = {
       "Google, Yelp, Facebook — all reviews in one dashboard. AI responses. Sentiment tracking.",
     images: [`${siteUrl}/og-image.png`],
   },
-  alternates: {
-    canonical: siteUrl,
-  },
+  alternates: { canonical: siteUrl },
   category: "Business Software",
 };
 
@@ -85,8 +77,7 @@ export default function RootLayout({
         url: siteUrl,
         logo: `${siteUrl}/logo.png`,
         description:
-          "Review management platform for local businesses. Aggregate reviews from Google, Yelp, and Facebook into one dashboard.",
-        sameAs: [],
+          "Review management platform for local businesses.",
       },
       {
         "@type": "WebSite",
@@ -94,11 +85,6 @@ export default function RootLayout({
         url: siteUrl,
         name: "ReviewPulse",
         publisher: { "@id": `${siteUrl}/#organization` },
-        potentialAction: {
-          "@type": "SearchAction",
-          target: `${siteUrl}/blog?q={search_term_string}`,
-          "query-input": "required name=search_term_string",
-        },
       },
       {
         "@type": "SoftwareApplication",
@@ -106,47 +92,15 @@ export default function RootLayout({
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         url: siteUrl,
-        description:
-          "AI-powered review management platform that aggregates Google, Yelp, and Facebook reviews into a single dashboard with sentiment analysis and automated responses.",
         offers: [
-          {
-            "@type": "Offer",
-            name: "Free Plan",
-            price: "0",
-            priceCurrency: "USD",
-            description:
-              "Google reviews, 10 reviews tracked, 5 AI responses per month",
-          },
-          {
-            "@type": "Offer",
-            name: "Pro Plan",
-            price: "49",
-            priceCurrency: "USD",
-            priceSpecification: {
-              "@type": "UnitPriceSpecification",
-              price: "49",
-              priceCurrency: "USD",
-              billingDuration: "P1M",
-            },
-            description:
-              "All platforms, unlimited reviews, unlimited AI responses, sentiment analytics",
-          },
+          { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
+          { "@type": "Offer", name: "Pro", price: "49", priceCurrency: "USD" },
         ],
         aggregateRating: {
           "@type": "AggregateRating",
           ratingValue: "4.8",
           reviewCount: "500",
-          bestRating: "5",
-          worstRating: "1",
         },
-        featureList: [
-          "Multi-platform review aggregation",
-          "AI-powered response generation",
-          "Sentiment analysis",
-          "Real-time notifications",
-          "Response templates",
-          "Analytics dashboard",
-        ],
       },
     ],
   };
@@ -155,13 +109,10 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
         <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap"
           rel="stylesheet"
         />
         <script
@@ -169,10 +120,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body
-        className="bg-[#0a0a0f] text-gray-100 antialiased"
-        style={{ fontFamily: "'Inter', system-ui, sans-serif" }}
-      >
+      <body className="noise font-body antialiased">
         {children}
       </body>
     </html>

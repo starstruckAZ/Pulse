@@ -4,275 +4,318 @@ import {
   MessageSquare,
   Bell,
   ArrowRight,
-  Shield,
   Zap,
   BarChart3,
   Quote,
+  Sparkles,
+  Shield,
+  Globe,
+  Clock,
+  Check,
 } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="relative min-h-screen overflow-hidden">
+      {/* Background mesh */}
+      <div className="mesh-gradient left-[-20%] top-[-10%] h-[600px] w-[600px] bg-orange-500/8 animate-glow" />
+      <div className="mesh-gradient right-[-10%] top-[20%] h-[500px] w-[500px] bg-violet-500/6 animate-glow" />
+      <div className="mesh-gradient left-[30%] top-[60%] h-[400px] w-[400px] bg-amber-500/5" />
+
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass border-b-0">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <div className="flex items-center gap-2">
-            <MessageSquare className="h-6 w-6 text-indigo-500" />
-            <span className="text-lg font-bold tracking-tight">ReviewPulse</span>
-          </div>
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500">
+              <MessageSquare className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-display text-lg font-bold tracking-tight">ReviewPulse</span>
+          </Link>
           <div className="hidden items-center gap-8 md:flex">
-            <a href="#features" className="text-sm text-gray-400 transition hover:text-white">
-              Features
-            </a>
-            <a href="#pricing" className="text-sm text-gray-400 transition hover:text-white">
-              Pricing
-            </a>
-            <Link href="/how-it-works" className="text-sm text-gray-400 transition hover:text-white">
-              How It Works
-            </Link>
-            <Link href="/blog" className="text-sm text-gray-400 transition hover:text-white">
-              Blog
-            </Link>
-            <Link
-              href="/login"
-              className="text-sm text-gray-400 transition hover:text-white"
-            >
-              Log In
-            </Link>
-            <Link
-              href="/signup"
-              className="btn-glow rounded-lg px-4 py-2 text-sm font-medium text-white"
-            >
+            <a href="#features" className="text-sm text-zinc-400 transition hover:text-white">Features</a>
+            <a href="#pricing" className="text-sm text-zinc-400 transition hover:text-white">Pricing</a>
+            <Link href="/how-it-works" className="text-sm text-zinc-400 transition hover:text-white">How It Works</Link>
+            <Link href="/blog" className="text-sm text-zinc-400 transition hover:text-white">Blog</Link>
+            <Link href="/login" className="text-sm text-zinc-400 transition hover:text-white">Log In</Link>
+            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2.5 text-sm">
               Get Started Free
             </Link>
           </div>
-          <Link
-            href="/signup"
-            className="btn-glow rounded-lg px-4 py-2 text-sm font-medium text-white md:hidden"
-          >
+          <Link href="/signup" className="btn-primary rounded-xl px-4 py-2 text-sm md:hidden">
             Start Free
           </Link>
         </div>
       </nav>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden pt-32 pb-20 md:pt-44 md:pb-32">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-1/4 top-0 h-[500px] w-[500px] rounded-full bg-indigo-500/10 blur-[120px]" />
-          <div className="absolute right-1/4 top-20 h-[400px] w-[400px] rounded-full bg-purple-500/10 blur-[120px]" />
-        </div>
-
-        <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-4 py-1.5 text-sm text-indigo-400">
-            <Star className="h-3.5 w-3.5" />
+      {/* ═══ Hero ═══ */}
+      <section className="relative pt-36 pb-24 md:pt-48 md:pb-36">
+        <div className="relative mx-auto max-w-5xl px-6 text-center">
+          <div className="mb-8 inline-flex items-center gap-2 badge text-orange-400 border-orange-500/20 bg-orange-500/5">
+            <Sparkles className="h-3.5 w-3.5" />
             Trusted by 500+ local businesses
           </div>
 
-          <h1 className="mb-6 text-4xl font-bold tracking-tight md:text-6xl md:leading-tight">
-            See Every Review.{" "}
-            <span className="gradient-text">Reply in Seconds.</span>
+          <h1 className="mx-auto mb-8 max-w-4xl font-display text-5xl font-bold leading-[1.1] tracking-tight md:text-7xl">
+            Every review.
+            <br />
+            <span className="gradient-text">One dashboard.</span>
           </h1>
 
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-gray-400 md:text-xl">
-            Google, Yelp, Facebook — all your reviews in one dashboard. AI-powered
-            responses. Sentiment tracking. Never miss a review again.
+          <p className="mx-auto mb-12 max-w-2xl text-lg leading-relaxed text-zinc-400 md:text-xl">
+            Pull in reviews from Google, Yelp, and Facebook automatically.
+            Respond with AI in seconds. Track sentiment over time. Never let
+            a review slip through the cracks.
           </p>
 
           <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
             <Link
               href="/signup"
-              className="btn-glow inline-flex items-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold text-white"
+              className="btn-primary inline-flex items-center gap-2 rounded-2xl px-8 py-4 text-base"
             >
-              Get Started Free <ArrowRight className="h-4 w-4" />
+              Start Free — No Card Needed <ArrowRight className="h-4 w-4" />
             </Link>
             <Link
               href="/how-it-works"
-              className="inline-flex items-center gap-2 rounded-xl border border-white/10 px-8 py-3.5 text-base font-medium text-gray-300 transition hover:border-white/20 hover:text-white"
+              className="btn-ghost inline-flex items-center gap-2 rounded-2xl px-8 py-4 text-base"
             >
               See How It Works
             </Link>
           </div>
 
-          <p className="mt-4 text-sm text-gray-500">
-            Free forever plan. No credit card required.
-          </p>
+          {/* Mini stats row */}
+          <div className="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm text-zinc-500">
+            <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-orange-400" /> 2-min setup</span>
+            <span className="flex items-center gap-2"><Shield className="h-4 w-4 text-orange-400" /> SOC 2 compliant</span>
+            <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-orange-400" /> 3 platforms</span>
+          </div>
         </div>
       </section>
 
-      {/* Features */}
-      <section id="features" className="py-20 md:py-28">
+      {/* ═══ Bento Features ═══ */}
+      <section id="features" className="relative py-24 md:py-32">
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="mb-16 max-w-2xl">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-orange-400">Features</p>
+            <h2 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
+              Stop tab-hopping.<br />
+              <span className="text-zinc-500">Start managing.</span>
+            </h2>
+          </div>
+
+          {/* Bento Grid */}
+          <div className="grid gap-4 md:grid-cols-3 md:grid-rows-2">
+            {/* Large — spans 2 cols */}
+            <div className="bento p-8 md:col-span-2 md:row-span-1">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-500/10">
+                <MessageSquare className="h-6 w-6 text-orange-400" />
+              </div>
+              <h3 className="mb-2 font-display text-xl font-bold">Unified Review Inbox</h3>
+              <p className="max-w-md text-sm leading-relaxed text-zinc-400">
+                Google, Yelp, and Facebook reviews stream into one feed.
+                Filter by platform, rating, sentiment, or response status.
+                No more switching between three dashboards.
+              </p>
+              {/* Mini UI preview */}
+              <div className="mt-6 flex gap-2">
+                {["Google", "Yelp", "Facebook"].map((p) => (
+                  <span key={p} className="badge text-xs text-zinc-400">{p}</span>
+                ))}
+              </div>
+            </div>
+
+            {/* Tall — spans 2 rows */}
+            <div className="bento flex flex-col justify-between p-8 md:row-span-2">
+              <div>
+                <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-500/10">
+                  <Zap className="h-6 w-6 text-violet-400" />
+                </div>
+                <h3 className="mb-2 font-display text-xl font-bold">AI Responses</h3>
+                <p className="text-sm leading-relaxed text-zinc-400">
+                  One click generates a personalized, tone-aware reply draft.
+                  Adjust for professional, friendly, or apologetic tone.
+                  Save your best replies as reusable templates.
+                </p>
+              </div>
+              <div className="mt-8 space-y-2">
+                {["Professional", "Friendly", "Apologetic"].map((tone) => (
+                  <div key={tone} className="flex items-center gap-2 rounded-xl bg-white/[0.03] px-4 py-2.5 text-xs text-zinc-400 border border-white/5">
+                    <span className="h-2 w-2 rounded-full bg-violet-400" />
+                    {tone} tone
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom left */}
+            <div className="bento p-8">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-500/10">
+                <BarChart3 className="h-6 w-6 text-emerald-400" />
+              </div>
+              <h3 className="mb-2 font-display text-xl font-bold">Sentiment Analytics</h3>
+              <p className="text-sm leading-relaxed text-zinc-400">
+                Real-time sentiment breakdown across all platforms. Spot
+                trends before they escalate.
+              </p>
+              {/* Mini chart */}
+              <div className="mt-5 flex items-end gap-1.5">
+                {[60, 80, 45, 90, 70, 85, 95].map((h, i) => (
+                  <div key={i} className="w-full rounded-md bg-emerald-500/20" style={{ height: `${h * 0.5}px` }} />
+                ))}
+              </div>
+            </div>
+
+            {/* Bottom center */}
+            <div className="bento p-8">
+              <div className="mb-5 flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-500/10">
+                <Bell className="h-6 w-6 text-amber-400" />
+              </div>
+              <h3 className="mb-2 font-display text-xl font-bold">Instant Alerts</h3>
+              <p className="text-sm leading-relaxed text-zinc-400">
+                New review? You know within minutes. Respond while it
+                matters — fast replies drive 4x more return visits.
+              </p>
+              <div className="mt-5 glass rounded-xl p-3">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-amber-500/20 text-xs font-bold text-amber-400">
+                    G
+                  </div>
+                  <div className="text-xs">
+                    <p className="font-medium text-zinc-300">New 5-star review</p>
+                    <p className="text-zinc-500">Just now</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Social Proof ═══ */}
+      <section className="py-16">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="glass rounded-3xl p-10 text-center md:p-16">
+            <div className="mb-8 flex flex-wrap items-center justify-center gap-10">
+              {[
+                { label: "500+", sub: "Businesses" },
+                { label: "50K+", sub: "Reviews Managed" },
+                { label: "4.8x", sub: "Faster Replies" },
+                { label: "32%", sub: "More Return Visits" },
+              ].map((stat) => (
+                <div key={stat.label}>
+                  <p className="font-display text-3xl font-bold gradient-text">{stat.label}</p>
+                  <p className="mt-1 text-xs text-zinc-500">{stat.sub}</p>
+                </div>
+              ))}
+            </div>
+            <div className="flex flex-wrap items-center justify-center gap-6 text-zinc-500">
+              <span className="flex items-center gap-2 text-sm"><Star className="h-4 w-4 text-yellow-500" /> Google Reviews</span>
+              <span className="flex items-center gap-2 text-sm"><Star className="h-4 w-4 text-red-500" /> Yelp Reviews</span>
+              <span className="flex items-center gap-2 text-sm"><Star className="h-4 w-4 text-blue-500" /> Facebook Reviews</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Testimonials ═══ */}
+      <section id="testimonials" className="py-24 md:py-32">
         <div className="mx-auto max-w-6xl px-6">
           <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Everything you need to{" "}
-              <span className="gradient-text">manage your reputation</span>
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-orange-400">Testimonials</p>
+            <h2 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
+              Businesses love <span className="gradient-text">ReviewPulse</span>
             </h2>
-            <p className="mx-auto max-w-xl text-gray-400">
-              Stop switching between platforms. Stop missing reviews. Stop losing
-              customers over bad responses.
-            </p>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-3">
+            {[
+              {
+                quote: "We went from spending 3 hours a week on reviews to 15 minutes. The AI responses are shockingly good.",
+                name: "Maria C.",
+                role: "Bella's Italian Kitchen",
+              },
+              {
+                quote: "Our Google rating went from 3.6 to 4.4 in four months. ReviewPulse made responding to every review possible.",
+                name: "James T.",
+                role: "Precision Auto Care",
+              },
+              {
+                quote: "I manage 8 locations. I catch every negative review within minutes now and my team responds fast.",
+                name: "Sarah K.",
+                role: "FreshFit Dental",
+              },
+            ].map((t, i) => (
+              <div key={i} className="bento p-8">
+                <div className="mb-4 flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="h-4 w-4 fill-orange-400 text-orange-400" />
+                  ))}
+                </div>
+                <Quote className="mb-3 h-5 w-5 text-zinc-700" />
+                <p className="mb-6 text-sm leading-relaxed text-zinc-300">{t.quote}</p>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-9 w-9 items-center justify-center rounded-full bg-gradient-to-br from-orange-500/20 to-amber-500/20 text-xs font-bold text-orange-400">
+                    {t.name[0]}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold">{t.name}</p>
+                    <p className="text-xs text-zinc-500">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ═══ Pricing ═══ */}
+      <section id="pricing" className="py-24 md:py-32">
+        <div className="mx-auto max-w-4xl px-6">
+          <div className="mb-16 text-center">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-orange-400">Pricing</p>
+            <h2 className="font-display text-3xl font-bold tracking-tight md:text-5xl">
+              Simple, transparent pricing
+            </h2>
+            <p className="mt-4 text-zinc-400">Start free. Upgrade when you&apos;re ready.</p>
           </div>
 
           <div className="grid gap-6 md:grid-cols-2">
-            <FeatureCard
-              icon={<MessageSquare className="h-6 w-6" />}
-              title="All Reviews in One Place"
-              description="Google, Yelp, and Facebook reviews aggregated into a single dashboard. No more tab-hopping."
-            />
-            <FeatureCard
-              icon={<Zap className="h-6 w-6" />}
-              title="AI-Powered Responses"
-              description="Generate professional, personalized reply drafts in one click. Adjust tone, length, and specifics instantly."
-            />
-            <FeatureCard
-              icon={<BarChart3 className="h-6 w-6" />}
-              title="Sentiment Tracking"
-              description="See how customers feel at a glance with real-time sentiment analysis. Spot trends before they become problems."
-            />
-            <FeatureCard
-              icon={<Bell className="h-6 w-6" />}
-              title="Instant Alerts"
-              description="Get notified the moment a new review comes in. Respond fast — reviewers who get replies are 4x more likely to return."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Social proof bar */}
-      <section className="border-y border-white/5 bg-white/[0.02] py-12">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <p className="mb-6 text-sm font-medium uppercase tracking-widest text-gray-500">
-            Local businesses use ReviewPulse to manage
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 text-gray-500">
-            <span className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-yellow-500" /> Google Reviews
-            </span>
-            <span className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-red-500" /> Yelp Reviews
-            </span>
-            <span className="flex items-center gap-2">
-              <Star className="h-5 w-5 text-blue-500" /> Facebook Reviews
-            </span>
-          </div>
-        </div>
-      </section>
-
-      {/* Testimonials */}
-      <section id="testimonials" className="py-20 md:py-28">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Loved by{" "}
-              <span className="gradient-text">local businesses</span>
-            </h2>
-            <p className="mx-auto max-w-xl text-gray-400">
-              See how businesses like yours are saving time and winning more customers
-              with ReviewPulse.
-            </p>
-          </div>
-
-          <div className="grid gap-6 md:grid-cols-3">
-            <TestimonialCard
-              quote="We went from spending 3 hours a week on reviews to 15 minutes. The AI responses are shockingly good — I just tweak a few words and hit send."
-              name="Maria C."
-              role="Owner, Bella's Italian Kitchen"
-              rating={5}
-            />
-            <TestimonialCard
-              quote="Our Google rating went from 3.6 to 4.4 in four months. The biggest change? We actually started responding to every single review. ReviewPulse made that possible."
-              name="James T."
-              role="Manager, Precision Auto Care"
-              rating={5}
-            />
-            <TestimonialCard
-              quote="I manage 8 locations. Before ReviewPulse, I had no idea what was happening with reviews. Now I catch every negative review within minutes and my team can respond fast."
-              name="Sarah K."
-              role="Regional Director, FreshFit Dental"
-              rating={5}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Pricing */}
-      <section id="pricing" className="py-20 md:py-28">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="mb-16 text-center">
-            <h2 className="mb-4 text-3xl font-bold md:text-4xl">
-              Simple, honest{" "}
-              <span className="gradient-text">pricing</span>
-            </h2>
-            <p className="mx-auto max-w-xl text-gray-400">
-              Start free. Upgrade when you&apos;re ready. No tricks, no hidden fees.
-            </p>
-          </div>
-
-          <div className="grid gap-8 md:grid-cols-2">
-            {/* Free Plan */}
-            <div className="glow-card rounded-2xl p-8 transition">
-              <div className="mb-6">
-                <h3 className="mb-1 text-xl font-semibold">Free</h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$0</span>
-                  <span className="text-gray-500">/month</span>
-                </div>
+            {/* Free */}
+            <div className="bento p-8">
+              <p className="mb-1 text-sm font-medium text-zinc-400">Free</p>
+              <div className="mb-6 flex items-baseline gap-1">
+                <span className="font-display text-5xl font-bold">$0</span>
+                <span className="text-zinc-500">/mo</span>
               </div>
-              <ul className="mb-8 space-y-3 text-sm text-gray-300">
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Google Reviews
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> 10 reviews tracked
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> 5 AI responses / month
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Weekly email digest
-                </li>
+              <ul className="mb-8 space-y-3 text-sm text-zinc-300">
+                {["Google Reviews", "10 reviews tracked", "5 AI responses / month", "Weekly email digest"].map((f) => (
+                  <li key={f} className="flex items-center gap-3">
+                    <Check className="h-4 w-4 shrink-0 text-zinc-500" /> {f}
+                  </li>
+                ))}
               </ul>
-              <Link
-                href="/signup"
-                className="block w-full rounded-xl border border-white/10 py-3 text-center text-sm font-semibold transition hover:bg-white/5"
-              >
+              <Link href="/signup" className="btn-ghost block w-full rounded-2xl py-3.5 text-center text-sm">
                 Get Started Free
               </Link>
             </div>
 
-            {/* Pro Plan */}
-            <div className="relative glow-card rounded-2xl p-8 transition">
-              <div className="absolute -top-3 right-6 rounded-full bg-indigo-500 px-3 py-1 text-xs font-semibold text-white">
+            {/* Pro */}
+            <div className="relative bento border-orange-500/20 p-8">
+              <div className="absolute -top-3 right-6 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 px-3 py-1 text-xs font-semibold text-white">
                 Most Popular
               </div>
-              <div className="mb-6">
-                <h3 className="mb-1 text-xl font-semibold">Pro</h3>
-                <div className="flex items-baseline gap-1">
-                  <span className="text-4xl font-bold">$49</span>
-                  <span className="text-gray-500">/month</span>
-                </div>
+              <p className="mb-1 text-sm font-medium text-orange-400">Pro</p>
+              <div className="mb-6 flex items-baseline gap-1">
+                <span className="font-display text-5xl font-bold">$49</span>
+                <span className="text-zinc-500">/mo</span>
               </div>
-              <ul className="mb-8 space-y-3 text-sm text-gray-300">
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Google, Yelp & Facebook
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Unlimited reviews
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Unlimited AI responses
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Instant email alerts
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Sentiment analytics
-                </li>
-                <li className="flex items-center gap-3">
-                  <CheckIcon /> Response templates
-                </li>
+              <ul className="mb-8 space-y-3 text-sm text-zinc-300">
+                {["Google, Yelp & Facebook", "Unlimited reviews", "Unlimited AI responses", "Instant email alerts", "Sentiment analytics", "Response templates"].map((f) => (
+                  <li key={f} className="flex items-center gap-3">
+                    <Check className="h-4 w-4 shrink-0 text-orange-400" /> {f}
+                  </li>
+                ))}
               </ul>
-              <button className="btn-glow block w-full rounded-xl py-3 text-sm font-semibold text-white">
+              <button className="btn-primary block w-full rounded-2xl py-3.5 text-sm">
                 Upgrade to Pro
               </button>
             </div>
@@ -280,21 +323,23 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 md:py-28">
+      {/* ═══ CTA ═══ */}
+      <section className="py-24 md:py-32">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <div className="glow-card rounded-3xl p-12">
-            <Shield className="mx-auto mb-6 h-12 w-12 text-indigo-500" />
-            <h2 className="mb-4 text-3xl font-bold">
-              Start protecting your reputation today
+          <div className="glass rounded-[2rem] p-12 md:p-16">
+            <div className="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500">
+              <Shield className="h-7 w-7 text-white" />
+            </div>
+            <h2 className="mb-4 font-display text-3xl font-bold md:text-4xl">
+              Your reputation can&apos;t wait
             </h2>
-            <p className="mb-8 text-gray-400">
-              Every unanswered review is a missed opportunity. Set up ReviewPulse
-              in under 2 minutes and never miss another one.
+            <p className="mb-8 text-zinc-400">
+              Every unanswered review is a customer lost. Set up ReviewPulse
+              in under 2 minutes.
             </p>
             <Link
               href="/signup"
-              className="btn-glow inline-flex items-center gap-2 rounded-xl px-8 py-3.5 text-base font-semibold text-white"
+              className="btn-primary inline-flex items-center gap-2 rounded-2xl px-8 py-4 text-base"
             >
               Get Started Free <ArrowRight className="h-4 w-4" />
             </Link>
@@ -302,121 +347,53 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
+      {/* ═══ Footer ═══ */}
       <footer className="border-t border-white/5 py-12">
         <div className="mx-auto max-w-6xl px-6">
           <div className="grid gap-8 md:grid-cols-4">
             <div>
-              <div className="mb-4 flex items-center gap-2">
-                <MessageSquare className="h-5 w-5 text-indigo-500" />
-                <span className="text-sm font-semibold">ReviewPulse</span>
-              </div>
-              <p className="text-sm text-gray-500">
-                Review management for local businesses. All your reviews, one dashboard.
+              <Link href="/" className="mb-4 flex items-center gap-2.5">
+                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500">
+                  <MessageSquare className="h-3.5 w-3.5 text-white" />
+                </div>
+                <span className="font-display text-sm font-bold">ReviewPulse</span>
+              </Link>
+              <p className="text-sm text-zinc-500">
+                Review management for<br />local businesses.
               </p>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-semibold text-gray-300">Product</h4>
-              <ul className="space-y-2 text-sm text-gray-500">
+              <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Product</h4>
+              <ul className="space-y-2 text-sm text-zinc-400">
                 <li><a href="#features" className="transition hover:text-white">Features</a></li>
                 <li><a href="#pricing" className="transition hover:text-white">Pricing</a></li>
                 <li><Link href="/how-it-works" className="transition hover:text-white">How It Works</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-semibold text-gray-300">Resources</h4>
-              <ul className="space-y-2 text-sm text-gray-500">
+              <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Resources</h4>
+              <ul className="space-y-2 text-sm text-zinc-400">
                 <li><Link href="/blog" className="transition hover:text-white">Blog</Link></li>
                 <li><Link href="/faq" className="transition hover:text-white">FAQ</Link></li>
-                <li><Link href="/blog/google-review-management-guide" className="transition hover:text-white">Google Reviews Guide</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="mb-3 text-sm font-semibold text-gray-300">Company</h4>
-              <ul className="space-y-2 text-sm text-gray-500">
+              <h4 className="mb-3 text-xs font-semibold uppercase tracking-widest text-zinc-500">Account</h4>
+              <ul className="space-y-2 text-sm text-zinc-400">
                 <li><Link href="/signup" className="transition hover:text-white">Sign Up</Link></li>
                 <li><Link href="/login" className="transition hover:text-white">Log In</Link></li>
               </ul>
             </div>
           </div>
           <div className="mt-10 flex flex-col items-center justify-between gap-4 border-t border-white/5 pt-8 md:flex-row">
-            <p className="text-sm text-gray-600">
-              &copy; {new Date().getFullYear()} ReviewPulse. All rights reserved.
-            </p>
-            <div className="flex gap-6 text-sm text-gray-600">
-              <a href="#" className="transition hover:text-white">Privacy Policy</a>
-              <a href="#" className="transition hover:text-white">Terms of Service</a>
+            <p className="text-xs text-zinc-600">&copy; {new Date().getFullYear()} ReviewPulse</p>
+            <div className="flex gap-6 text-xs text-zinc-600">
+              <a href="#" className="transition hover:text-white">Privacy</a>
+              <a href="#" className="transition hover:text-white">Terms</a>
             </div>
           </div>
         </div>
       </footer>
     </div>
-  );
-}
-
-function FeatureCard({
-  icon,
-  title,
-  description,
-}: {
-  icon: React.ReactNode;
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="glow-card group rounded-2xl p-8 transition">
-      <div className="mb-4 inline-flex rounded-xl bg-indigo-500/10 p-3 text-indigo-400 transition group-hover:bg-indigo-500/20">
-        {icon}
-      </div>
-      <h3 className="mb-2 text-lg font-semibold">{title}</h3>
-      <p className="text-sm leading-relaxed text-gray-400">{description}</p>
-    </div>
-  );
-}
-
-function TestimonialCard({
-  quote,
-  name,
-  role,
-  rating,
-}: {
-  quote: string;
-  name: string;
-  role: string;
-  rating: number;
-}) {
-  return (
-    <div className="glow-card rounded-2xl p-8 transition">
-      <div className="mb-4 flex gap-0.5">
-        {[1, 2, 3, 4, 5].map((i) => (
-          <Star
-            key={i}
-            className={`h-4 w-4 ${
-              i <= rating ? "fill-yellow-400 text-yellow-400" : "text-gray-600"
-            }`}
-          />
-        ))}
-      </div>
-      <Quote className="mb-3 h-5 w-5 text-indigo-500/40" />
-      <p className="mb-6 text-sm leading-relaxed text-gray-300">{quote}</p>
-      <div>
-        <p className="text-sm font-semibold">{name}</p>
-        <p className="text-xs text-gray-500">{role}</p>
-      </div>
-    </div>
-  );
-}
-
-function CheckIcon() {
-  return (
-    <svg
-      className="h-4 w-4 shrink-0 text-indigo-400"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-      strokeWidth={2}
-    >
-      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-    </svg>
   );
 }

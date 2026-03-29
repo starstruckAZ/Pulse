@@ -181,87 +181,55 @@ export default async function BlogArticlePage({
   };
 
   return (
-    <div className="min-h-screen">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+    <div className="relative min-h-screen overflow-hidden">
+      <div className="mesh-gradient left-[10%] top-[5%] h-[400px] w-[400px] bg-orange-500/6" />
+
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-[#0a0a0f]/80 backdrop-blur-xl">
+      <nav className="fixed top-0 left-0 right-0 z-50 glass">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2">
-            <MessageSquare className="h-6 w-6 text-indigo-500" />
-            <span className="text-lg font-bold tracking-tight">
-              ReviewPulse
-            </span>
+          <Link href="/" className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500">
+              <MessageSquare className="h-4 w-4 text-white" />
+            </div>
+            <span className="font-display text-lg font-bold">ReviewPulse</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
-            <Link href="/how-it-works" className="text-sm text-gray-400 transition hover:text-white">
-              How It Works
-            </Link>
-            <Link href="/blog" className="text-sm text-gray-400 transition hover:text-white">
-              Blog
-            </Link>
-            <Link
-              href="/signup"
-              className="btn-glow rounded-lg px-4 py-2 text-sm font-medium text-white"
-            >
-              Get Started Free
-            </Link>
+            <Link href="/how-it-works" className="text-sm text-zinc-400 transition hover:text-white">How It Works</Link>
+            <Link href="/blog" className="text-sm text-zinc-400 transition hover:text-white">Blog</Link>
+            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2.5 text-sm">Get Started Free</Link>
           </div>
         </div>
       </nav>
 
       {/* Article */}
-      <article className="pt-32 pb-20 md:pt-44">
-        <div className="mx-auto max-w-3xl px-6">
-          <Link
-            href="/blog"
-            className="mb-8 inline-flex items-center gap-2 text-sm text-gray-400 transition hover:text-white"
-          >
+      <article className="pt-36 pb-20 md:pt-48">
+        <div className="relative mx-auto max-w-3xl px-6">
+          <Link href="/blog" className="mb-8 inline-flex items-center gap-2 text-sm text-zinc-500 transition hover:text-white">
             <ArrowLeft className="h-4 w-4" /> Back to Blog
           </Link>
 
-          <div className="mb-8">
+          <div className="mb-10">
             <div className="mb-4 flex items-center gap-3">
-              <span className="rounded-full bg-indigo-500/10 px-3 py-1 text-xs font-medium text-indigo-400">
-                {article.category}
-              </span>
-              <span className="flex items-center gap-1 text-xs text-gray-500">
-                <Clock className="h-3 w-3" />
-                {article.readTime}
-              </span>
-              <span className="text-xs text-gray-600">{article.date}</span>
+              <span className="badge text-orange-400 border-orange-500/20 bg-orange-500/5 text-xs">{article.category}</span>
+              <span className="flex items-center gap-1 text-xs text-zinc-600"><Clock className="h-3 w-3" />{article.readTime}</span>
+              <span className="text-xs text-zinc-700">{article.date}</span>
             </div>
-            <h1 className="text-3xl font-bold tracking-tight md:text-4xl">
-              {article.title}
-            </h1>
+            <h1 className="font-display text-3xl font-bold tracking-tight md:text-4xl">{article.title}</h1>
           </div>
 
-          <div className="prose-custom space-y-6">
+          <div className="space-y-6">
             {article.content.map((block, i) => {
               if (block.startsWith("## ")) {
-                return (
-                  <h2
-                    key={i}
-                    className="mt-10 mb-4 text-2xl font-bold text-white"
-                  >
-                    {block.replace("## ", "")}
-                  </h2>
-                );
+                return <h2 key={i} className="mt-12 mb-4 font-display text-2xl font-bold">{block.replace("## ", "")}</h2>;
               }
               const parts = block.split(/(\*\*.*?\*\*)/g);
               return (
-                <p
-                  key={i}
-                  className="text-base leading-relaxed text-gray-400 whitespace-pre-line"
-                >
+                <p key={i} className="text-base leading-relaxed text-zinc-400 whitespace-pre-line">
                   {parts.map((part, j) =>
                     part.startsWith("**") && part.endsWith("**") ? (
-                      <strong key={j} className="text-gray-200 font-semibold">
-                        {part.slice(2, -2)}
-                      </strong>
+                      <strong key={j} className="text-zinc-200 font-semibold">{part.slice(2, -2)}</strong>
                     ) : (
                       <span key={j}>{part}</span>
                     )
@@ -271,18 +239,11 @@ export default async function BlogArticlePage({
             })}
           </div>
 
-          {/* CTA in article */}
-          <div className="mt-16 glow-card rounded-2xl p-8 text-center">
-            <h3 className="mb-2 text-xl font-bold">
-              Ready to manage your reviews smarter?
-            </h3>
-            <p className="mb-6 text-sm text-gray-400">
-              Join 500+ local businesses using ReviewPulse. Free to start.
-            </p>
-            <Link
-              href="/signup"
-              className="btn-glow inline-flex items-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white"
-            >
+          {/* CTA */}
+          <div className="mt-16 glass rounded-3xl p-10 text-center">
+            <h3 className="mb-2 font-display text-xl font-bold">Ready to manage reviews smarter?</h3>
+            <p className="mb-6 text-sm text-zinc-400">Join 500+ businesses using ReviewPulse. Free to start.</p>
+            <Link href="/signup" className="btn-primary inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm">
               Get Started Free <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
@@ -291,21 +252,19 @@ export default async function BlogArticlePage({
 
       {/* Footer */}
       <footer className="border-t border-white/5 py-12">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="flex flex-col items-center justify-between gap-6 md:flex-row">
-            <Link href="/" className="flex items-center gap-2">
-              <MessageSquare className="h-5 w-5 text-indigo-500" />
-              <span className="text-sm font-semibold">ReviewPulse</span>
-            </Link>
-            <div className="flex gap-6 text-sm text-gray-500">
-              <Link href="/how-it-works" className="transition hover:text-white">How It Works</Link>
-              <Link href="/faq" className="transition hover:text-white">FAQ</Link>
-              <Link href="/blog" className="transition hover:text-white">Blog</Link>
+        <div className="mx-auto max-w-6xl px-6 flex flex-col items-center justify-between gap-6 md:flex-row">
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-orange-500 to-amber-500">
+              <MessageSquare className="h-3 w-3 text-white" />
             </div>
-            <p className="text-sm text-gray-600">
-              &copy; {new Date().getFullYear()} ReviewPulse
-            </p>
+            <span className="font-display text-sm font-bold">ReviewPulse</span>
+          </Link>
+          <div className="flex gap-6 text-sm text-zinc-500">
+            <Link href="/how-it-works" className="transition hover:text-white">How It Works</Link>
+            <Link href="/faq" className="transition hover:text-white">FAQ</Link>
+            <Link href="/blog" className="transition hover:text-white">Blog</Link>
           </div>
+          <p className="text-xs text-zinc-600">&copy; {new Date().getFullYear()} ReviewPulse</p>
         </div>
       </footer>
     </div>
