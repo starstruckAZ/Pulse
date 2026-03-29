@@ -2,71 +2,127 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Base ─── */
+/* ─── Design Tokens ─── */
 :root {
-  --bg: #09090b;
-  --surface: #111116;
-  --surface-raised: #18181f;
-  --border: rgba(255, 255, 255, 0.06);
-  --border-hover: rgba(255, 255, 255, 0.12);
-  --text-primary: #fafafa;
-  --text-secondary: #a1a1aa;
-  --text-muted: #52525b;
-  --accent: #f97316;
-  --accent-light: #fb923c;
-  --brand: #7c3aed;
-  --brand-light: #a78bfa;
+  --bg: #050508;
+  --surface-0: #0a0a10;
+  --surface-1: #0f0f18;
+  --surface-2: #151520;
+  --surface-3: #1c1c2b;
+  --border: rgba(255, 255, 255, 0.05);
+  --border-hover: rgba(255, 255, 255, 0.1);
+  --border-accent: rgba(255, 107, 74, 0.25);
+  --text: #eeeef0;
+  --text-secondary: #8b8b9e;
+  --text-muted: #4a4a5e;
+  --accent: #ff6b4a;
+  --accent-end: #ff3d71;
+  --brand: #6366f1;
+  --brand-end: #a78bfa;
+  --teal: #2dd4bf;
+  --radius: 1rem;
 }
 
 body {
   background: var(--bg);
-  color: var(--text-primary);
+  color: var(--text);
 }
 
 /* ─── Scrollbar ─── */
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #27273a; border-radius: 99px; }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 99px; }
+
+/* ─── Dot Grid Background ─── */
+.dot-grid::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 40%, black 40%, transparent 100%);
+}
+
+/* ─── Noise Texture ─── */
+.noise::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
 
 /* ─── Glass Card ─── */
 .glass {
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(255, 255, 255, 0.02);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .glass:hover {
   border-color: var(--border-hover);
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.04);
 }
 
-/* ─── Bento Card ─── */
+/* ─── Bento Card with Gradient Border ─── */
 .bento {
-  background: linear-gradient(145deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%);
-  backdrop-filter: blur(12px);
+  position: relative;
+  background: linear-gradient(160deg, rgba(255,255,255,0.035) 0%, rgba(255,255,255,0.008) 100%);
   border: 1px solid var(--border);
-  border-radius: 1.5rem;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 1.25rem;
+  overflow: hidden;
+  transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bento::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(160deg, rgba(255,107,74,0) 0%, rgba(255,107,74,0) 100%);
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+  transition: background 0.5s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .bento:hover {
-  border-color: rgba(249, 115, 22, 0.2);
-  transform: translateY(-2px);
-  box-shadow: 0 20px 60px -15px rgba(249, 115, 22, 0.08);
+  transform: translateY(-3px);
+  box-shadow:
+    0 0 0 1px rgba(255,107,74,0.08),
+    0 24px 80px -12px rgba(255,107,74,0.06),
+    0 0 60px -20px rgba(255,61,113,0.08);
+}
+
+.bento:hover::before {
+  background: linear-gradient(160deg, rgba(255,107,74,0.3) 0%, rgba(99,102,241,0.15) 60%, rgba(255,61,113,0.2) 100%);
 }
 
 /* ─── Gradient Text ─── */
 .gradient-text {
-  background: linear-gradient(135deg, #f97316 0%, #f59e0b 50%, #fb923c 100%);
+  background: linear-gradient(135deg, #ff6b4a 0%, #ff3d71 40%, #ff6b9d 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-cool {
-  background: linear-gradient(135deg, #7c3aed 0%, #6366f1 50%, #818cf8 100%);
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 50%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-text-teal {
+  background: linear-gradient(135deg, #2dd4bf 0%, #34d399 50%, #6ee7b7 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -74,71 +130,73 @@ body {
 
 /* ─── Primary Button ─── */
 .btn-primary {
-  background: linear-gradient(135deg, #f97316, #ea580c);
+  position: relative;
+  background: linear-gradient(135deg, #ff6b4a, #ff3d71);
   color: white;
   font-weight: 600;
-  box-shadow: 0 4px 24px rgba(249, 115, 22, 0.25), inset 0 1px 0 rgba(255,255,255,0.1);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: -0.01em;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  box-shadow:
+    0 0 0 1px rgba(255,107,74,0.3),
+    0 4px 20px rgba(255,61,113,0.2),
+    inset 0 1px 0 rgba(255,255,255,0.12);
 }
 
 .btn-primary:hover {
-  box-shadow: 0 8px 40px rgba(249, 115, 22, 0.35), inset 0 1px 0 rgba(255,255,255,0.15);
+  box-shadow:
+    0 0 0 1px rgba(255,107,74,0.4),
+    0 8px 40px rgba(255,61,113,0.3),
+    0 0 80px -20px rgba(255,107,74,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.15);
   transform: translateY(-1px);
 }
 
-/* ─── Secondary / Ghost Button ─── */
+/* ─── Ghost Button ─── */
 .btn-ghost {
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--border-hover);
   color: var(--text-secondary);
   font-weight: 500;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  letter-spacing: -0.01em;
+  transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: var(--border-hover);
-  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.07);
+  border-color: rgba(255,255,255,0.18);
+  color: var(--text);
 }
 
-/* ─── Mesh Background Blobs ─── */
+/* ─── Mesh Gradient Blobs ─── */
 .mesh-gradient {
   position: absolute;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(140px);
   pointer-events: none;
-  opacity: 0.5;
+  opacity: 0.4;
 }
 
-/* ─── Noise texture overlay ─── */
-.noise::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
-  pointer-events: none;
-  z-index: 0;
+/* ─── Badge ─── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.3rem 0.85rem;
+  border-radius: 99px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.02);
 }
 
-/* ─── Section fade-in on scroll (JS optional) ─── */
-.reveal {
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.reveal.visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-/* ─── Subtle input style ─── */
+/* ─── Input ─── */
 .input {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--surface-1);
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   padding: 0.625rem 1rem;
-  color: var(--text-primary);
+  color: var(--text);
   font-size: 0.875rem;
   outline: none;
   transition: all 0.2s;
@@ -149,25 +207,63 @@ body {
 }
 
 .input:focus {
-  border-color: rgba(249, 115, 22, 0.4);
-  box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.08);
-}
-
-/* ─── Badge ─── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.25rem 0.75rem;
-  border-radius: 99px;
-  font-size: 0.75rem;
-  font-weight: 500;
-  border: 1px solid var(--border);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 107, 74, 0.35);
+  box-shadow: 0 0 0 3px rgba(255, 107, 74, 0.06), 0 0 20px -8px rgba(255, 107, 74, 0.15);
 }
 
 /* ─── Divider ─── */
 .divider {
   height: 1px;
   background: var(--border);
+}
+
+/* ─── Section reveal ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: all 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ─── Animated gradient line ─── */
+.gradient-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(255,107,74,0.5) 30%, rgba(99,102,241,0.5) 70%, transparent 100%);
+}
+
+/* ─── Glow ring for feature icons ─── */
+.icon-glow {
+  position: relative;
+}
+
+.icon-glow::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: inherit;
+  background: inherit;
+  filter: blur(16px);
+  opacity: 0.3;
+  z-index: -1;
+}
+
+/* ─── Shimmer animation for CTAs ─── */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.shimmer {
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(255,255,255,0.06) 37%,
+    transparent 63%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 4s ease-in-out infinite;
 }

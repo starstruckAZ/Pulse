@@ -36,26 +36,25 @@ export default function LoginPage() {
 
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4">
-      {/* Background */}
-      <div className="mesh-gradient left-[10%] top-[20%] h-[400px] w-[400px] bg-orange-500/8" />
-      <div className="mesh-gradient right-[10%] bottom-[20%] h-[300px] w-[300px] bg-violet-500/6" />
+      <div className="mesh-gradient left-[10%] top-[20%] h-[400px] w-[400px] bg-[#ff6b4a]/[0.06]" />
+      <div className="mesh-gradient right-[10%] bottom-[20%] h-[300px] w-[300px] bg-[#6366f1]/[0.05]" />
 
       <div className="relative w-full max-w-sm">
         <div className="mb-10 text-center">
           <Link href="/" className="mb-6 inline-flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-500">
-              <MessageSquare className="h-4.5 w-4.5 text-white" />
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
+              <MessageSquare className="h-4 w-4 text-white" />
             </div>
             <span className="font-display text-xl font-bold">ReviewPulse</span>
           </Link>
-          <h1 className="mt-4 font-display text-2xl font-bold">Welcome back</h1>
-          <p className="mt-1 text-sm text-zinc-500">Sign in to your account</p>
+          <h1 className="mt-4 font-display text-2xl font-bold tracking-tight">Welcome back</h1>
+          <p className="mt-2 text-sm text-[#8b8b9e]">Sign in to your account</p>
         </div>
 
-        <div className="glass rounded-3xl p-8">
+        <div className="rounded-[1.5rem] border border-white/[0.05] bg-white/[0.02] p-8 backdrop-blur-xl">
           <button
             onClick={handleGoogleLogin}
-            className="btn-ghost flex w-full items-center justify-center gap-3 rounded-2xl py-3 text-sm"
+            className="btn-ghost flex w-full items-center justify-center gap-3 rounded-xl py-3 text-sm"
           >
             <svg className="h-5 w-5" viewBox="0 0 24 24">
               <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 0 1-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" />
@@ -67,14 +66,14 @@ export default function LoginPage() {
           </button>
 
           <div className="my-6 flex items-center gap-4">
-            <div className="divider flex-1" />
-            <span className="text-xs text-zinc-600">or</span>
-            <div className="divider flex-1" />
+            <div className="h-px flex-1 bg-white/[0.05]" />
+            <span className="text-xs text-[#4a4a5e]">or</span>
+            <div className="h-px flex-1 bg-white/[0.05]" />
           </div>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-zinc-300">Email</label>
+              <label className="mb-1.5 block text-[13px] font-medium text-[#8b8b9e]">Email</label>
               <input
                 type="email"
                 value={email}
@@ -85,7 +84,7 @@ export default function LoginPage() {
               />
             </div>
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-zinc-300">Password</label>
+              <label className="mb-1.5 block text-[13px] font-medium text-[#8b8b9e]">Password</label>
               <input
                 type="password"
                 value={password}
@@ -99,16 +98,16 @@ export default function LoginPage() {
             <button
               type="submit"
               disabled={loading}
-              className="btn-primary w-full rounded-2xl py-3 text-sm disabled:opacity-50"
+              className="btn-primary w-full rounded-xl py-3 text-sm disabled:opacity-50"
             >
               {loading ? "Signing in..." : "Sign In"}
             </button>
           </form>
         </div>
 
-        <p className="mt-8 text-center text-sm text-zinc-500">
+        <p className="mt-8 text-center text-sm text-[#4a4a5e]">
           Don&apos;t have an account?{" "}
-          <Link href="/signup" className="text-orange-400 transition hover:text-orange-300">
+          <Link href="/signup" className="text-[#ff6b4a] transition hover:text-[#ff3d71]">
             Sign up free
           </Link>
         </p>
