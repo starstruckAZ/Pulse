@@ -2,7 +2,8 @@ import { createClient as createPublicClient } from "@supabase/supabase-js";
 import { createClient } from "@/utils/supabase/server";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
-import { MessageSquare, Star, TrendingUp, TrendingDown, Printer, ArrowRight } from "lucide-react";
+import { MessageSquare, Star, TrendingUp, TrendingDown, ArrowRight } from "lucide-react";
+import PrintButton from "./print-button";
 
 export const dynamic = "force-dynamic";
 
@@ -233,28 +234,10 @@ export default async function MonthlyReportPage({
             >
               Back to Locations
             </Link>
-            <button
-              onClick={() => window.print()}
-              className="btn-primary inline-flex items-center gap-2 rounded-2xl px-5 py-2 text-sm"
-            >
-              <Printer className="h-4 w-4" />
-              Print Report
-            </button>
+            <PrintButton />
           </div>
         </div>
       </nav>
-
-      {/* Print button (client) */}
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            document.addEventListener('DOMContentLoaded', function() {
-              var btn = document.getElementById('print-btn');
-              if (btn) btn.addEventListener('click', function() { window.print(); });
-            });
-          `,
-        }}
-      />
 
       <main className="mx-auto max-w-5xl px-6 py-10 print:py-4 print:px-8">
         {/* ── Report Header ─────────────────────────────────────────────────── */}
@@ -556,13 +539,7 @@ export default async function MonthlyReportPage({
 
         {/* ── Print CTA ─────────────────────────────────────────────────────── */}
         <div className="flex items-center justify-center gap-4 print:hidden">
-          <button
-            id="print-btn"
-            className="btn-primary inline-flex items-center gap-2 rounded-2xl px-6 py-2.5 text-sm"
-          >
-            <Printer className="h-4 w-4" />
-            Print / Save as PDF
-          </button>
+          <PrintButton className="btn-primary inline-flex items-center gap-2 rounded-2xl px-6 py-2.5 text-sm" />
           <Link
             href="/dashboard"
             className="btn-ghost inline-flex items-center gap-2 rounded-2xl px-6 py-2.5 text-sm"

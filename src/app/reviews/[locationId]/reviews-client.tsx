@@ -10,7 +10,6 @@ interface Review {
   review_text: string | null;
   review_url: string | null;
   sentiment: string;
-  created_at: string;
   fetched_at: string;
 }
 
@@ -164,7 +163,7 @@ export default function ReviewsClient({
                     </span>
                     <StarDisplay rating={review.rating} />
                     <span className="text-xs text-[var(--text-muted)]">
-                      {relativeTime(review.created_at || review.fetched_at)}
+                      {relativeTime(review.fetched_at)}
                     </span>
                     {review.sentiment && (
                       <span

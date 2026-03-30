@@ -248,7 +248,7 @@ export default async function BusinessProfilePage({
             <span className="font-semibold text-white">{totalCount}</span>{" "}
             {totalCount === 1 ? "review" : "reviews"}
             {respondedCount > 0 && (
-              <> · <span className="text-emerald-400">{respondedCount} responded</ span></>
+              <> · <span className="text-emerald-400">{respondedCount} responded</span></>
             )}
           </p>
           <p className="text-xs text-zinc-600">Powered by ReviewPulse</p>

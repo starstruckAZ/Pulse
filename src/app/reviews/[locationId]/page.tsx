@@ -82,7 +82,7 @@ export default async function PublicReviewsPage({ params }: PageProps) {
     .select("*")
     .eq("location_id", locationId)
     .order("rating", { ascending: false })
-    .order("created_at", { ascending: false });
+    .order("fetched_at", { ascending: false });
 
   const allReviews: ReviewRow[] = (reviews as ReviewRow[]) || [];
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import {
-  MapPin, Plus, Edit3, Trash2, Building2, Globe, X,
+  MapPin, Plus, Edit3, Trash2, Globe, X,
   LogOut, MessageSquare, BarChart3, FileText, Settings, LayoutDashboard,
   ExternalLink, Award, Share2, Check, BarChart2,
 } from "lucide-react";
@@ -16,7 +16,6 @@ interface Location {
   name: string;
   address: string;
   google_place_id: string | null;
-  yelp_business_id: string | null;
   created_at: string;
 }
 
@@ -42,7 +41,6 @@ export default function LocationsClient({ user, profile, locations: initialLocat
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [googlePlaceId, setGooglePlaceId] = useState("");
-  const [yelpBusinessId, setYelpBusinessId] = useState("");
   const [saving, setSaving] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
@@ -65,7 +63,6 @@ export default function LocationsClient({ user, profile, locations: initialLocat
     setName("");
     setAddress("");
     setGooglePlaceId("");
-    setYelpBusinessId("");
     setShowModal(true);
   };
 
@@ -74,7 +71,6 @@ export default function LocationsClient({ user, profile, locations: initialLocat
     setName(loc.name);
     setAddress(loc.address);
     setGooglePlaceId(loc.google_place_id || "");
-    setYelpBusinessId(loc.yelp_business_id || "");
     setShowModal(true);
   };
 
@@ -86,7 +82,6 @@ export default function LocationsClient({ user, profile, locations: initialLocat
       name: name.trim(),
       address: address.trim(),
       google_place_id: googlePlaceId.trim() || null,
-      yelp_business_id: yelpBusinessId.trim() || null,
     };
 
     if (editing) {
@@ -269,16 +264,7 @@ export default function LocationsClient({ user, profile, locations: initialLocat
                       </span>
                     </div>
                   )}
-                  {loc.yelp_business_id && (
-                    <div className="flex items-center gap-2 text-xs text-zinc-500">
-                      <Building2 className="h-3.5 w-3.5 text-red-400 shrink-0" />
-                      <span className="text-zinc-400">Yelp:</span>
-                      <span className="truncate font-mono text-zinc-500" title={loc.yelp_business_id}>
-                        {truncate(loc.yelp_business_id, 24)}
-                      </span>
-                    </div>
-                  )}
-                  {!loc.google_place_id && !loc.yelp_business_id && (
+                  {!loc.google_place_id && (
                     <p className="text-xs text-zinc-600 italic">No review sources connected</p>
                   )}
                 </div>
@@ -402,17 +388,6 @@ export default function LocationsClient({ user, profile, locations: initialLocat
                   placeholder="e.g., ChIJN1t_tDeuEmsRUsoyG83frY4"
                 />
                 <p className="mt-1 text-xs text-zinc-600">Find your Place ID at <span className="text-zinc-400">developers.google.com/maps/documentation/places/web-service/place-id</span></p>
-              </div>
-              <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-300">Yelp Business ID</label>
-                <input
-                  type="text"
-                  value={yelpBusinessId}
-                  onChange={(e) => setYelpBusinessId(e.target.value)}
-                  className="input w-full"
-                  placeholder="e.g., my-coffee-shop-new-york"
-                />
-                <p className="mt-1 text-xs text-zinc-600">The business alias from your Yelp page URL</p>
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-3">

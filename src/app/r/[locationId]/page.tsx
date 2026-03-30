@@ -18,13 +18,12 @@ interface Location {
   name: string;
   address: string;
   google_place_id: string | null;
-  yelp_business_id: string | null;
 }
 
 async function getLocation(id: string): Promise<Location | null> {
   const { data, error } = await getSupabase()
     .from("locations")
-    .select("id, name, address, google_place_id, yelp_business_id")
+    .select("id, name, address, google_place_id")
     .eq("id", id)
     .single();
 
