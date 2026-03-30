@@ -1,47 +1,26 @@
 import Link from "next/link";
 import PricingToggle from "./pricing-toggle";
 import {
-  Star,
-  MessageSquare,
-  Bell,
-  ArrowRight,
-  Zap,
-  BarChart3,
-  Quote,
-  Sparkles,
-  Shield,
-  Globe,
-  Clock,
-  Check,
-  ChevronRight,
-  Layers,
+  Star, MessageSquare, Bell, ArrowRight, Zap, BarChart3,
+  Shield, Globe, Clock, ChevronRight, Layers,
 } from "lucide-react";
 
 export default function Home() {
   return (
-    <div className="relative min-h-screen overflow-hidden">
-      {/* ── Mesh blobs ── */}
-      <div className="mesh-gradient left-[-15%] top-[-8%] h-[700px] w-[700px] bg-[#ff6b4a]/[0.07] animate-glow" />
-      <div className="mesh-gradient right-[-8%] top-[15%] h-[600px] w-[600px] bg-[#6366f1]/[0.06] animate-glow" />
-      <div className="mesh-gradient left-[40%] top-[55%] h-[500px] w-[500px] bg-[#2dd4bf]/[0.04] animate-float" />
-      <div className="mesh-gradient right-[20%] bottom-[10%] h-[400px] w-[400px] bg-[#ff3d71]/[0.05] animate-glow" />
-
+    <div className="relative min-h-screen bg-background">
       {/* ── Nav ── */}
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/[0.04] bg-[#050508]/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
-              <MessageSquare className="h-4 w-4 text-white" />
-            </div>
-            <span className="font-display text-lg font-bold tracking-tight">ReviewPulse</span>
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[#e1dcd8] bg-[rgba(250,245,242,0.85)] backdrop-blur-md">
+        <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-0 h-20">
+          <Link href="/" className="flex items-center gap-2">
+            <span className="font-headline text-2xl font-bold tracking-tight text-primary">ReviewPulse</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
-            <a href="#features" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Features</a>
-            <a href="#pricing" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Pricing</a>
-            <Link href="/how-it-works" className="text-[13px] text-[#8b8b9e] transition hover:text-white">How It Works</Link>
-            <Link href="/blog" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Blog</Link>
-            <Link href="/login" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Log In</Link>
-            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">
+            <a href="#features" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Features</a>
+            <a href="#pricing" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Pricing</a>
+            <Link href="/how-it-works" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">How It Works</Link>
+            <Link href="/blog" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Blog</Link>
+            <Link href="/login" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Log In</Link>
+            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2.5 text-[13px]">
               Get Started Free
             </Link>
           </div>
@@ -51,112 +30,120 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* ═══ Hero ═══ */}
-      <section className="relative pt-40 pb-28 md:pt-52 md:pb-40">
-        <div className="relative z-10 mx-auto max-w-5xl px-6 text-center">
-          {/* Badge */}
-          <div className="mb-10 inline-flex items-center gap-2 badge border-[#ff6b4a]/15 bg-[#ff6b4a]/[0.04] text-[#ff6b4a]">
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Trusted by 500+ local businesses</span>
-            <ChevronRight className="h-3 w-3 opacity-50" />
+      {/* ── Hero ── */}
+      <section className="relative pt-44 pb-28 md:pt-52 md:pb-40">
+        <div className="mx-auto max-w-7xl px-8">
+          <div className="max-w-3xl">
+            {/* Badge */}
+            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#e1dcd8] bg-[#f5f0ed] px-4 py-1.5">
+              <span className="h-2 w-2 rounded-full bg-[#aa2c32]" />
+              <span className="text-xs font-bold uppercase tracking-widest text-[#5d5b59]">Trusted by 500+ local businesses</span>
+              <ChevronRight className="h-3 w-3 text-[#797674]" />
+            </div>
+
+            <h1 className="font-headline mb-6 text-6xl font-extrabold tracking-tight leading-[0.95] text-[#302e2d] md:text-7xl lg:text-8xl">
+              Every review.{" "}
+              <span className="italic text-[#aa2c32]">One dashboard.</span>
+            </h1>
+
+            <p className="mb-12 max-w-xl text-lg leading-relaxed text-[#5d5b59]">
+              Pull in reviews from Google, Yelp, and Facebook automatically.
+              Respond with AI in seconds. Track sentiment over time.
+            </p>
+
+            <div className="flex flex-wrap items-center gap-4">
+              <Link href="/signup" className="btn-primary inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
+                Start Free — No Card Needed <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/how-it-works" className="btn-ghost inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
+                See How It Works
+              </Link>
+            </div>
+
+            {/* Trust signals */}
+            <div className="mt-14 flex flex-wrap items-center gap-8 text-[13px] text-[#797674]">
+              <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-[#aa2c32]/50" /> 2-min setup</span>
+              <span className="h-3 w-px bg-[#e1dcd8]" />
+              <span className="flex items-center gap-2"><Shield className="h-4 w-4 text-[#40606d]/50" /> SOC 2 compliant</span>
+              <span className="h-3 w-px bg-[#e1dcd8]" />
+              <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-[#735801]/50" /> 3 platforms</span>
+            </div>
           </div>
 
-          {/* Headline */}
-          <h1 className="mx-auto mb-8 max-w-4xl font-display text-display-lg md:text-display-xl">
-            Every review.{" "}
-            <br className="hidden sm:block" />
-            <span className="gradient-text">One dashboard.</span>
-          </h1>
-
-          <p className="mx-auto mb-14 max-w-2xl text-base leading-relaxed text-[#8b8b9e] md:text-lg">
-            Pull in reviews from Google, Yelp, and Facebook automatically.
-            Respond with AI in seconds. Track sentiment over time.
-          </p>
-
-          {/* CTA Buttons */}
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link
-              href="/signup"
-              className="btn-primary inline-flex items-center gap-2.5 rounded-2xl px-8 py-4 text-[15px]"
-            >
-              Start Free — No Card Needed <ArrowRight className="h-4 w-4" />
-            </Link>
-            <Link
-              href="/how-it-works"
-              className="btn-ghost inline-flex items-center gap-2.5 rounded-2xl px-8 py-4 text-[15px]"
-            >
-              See How It Works
-            </Link>
-          </div>
-
-          {/* Trust signals */}
-          <div className="mt-20 flex flex-wrap items-center justify-center gap-10 text-[13px] text-[#4a4a5e]">
-            <span className="flex items-center gap-2"><Clock className="h-4 w-4 text-[#ff6b4a]/60" /> 2-min setup</span>
-            <span className="h-3 w-px bg-white/10" />
-            <span className="flex items-center gap-2"><Shield className="h-4 w-4 text-[#6366f1]/60" /> SOC 2 compliant</span>
-            <span className="h-3 w-px bg-white/10" />
-            <span className="flex items-center gap-2"><Globe className="h-4 w-4 text-[#2dd4bf]/60" /> 3 platforms</span>
+          {/* Asymmetric score badge (editorial style) */}
+          <div className="pointer-events-none absolute right-12 top-40 hidden lg:block">
+            <div className="rotate-2 rounded-2xl bg-[#f9d377] p-8 shadow-xl">
+              <p className="mb-1 text-center text-[10px] font-bold uppercase tracking-widest text-[#5f4800]">Pulse Score</p>
+              <p className="font-headline text-7xl font-extrabold leading-none text-[#735801]">4.8</p>
+              <div className="mt-3 flex justify-center gap-1">
+                {[1,2,3,4,5].map((s) => (
+                  <Star key={s} className="h-4 w-4 fill-[#735801] text-[#735801]" />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Gradient divider */}
       <div className="gradient-line" />
 
-      {/* ═══ Bento Features ═══ */}
-      <section id="features" className="relative py-28 md:py-36">
-        <div className="mx-auto max-w-6xl px-6">
+      {/* ── Features ── */}
+      <section id="features" className="py-28 md:py-36">
+        <div className="mx-auto max-w-7xl px-8">
           <div className="mb-20 max-w-2xl">
-            <p className="mb-4 flex items-center gap-2 text-[13px] font-medium uppercase tracking-[0.15em] text-[#ff6b4a]">
+            <p className="mb-4 flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.15em] text-[#aa2c32]">
               <Layers className="h-3.5 w-3.5" />
               Features
             </p>
-            <h2 className="font-display text-display-sm md:text-display-md">
-              Stop tab-hopping.
-              <br />
-              <span className="text-[#4a4a5e]">Start managing.</span>
+            <h2 className="font-headline text-5xl font-bold tracking-tight text-[#302e2d] md:text-6xl">
+              Stop tab-hopping.<br />
+              <span className="italic text-[#5d5b59]">Start managing.</span>
             </h2>
           </div>
 
           {/* Bento Grid */}
-          <div className="grid gap-3 md:grid-cols-3 md:grid-rows-2">
+          <div className="grid gap-4 md:grid-cols-3 md:grid-rows-2">
             {/* Large — spans 2 cols */}
-            <div className="bento p-8 md:p-10 md:col-span-2 md:row-span-1">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#ff6b4a]/[0.08] ring-1 ring-[#ff6b4a]/15">
-                <MessageSquare className="h-5 w-5 text-[#ff6b4a]" />
+            <div className="bento p-8 md:col-span-2 md:p-10">
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#aa2c32]/10">
+                <MessageSquare className="h-5 w-5 text-[#aa2c32]" />
               </div>
-              <h3 className="mb-3 font-display text-xl font-semibold tracking-tight">Unified Review Inbox</h3>
-              <p className="max-w-lg text-sm leading-relaxed text-[#8b8b9e]">
+              <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">Unified Review Inbox</h3>
+              <p className="max-w-lg text-sm leading-relaxed text-[#5d5b59]">
                 Google, Yelp, and Facebook reviews stream into one feed.
                 Filter by platform, rating, sentiment, or response status.
               </p>
               <div className="mt-8 flex gap-2">
-                {["Google", "Yelp", "Facebook"].map((p) => (
-                  <span key={p} className="rounded-lg bg-white/[0.03] px-3 py-1.5 text-xs text-[#8b8b9e] ring-1 ring-white/[0.06]">{p}</span>
+                {[
+                  { label: "Google", color: "bg-blue-100 text-blue-700" },
+                  { label: "Yelp",   color: "bg-red-100 text-red-700" },
+                  { label: "Facebook", color: "bg-indigo-100 text-indigo-700" },
+                ].map(({ label, color }) => (
+                  <span key={label} className={`rounded-lg px-3 py-1.5 text-xs font-semibold ${color}`}>{label}</span>
                 ))}
               </div>
             </div>
 
             {/* Tall — spans 2 rows */}
-            <div className="bento flex flex-col justify-between p-8 md:p-10 md:row-span-2">
+            <div className="bento flex flex-col justify-between p-8 md:row-span-2 md:p-10">
               <div>
-                <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#6366f1]/[0.08] ring-1 ring-[#6366f1]/15">
-                  <Zap className="h-5 w-5 text-[#818cf8]" />
+                <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f9d377]/60">
+                  <Zap className="h-5 w-5 text-[#735801]" />
                 </div>
-                <h3 className="mb-3 font-display text-xl font-semibold tracking-tight">AI Responses</h3>
-                <p className="text-sm leading-relaxed text-[#8b8b9e]">
+                <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">AI Responses</h3>
+                <p className="text-sm leading-relaxed text-[#5d5b59]">
                   One click generates a personalized, tone-aware reply draft.
                   Save your best replies as reusable templates.
                 </p>
               </div>
               <div className="mt-8 space-y-2">
                 {[
-                  { tone: "Professional", color: "#6366f1" },
-                  { tone: "Friendly", color: "#2dd4bf" },
-                  { tone: "Apologetic", color: "#ff6b4a" },
-                ].map(({ tone, color }) => (
-                  <div key={tone} className="flex items-center gap-3 rounded-xl bg-white/[0.02] px-4 py-3 text-[13px] text-[#8b8b9e] ring-1 ring-white/[0.05]">
-                    <span className="h-2 w-2 rounded-full" style={{ background: color }} />
+                  { tone: "Professional", bg: "bg-[#aa2c32]/8", text: "text-[#aa2c32]" },
+                  { tone: "Friendly",     bg: "bg-[#40606d]/8", text: "text-[#40606d]" },
+                  { tone: "Apologetic",   bg: "bg-[#735801]/8", text: "text-[#735801]" },
+                ].map(({ tone, bg, text }) => (
+                  <div key={tone} className={`flex items-center gap-3 rounded-lg ${bg} px-4 py-3 text-[13px] font-medium ${text}`}>
+                    <span className="h-2 w-2 shrink-0 rounded-full bg-current opacity-60" />
                     {tone} tone
                   </div>
                 ))}
@@ -165,44 +152,35 @@ export default function Home() {
 
             {/* Bottom left */}
             <div className="bento p-8 md:p-10">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#2dd4bf]/[0.08] ring-1 ring-[#2dd4bf]/15">
-                <BarChart3 className="h-5 w-5 text-[#2dd4bf]" />
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#ccedfe]/60">
+                <BarChart3 className="h-5 w-5 text-[#40606d]" />
               </div>
-              <h3 className="mb-3 font-display text-xl font-semibold tracking-tight">Sentiment Analytics</h3>
-              <p className="text-sm leading-relaxed text-[#8b8b9e]">
-                Real-time sentiment breakdown across all platforms. Spot
-                trends before they escalate.
+              <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">Sentiment Analytics</h3>
+              <p className="text-sm leading-relaxed text-[#5d5b59]">
+                Real-time sentiment breakdown. Spot trends before they escalate.
               </p>
-              <div className="mt-6 flex items-end gap-1">
+              <div className="mt-6 flex items-end gap-1 h-12">
                 {[40, 65, 35, 80, 55, 72, 90, 60, 85].map((h, i) => (
-                  <div
-                    key={i}
-                    className="w-full rounded-sm bg-gradient-to-t from-[#2dd4bf]/20 to-[#2dd4bf]/40"
-                    style={{ height: `${h * 0.5}px` }}
-                  />
+                  <div key={i} className="w-full rounded-sm bg-gradient-to-t from-[#40606d]/30 to-[#40606d]/60"
+                    style={{ height: `${h * 0.48}px` }} />
                 ))}
               </div>
             </div>
 
             {/* Bottom center */}
             <div className="bento p-8 md:p-10">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-[#f59e0b]/[0.08] ring-1 ring-[#f59e0b]/15">
-                <Bell className="h-5 w-5 text-[#f59e0b]" />
+              <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f9d377]/60">
+                <Bell className="h-5 w-5 text-[#735801]" />
               </div>
-              <h3 className="mb-3 font-display text-xl font-semibold tracking-tight">Instant Alerts</h3>
-              <p className="text-sm leading-relaxed text-[#8b8b9e]">
-                New review? You know within minutes. Fast replies drive
-                4x more return visits.
+              <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">Instant Alerts</h3>
+              <p className="text-sm leading-relaxed text-[#5d5b59]">
+                New review? You know within minutes. Fast replies drive 4× more return visits.
               </p>
-              <div className="mt-6 rounded-xl bg-white/[0.02] p-3.5 ring-1 ring-white/[0.05]">
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#f59e0b]/[0.12] text-xs font-bold text-[#f59e0b]">
-                    G
-                  </div>
-                  <div className="text-xs">
-                    <p className="font-medium text-[#eeeef0]">New 5-star review</p>
-                    <p className="text-[#4a4a5e]">Just now</p>
-                  </div>
+              <div className="mt-6 flex items-center gap-3 rounded-xl border border-[#e1dcd8] bg-[#f5f0ed] p-4">
+                <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">G</div>
+                <div>
+                  <p className="text-xs font-semibold text-[#302e2d]">New 5-star review</p>
+                  <p className="text-xs text-[#797674]">Just now</p>
                 </div>
               </div>
             </div>
@@ -210,133 +188,125 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ Social Proof ═══ */}
-      <section className="py-20">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="relative overflow-hidden rounded-[1.5rem] border border-white/[0.04] bg-gradient-to-b from-white/[0.025] to-transparent p-12 text-center md:p-20">
-            {/* Shimmer overlay */}
-            <div className="shimmer absolute inset-0 rounded-[1.5rem]" />
-            <div className="relative z-10">
-              <div className="mb-10 flex flex-wrap items-center justify-center gap-12 md:gap-16">
-                {[
-                  { label: "500+", sub: "Businesses" },
-                  { label: "50K+", sub: "Reviews Managed" },
-                  { label: "4.8x", sub: "Faster Replies" },
-                  { label: "32%", sub: "More Return Visits" },
-                ].map((stat) => (
-                  <div key={stat.label}>
-                    <p className="font-display text-3xl font-bold tracking-tight gradient-text md:text-4xl">{stat.label}</p>
-                    <p className="mt-2 text-xs text-[#4a4a5e] tracking-wide">{stat.sub}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-wrap items-center justify-center gap-8 text-[#4a4a5e]">
-                <span className="flex items-center gap-2 text-[13px]"><Star className="h-3.5 w-3.5 text-yellow-500/70" /> Google</span>
-                <span className="flex items-center gap-2 text-[13px]"><Star className="h-3.5 w-3.5 text-red-500/70" /> Yelp</span>
-                <span className="flex items-center gap-2 text-[13px]"><Star className="h-3.5 w-3.5 text-blue-500/70" /> Facebook</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Gradient divider */}
-      <div className="gradient-line" />
-
-      {/* ═══ Testimonials ═══ */}
-      <section id="testimonials" className="py-28 md:py-36">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="mb-20 text-center">
-            <p className="mb-4 text-[13px] font-medium uppercase tracking-[0.15em] text-[#ff6b4a]">Testimonials</p>
-            <h2 className="font-display text-display-sm md:text-display-md">
-              Businesses love <span className="gradient-text">ReviewPulse</span>
-            </h2>
-          </div>
-
-          <div className="grid gap-3 md:grid-cols-3">
+      {/* ── Stats ── */}
+      <section className="bg-[#f5f0ed] py-20">
+        <div className="mx-auto max-w-5xl px-8">
+          <div className="flex flex-wrap items-center justify-center gap-16 md:gap-24">
             {[
-              {
-                quote: "We went from spending 3 hours a week on reviews to 15 minutes. The AI responses are shockingly good.",
-                name: "Maria C.",
-                role: "Bella's Italian Kitchen",
-                accent: "#ff6b4a",
-              },
-              {
-                quote: "Our Google rating went from 3.6 to 4.4 in four months. ReviewPulse made responding to every review possible.",
-                name: "James T.",
-                role: "Precision Auto Care",
-                accent: "#6366f1",
-              },
-              {
-                quote: "I manage 8 locations. I catch every negative review within minutes now and my team responds fast.",
-                name: "Sarah K.",
-                role: "FreshFit Dental",
-                accent: "#2dd4bf",
-              },
-            ].map((t, i) => (
-              <div key={i} className="bento p-8 md:p-10">
-                <div className="mb-5 flex gap-0.5">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="h-3.5 w-3.5 fill-[#ff6b4a]/80 text-[#ff6b4a]/80" />
-                  ))}
-                </div>
-                <Quote className="mb-4 h-5 w-5 text-white/[0.06]" />
-                <p className="mb-8 text-sm leading-relaxed text-[#8b8b9e]">{t.quote}</p>
-                <div className="flex items-center gap-3">
-                  <div
-                    className="flex h-9 w-9 items-center justify-center rounded-full text-xs font-bold"
-                    style={{ background: `${t.accent}12`, color: t.accent }}
-                  >
-                    {t.name[0]}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{t.name}</p>
-                    <p className="text-xs text-[#4a4a5e]">{t.role}</p>
-                  </div>
-                </div>
+              { label: "500+",  sub: "Businesses" },
+              { label: "50K+",  sub: "Reviews Managed" },
+              { label: "4.8×",  sub: "Faster Replies" },
+              { label: "32%",   sub: "More Return Visits" },
+            ].map((stat) => (
+              <div key={stat.label} className="text-center">
+                <p className="font-headline text-4xl font-extrabold text-[#aa2c32] md:text-5xl">{stat.label}</p>
+                <p className="mt-2 text-xs font-bold uppercase tracking-widest text-[#797674]">{stat.sub}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ═══ Pricing ═══ */}
-      <section id="pricing" className="py-28 md:py-36">
-        <div className="mx-auto max-w-4xl px-6">
-          <div className="mb-20 text-center">
-            <p className="mb-4 text-[13px] font-medium uppercase tracking-[0.15em] text-[#ff6b4a]">Pricing</p>
-            <h2 className="font-display text-display-sm md:text-display-md">
-              Simple, transparent pricing
+      <div className="gradient-line" />
+
+      {/* ── Testimonials ── */}
+      <section className="py-28 md:py-36">
+        <div className="mx-auto max-w-7xl px-8">
+          <div className="mb-20">
+            <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.15em] text-[#aa2c32]">Testimonials</p>
+            <h2 className="font-headline text-5xl font-bold tracking-tight text-[#302e2d] md:text-6xl">
+              Businesses love <span className="italic text-[#aa2c32]">ReviewPulse</span>
             </h2>
-            <p className="mt-5 text-[15px] text-[#8b8b9e]">Start free. Upgrade when you&apos;re ready.</p>
           </div>
 
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                quote: "We went from spending 3 hours a week on reviews to 15 minutes. The AI responses are shockingly good.",
+                name: "Maria C.",
+                role: "Bella's Italian Kitchen",
+                accentBg: "bg-[#aa2c32]/8",
+                accentText: "text-[#aa2c32]",
+              },
+              {
+                quote: "Our Google rating went from 3.6 to 4.4 in four months. ReviewPulse made responding to every review possible.",
+                name: "James T.",
+                role: "Precision Auto Care",
+                accentBg: "bg-[#40606d]/8",
+                accentText: "text-[#40606d]",
+              },
+              {
+                quote: "I manage 8 locations. I catch every negative review within minutes and my team responds fast.",
+                name: "Sarah K.",
+                role: "FreshFit Dental",
+                accentBg: "bg-[#735801]/8",
+                accentText: "text-[#735801]",
+              },
+            ].map((t, i) => (
+              <div key={i} className="bento p-8 md:p-10">
+                <div className="mb-4 flex gap-0.5">
+                  {[1, 2, 3, 4, 5].map((s) => (
+                    <Star key={s} className="h-3.5 w-3.5 fill-[#735801] text-[#735801]" />
+                  ))}
+                </div>
+                <p className="font-headline mb-6 text-xl font-medium italic leading-snug text-[#302e2d]">&ldquo;{t.quote}&rdquo;</p>
+                <div className="flex items-center gap-3">
+                  <div className={`flex h-9 w-9 items-center justify-center rounded-full ${t.accentBg} text-sm font-bold ${t.accentText}`}>
+                    {t.name[0]}
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-[#302e2d]">{t.name}</p>
+                    <p className="text-xs text-[#797674]">{t.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Pulse quote */}
+          <div className="mt-12 rounded-2xl bg-[#f9d377] p-12 md:p-16 relative overflow-hidden">
+            <span className="absolute -top-4 -left-2 font-headline text-[160px] font-extrabold leading-none text-[#735801]/10 select-none">&ldquo;</span>
+            <blockquote className="relative z-10 max-w-3xl">
+              <p className="font-headline text-3xl font-bold italic leading-tight text-[#302e2d] md:text-4xl">
+                ReviewPulse isn&apos;t just a dashboard — it&apos;s the difference between a business that listens and one that doesn&apos;t.
+              </p>
+              <p className="mt-6 text-sm font-bold text-[#735801]">— Sarah K., Multi-location Practice Owner</p>
+            </blockquote>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Pricing ── */}
+      <section id="pricing" className="bg-[#f5f0ed] py-28 md:py-36">
+        <div className="mx-auto max-w-4xl px-8">
+          <div className="mb-16 text-center">
+            <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.15em] text-[#aa2c32]">Pricing</p>
+            <h2 className="font-headline text-5xl font-bold tracking-tight text-[#302e2d] md:text-6xl">
+              Simple, transparent pricing
+            </h2>
+            <p className="mt-5 text-base text-[#5d5b59]">Start free. Upgrade when you&apos;re ready.</p>
+          </div>
           <PricingToggle />
         </div>
       </section>
 
-      {/* ═══ CTA ═══ */}
+      {/* ── Final CTA ── */}
       <section className="py-28 md:py-36">
-        <div className="mx-auto max-w-3xl px-6 text-center">
-          <div className="relative overflow-hidden rounded-[2rem] border border-white/[0.04] bg-gradient-to-b from-white/[0.03] to-transparent p-14 md:p-20">
-            <div className="shimmer absolute inset-0" />
-            {/* Subtle glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[200px] w-[400px] rounded-full bg-[#ff6b4a]/[0.06] blur-[100px]" />
+        <div className="mx-auto max-w-4xl px-8 text-center">
+          <div className="rounded-2xl bg-[#ece7e4] p-14 md:p-20 relative overflow-hidden border border-[#e1dcd8]">
+            <span className="absolute inset-0 pointer-events-none rounded-2xl"
+              style={{ background: "radial-gradient(ellipse at 60% 0%, rgba(170,44,50,0.06) 0%, transparent 70%)" }} />
             <div className="relative z-10">
-              <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
+              <div className="mx-auto mb-8 flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-[#aa2c32] to-[#ff7574] shadow-lg">
                 <Shield className="h-7 w-7 text-white" />
               </div>
-              <h2 className="mb-5 font-display text-display-sm md:text-display-md">
+              <h2 className="font-headline mb-5 text-5xl font-extrabold tracking-tight text-[#302e2d] md:text-6xl">
                 Your reputation<br />can&apos;t wait
               </h2>
-              <p className="mb-10 text-[15px] text-[#8b8b9e]">
-                Every unanswered review is a customer lost. Set up ReviewPulse
-                in under 2 minutes.
+              <p className="mb-10 text-base text-[#5d5b59]">
+                Every unanswered review is a customer lost. Set up ReviewPulse in under 2 minutes.
               </p>
-              <Link
-                href="/signup"
-                className="btn-primary inline-flex items-center gap-2.5 rounded-2xl px-8 py-4 text-[15px]"
-              >
+              <Link href="/signup" className="btn-primary inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
                 Get Started Free <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
@@ -344,52 +314,49 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ Footer ═══ */}
-      <div className="gradient-line" />
-      <footer className="py-14">
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="grid gap-10 md:grid-cols-4">
+      {/* ── Footer ── */}
+      <footer className="border-t border-[#e1dcd8] bg-[#f5f0ed] py-16">
+        <div className="mx-auto max-w-7xl px-8">
+          <div className="grid gap-12 md:grid-cols-4">
             <div>
-              <Link href="/" className="mb-5 flex items-center gap-2.5">
-                <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
-                  <MessageSquare className="h-3.5 w-3.5 text-white" />
-                </div>
-                <span className="font-display text-sm font-bold">ReviewPulse</span>
+              <Link href="/" className="mb-5 block font-headline text-xl font-bold italic text-[#302e2d]">
+                ReviewPulse.
               </Link>
-              <p className="text-[13px] leading-relaxed text-[#4a4a5e]">
+              <p className="text-sm leading-relaxed text-[#797674]">
                 Review management for<br />local businesses.
               </p>
             </div>
             <div>
-              <h4 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#4a4a5e]">Product</h4>
-              <ul className="space-y-2.5 text-[13px] text-[#8b8b9e]">
-                <li><a href="#features" className="transition hover:text-white">Features</a></li>
-                <li><a href="#pricing" className="transition hover:text-white">Pricing</a></li>
-                <li><Link href="/how-it-works" className="transition hover:text-white">How It Works</Link></li>
+              <h4 className="mb-5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#302e2d]">Product</h4>
+              <ul className="space-y-3 text-sm text-[#797674]">
+                <li><a href="#features" className="transition hover:text-[#302e2d]">Features</a></li>
+                <li><a href="#pricing" className="transition hover:text-[#302e2d]">Pricing</a></li>
+                <li><Link href="/how-it-works" className="transition hover:text-[#302e2d]">How It Works</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#4a4a5e]">Resources</h4>
-              <ul className="space-y-2.5 text-[13px] text-[#8b8b9e]">
-                <li><Link href="/blog" className="transition hover:text-white">Blog</Link></li>
-                <li><Link href="/faq" className="transition hover:text-white">FAQ</Link></li>
+              <h4 className="mb-5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#302e2d]">Resources</h4>
+              <ul className="space-y-3 text-sm text-[#797674]">
+                <li><Link href="/blog" className="transition hover:text-[#302e2d]">Blog</Link></li>
+                <li><Link href="/faq" className="transition hover:text-[#302e2d]">FAQ</Link></li>
+                <li><Link href="/discover" className="transition hover:text-[#302e2d]">Business Directory</Link></li>
               </ul>
             </div>
             <div>
-              <h4 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.15em] text-[#4a4a5e]">Account</h4>
-              <ul className="space-y-2.5 text-[13px] text-[#8b8b9e]">
-                <li><Link href="/signup" className="transition hover:text-white">Sign Up</Link></li>
-                <li><Link href="/login" className="transition hover:text-white">Log In</Link></li>
-                <li><Link href="/privacy" className="transition hover:text-white">Privacy Policy</Link></li>
-                <li><Link href="/terms" className="transition hover:text-white">Terms of Service</Link></li>
+              <h4 className="mb-5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#302e2d]">Account & Legal</h4>
+              <ul className="space-y-3 text-sm text-[#797674]">
+                <li><Link href="/signup" className="transition hover:text-[#302e2d]">Sign Up</Link></li>
+                <li><Link href="/login" className="transition hover:text-[#302e2d]">Log In</Link></li>
+                <li><Link href="/privacy" className="transition hover:text-[#302e2d]">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="transition hover:text-[#302e2d]">Terms of Service</Link></li>
               </ul>
             </div>
           </div>
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.04] pt-8 md:flex-row">
-            <p className="text-[11px] text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewPulse. All rights reserved.</p>
-            <div className="flex gap-6 text-[11px] text-[#4a4a5e]">
-              <Link href="/privacy" className="transition hover:text-white">Privacy Policy</Link>
-              <Link href="/terms" className="transition hover:text-white">Terms of Service</Link>
+          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#e1dcd8] pt-8 md:flex-row">
+            <p className="text-xs text-[#b0acaa]">&copy; {new Date().getFullYear()} ReviewPulse. All rights reserved.</p>
+            <div className="flex gap-6 text-xs text-[#b0acaa]">
+              <Link href="/privacy" className="transition hover:text-[#302e2d]">Privacy Policy</Link>
+              <Link href="/terms" className="transition hover:text-[#302e2d]">Terms of Service</Link>
             </div>
           </div>
         </div>
