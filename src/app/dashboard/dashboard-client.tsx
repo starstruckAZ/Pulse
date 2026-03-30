@@ -8,6 +8,7 @@ import {
   MessageSquare, Star, TrendingUp, Clock, LogOut, Link2, ChevronRight,
   ExternalLink, ThumbsUp, Minus, ThumbsDown, X, FileText,
   BarChart3, Filter, ChevronDown, MapPin, Settings, LayoutDashboard, Code2, Bookmark,
+  User, Share2, Check,
 } from "lucide-react";
 
 interface Review {
@@ -57,6 +58,15 @@ export default function DashboardClient({
   const supabase = createClient();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [reviews, setReviews] = useState(initialReviews);
+  const [copiedLinkId, setCopiedLinkId] = useState<string | null>(null);
+
+  const copyReviewLink = (locId: string) => {
+    const url = `${window.location.origin}/r/${locId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedLinkId(locId);
+      setTimeout(() => setCopiedLinkId(null), 2000);
+    });
+  };
 
   // Filters
   const [filterSource, setFilterSource] = useState<string>("all");
@@ -336,6 +346,46 @@ export default function DashboardClient({
                 </div>
               </Link>
             ))}
+
+            {/* View Profile — links to first location's public profile */}
+            {locations.length > 0 && (
+              <Link
+                href={`/business/${locations[0].id}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bento flex items-center gap-3 p-4"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-sky-500/10">
+                  <User className="h-5 w-5 text-sky-400" />
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">View Profile</p>
+                  <p className="text-xs text-zinc-500">Public business page</p>
+                </div>
+              </Link>
+            )}
+
+            {/* Get Reviews Link — copies review request URL to clipboard */}
+            {locations.length > 0 && (
+              <button
+                onClick={() => copyReviewLink(locations[0].id)}
+                className="bento flex items-center gap-3 p-4 text-left"
+              >
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#ff6b4a]/10">
+                  {copiedLinkId ? (
+                    <Check className="h-5 w-5 text-emerald-400" />
+                  ) : (
+                    <Share2 className="h-5 w-5 text-[#ff6b4a]" />
+                  )}
+                </div>
+                <div>
+                  <p className="text-sm font-semibold">
+                    {copiedLinkId ? "Copied!" : "Get Reviews Link"}
+                  </p>
+                  <p className="text-xs text-zinc-500">Share with customers</p>
+                </div>
+              </button>
+            )}
           </div>
         </div>
 

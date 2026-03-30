@@ -68,6 +68,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locationI
     openGraph: {
       title: `${location.name} — Reviews`,
       description,
+      type: "website",
     },
   };
 }
@@ -155,8 +156,43 @@ export default async function BusinessProfilePage({
 
   const addressLine = location.address ?? "";
 
+  // ── JSON-LD structured data ───────────────────────────────────────────────
+  const top5Reviews = reviews.slice(0, 5);
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: location.name,
+    ...(addressLine ? { address: addressLine } : {}),
+    ...(totalCount > 0
+      ? {
+          aggregateRating: {
+            "@type": "AggregateRating",
+            ratingValue: avgRating.toFixed(1),
+            reviewCount: totalCount,
+            bestRating: "5",
+            worstRating: "1",
+          },
+        }
+      : {}),
+    ...(top5Reviews.length > 0
+      ? {
+          review: top5Reviews.map((r) => ({
+            "@type": "Review",
+            author: { "@type": "Person", name: r.reviewer_name || "Anonymous" },
+            reviewRating: { "@type": "Rating", ratingValue: r.rating },
+            ...(r.review_text ? { reviewBody: r.review_text } : {}),
+          })),
+        }
+      : {}),
+  };
+
   return (
     <div className="min-h-screen dot-grid">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Background blobs */}
       <div className="mesh-gradient fixed left-1/4 top-0 h-[500px] w-[500px] bg-[#ff6b4a] opacity-[0.04]" />
       <div className="mesh-gradient fixed right-1/4 top-1/4 h-[400px] w-[400px] bg-[#ff3d71] opacity-[0.03]" />

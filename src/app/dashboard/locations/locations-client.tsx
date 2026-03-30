@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import {
   MapPin, Plus, Edit3, Trash2, Building2, Globe, X,
   LogOut, MessageSquare, BarChart3, FileText, Settings, LayoutDashboard,
+  ExternalLink, Award, Share2, Check, BarChart2,
 } from "lucide-react";
 
 interface Location {
@@ -44,6 +45,15 @@ export default function LocationsClient({ user, profile, locations: initialLocat
   const [yelpBusinessId, setYelpBusinessId] = useState("");
   const [saving, setSaving] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  const copyReviewLink = (locId: string) => {
+    const url = `${window.location.origin}/r/${locId}`;
+    navigator.clipboard.writeText(url).then(() => {
+      setCopiedId(locId);
+      setTimeout(() => setCopiedId(null), 2000);
+    });
+  };
 
   const displayName = profile?.business_name || profile?.full_name || user.email || "User";
   const plan = profile?.plan || "free";
@@ -281,6 +291,69 @@ export default function LocationsClient({ user, profile, locations: initialLocat
                   {(reviewCounts[loc.id] || 0) === 0 && (
                     <span className="text-xs text-zinc-600">No reviews yet</span>
                   )}
+                </div>
+
+                {/* Share / Badge / Get Reviews / Report actions */}
+                <div className="mt-3 flex flex-wrap items-center gap-2">
+                  <Link
+                    href={`/report/${loc.id}`}
+                    className="btn-ghost inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs"
+                  >
+                    <BarChart2 className="h-3.5 w-3.5" />
+                    Monthly Report
+                  </Link>
+                  <Link
+                    href={`/business/${loc.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-ghost inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs"
+                  >
+                    <ExternalLink className="h-3.5 w-3.5" />
+                    Share Profile
+                  </Link>
+                  <Link
+                    href={`/badge/${loc.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn-ghost inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs"
+                  >
+                    <Award className="h-3.5 w-3.5" />
+                    Get Badge
+                  </Link>
+                  <button
+                    onClick={() => copyReviewLink(loc.id)}
+                    className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-medium border border-[#ff6b4a]/20 bg-[#ff6b4a]/5 text-[#ff6b4a] transition hover:bg-[#ff6b4a]/10"
+                  >
+                    {copiedId === loc.id ? (
+                      <><Check className="h-3.5 w-3.5" /> Copied!</>
+                    ) : (
+                      <><Share2 className="h-3.5 w-3.5" /> Get Reviews</>
+                    )}
+                  </button>
+                </div>
+
+                {/* Copyable review request URL */}
+                <div className="mt-3">
+                  <p className="mb-1 text-xs text-zinc-600">Review request link</p>
+                  <div className="flex items-center gap-2">
+                    <input
+                      readOnly
+                      value={typeof window !== "undefined" ? `${window.location.origin}/r/${loc.id}` : `/r/${loc.id}`}
+                      className="input flex-1 py-1.5 text-xs font-mono text-zinc-400"
+                      onFocus={(e) => e.target.select()}
+                    />
+                    <button
+                      onClick={() => copyReviewLink(loc.id)}
+                      className="shrink-0 rounded-xl p-2 text-zinc-500 transition hover:bg-white/5 hover:text-white"
+                      title="Copy link"
+                    >
+                      {copiedId === loc.id ? (
+                        <Check className="h-4 w-4 text-emerald-400" />
+                      ) : (
+                        <Share2 className="h-4 w-4" />
+                      )}
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
