@@ -7,14 +7,18 @@ import { useRouter } from "next/navigation";
 import {
   MapPin, Plus, Edit3, Trash2, Globe, X,
   LogOut, MessageSquare, BarChart3, FileText, Settings, LayoutDashboard,
-  ExternalLink, Award, Share2, Check, BarChart2,
+  ExternalLink, Award, Share2, Check, BarChart2, Eye, EyeOff,
 } from "lucide-react";
+import { CATEGORIES } from "@/lib/categories";
 
 interface Location {
   id: string;
   user_id: string;
   name: string;
   address: string;
+  city: string | null;
+  category: string | null;
+  listed: boolean | null;
   google_place_id: string | null;
   created_at: string;
 }
@@ -40,6 +44,9 @@ export default function LocationsClient({ user, profile, locations: initialLocat
   const [editing, setEditing] = useState<Location | null>(null);
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [category, setCategory] = useState("");
+  const [listed, setListed] = useState(true);
   const [googlePlaceId, setGooglePlaceId] = useState("");
   const [saving, setSaving] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
@@ -62,6 +69,9 @@ export default function LocationsClient({ user, profile, locations: initialLocat
     setEditing(null);
     setName("");
     setAddress("");
+    setCity("");
+    setCategory("");
+    setListed(true);
     setGooglePlaceId("");
     setShowModal(true);
   };
@@ -70,6 +80,9 @@ export default function LocationsClient({ user, profile, locations: initialLocat
     setEditing(loc);
     setName(loc.name);
     setAddress(loc.address);
+    setCity(loc.city || "");
+    setCategory(loc.category || "");
+    setListed(loc.listed !== false);
     setGooglePlaceId(loc.google_place_id || "");
     setShowModal(true);
   };
@@ -81,6 +94,9 @@ export default function LocationsClient({ user, profile, locations: initialLocat
     const payload = {
       name: name.trim(),
       address: address.trim(),
+      city: city.trim() || null,
+      category: category || null,
+      listed,
       google_place_id: googlePlaceId.trim() || null,
     };
 
@@ -108,8 +124,6 @@ export default function LocationsClient({ user, profile, locations: initialLocat
         id: tempId,
         user_id: user.id,
         ...payload,
-        name: payload.name,
-        address: payload.address,
         created_at: new Date().toISOString(),
       };
       setLocations((prev) => [optimistic, ...prev]);
@@ -233,15 +247,24 @@ export default function LocationsClient({ user, profile, locations: initialLocat
               <div key={loc.id} className="bento p-6">
                 <div className="mb-3 flex items-start justify-between">
                   <div className="min-w-0 flex-1">
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-display text-lg font-semibold truncate">{loc.name}</h3>
                       {(reviewCounts[loc.id] || 0) > 0 && (
                         <span className="badge text-xs text-orange-400 border-orange-500/20 bg-orange-500/5 shrink-0">
                           {reviewCounts[loc.id]} {reviewCounts[loc.id] === 1 ? "review" : "reviews"}
                         </span>
                       )}
+                      {loc.listed !== false ? (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-emerald-500/20 bg-emerald-500/5 px-2 py-0.5 text-[10px] font-semibold text-emerald-400 shrink-0">
+                          <Eye className="h-2.5 w-2.5" /> Listed
+                        </span>
+                      ) : (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-zinc-700 bg-zinc-800 px-2 py-0.5 text-[10px] font-semibold text-zinc-500 shrink-0">
+                          <EyeOff className="h-2.5 w-2.5" /> Unlisted
+                        </span>
+                      )}
                     </div>
-                    <p className="mt-1 text-sm text-zinc-500 truncate">{loc.address}</p>
+                    <p className="mt-1 text-sm text-zinc-500 truncate">{loc.city ? `${loc.city}${loc.address ? ` · ${loc.address}` : ""}` : loc.address}</p>
                   </div>
                   <div className="flex items-center gap-1 shrink-0 ml-2">
                     <button onClick={() => openEdit(loc)} className="rounded-xl p-2 text-zinc-600 transition hover:bg-white/5 hover:text-white">
@@ -368,14 +391,41 @@ export default function LocationsClient({ user, profile, locations: initialLocat
                   placeholder="e.g., Downtown Coffee Shop"
                 />
               </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium text-zinc-300">City *</label>
+                  <input
+                    type="text"
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    className="input w-full"
+                    placeholder="e.g., Phoenix"
+                  />
+                </div>
+                <div>
+                  <label className="mb-1.5 block text-sm font-medium text-zinc-300">Category</label>
+                  <select
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="input w-full"
+                  >
+                    <option value="">Select category…</option>
+                    {CATEGORIES.map((cat) => (
+                      <option key={cat.slug} value={cat.slug}>
+                        {cat.icon} {cat.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-zinc-300">Address *</label>
+                <label className="mb-1.5 block text-sm font-medium text-zinc-300">Address</label>
                 <input
                   type="text"
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
                   className="input w-full"
-                  placeholder="e.g., 123 Main St, City, State"
+                  placeholder="e.g., 123 Main St, Phoenix, AZ 85001"
                 />
               </div>
               <div>
@@ -388,6 +438,26 @@ export default function LocationsClient({ user, profile, locations: initialLocat
                   placeholder="e.g., ChIJN1t_tDeuEmsRUsoyG83frY4"
                 />
                 <p className="mt-1 text-xs text-zinc-600">Find your Place ID at <span className="text-zinc-400">developers.google.com/maps/documentation/places/web-service/place-id</span></p>
+              </div>
+              {/* Directory listing toggle */}
+              <div className="flex items-center justify-between rounded-2xl border border-white/8 bg-white/3 px-4 py-3">
+                <div>
+                  <p className="text-sm font-medium text-zinc-300">Show in public directory</p>
+                  <p className="text-xs text-zinc-600">Appear on the ReviewPulse business discover page</p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => setListed(!listed)}
+                  className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
+                    listed ? "bg-[#aa2c32]" : "bg-zinc-700"
+                  }`}
+                >
+                  <span
+                    className={`inline-block h-4 w-4 rounded-full bg-white shadow transition-transform ${
+                      listed ? "translate-x-6" : "translate-x-1"
+                    }`}
+                  />
+                </button>
               </div>
             </div>
             <div className="mt-6 flex justify-end gap-3">

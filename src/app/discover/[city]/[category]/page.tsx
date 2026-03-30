@@ -1,9 +1,9 @@
 import { createClient } from "@supabase/supabase-js";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Star, MapPin, MessageSquare, ChevronRight, Building2, Tag } from "lucide-react";
+import { Star, MapPin, MessageSquare, ChevronRight, Building2 } from "lucide-react";
 import type { Metadata } from "next";
-import { CATEGORIES, getCategoryLabel } from "@/lib/categories";
+import { CATEGORIES, getCategoryBySlug, getCategoryLabel } from "@/lib/categories";
 
 export const revalidate = 3600; // ISR: re-render at most every hour
 
@@ -26,18 +26,61 @@ function toTitleCase(str: string): string {
   return str.replace(/\b\w/g, (c) => c.toUpperCase());
 }
 
+// Allow new city+category paths to be rendered on demand (ISR)
+export const dynamicParams = true;
+
+export async function generateStaticParams() {
+  // Pre-seed the most popular city+category combos at build time.
+  // If env vars aren't available (CI without secrets), return empty —
+  // pages will still be generated on first request via ISR.
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+    return [];
+  }
+
+  try {
+    const supabase = getSupabase();
+    const { data } = await supabase
+      .from("locations")
+      .select("city, address, category")
+      .neq("listed", false)
+      .not("category", "is", null);
+
+    const seen = new Set<string>();
+    const paths: { city: string; category: string }[] = [];
+
+    for (const loc of data ?? []) {
+      const rawCity =
+        (loc.city as string | null)?.trim() ||
+        parseCityFromAddress(loc.address ?? "");
+      const cat = loc.category as string | null;
+      if (!rawCity || !cat) continue;
+      const key = `${rawCity.toLowerCase()}__${cat}`;
+      if (!seen.has(key)) {
+        seen.add(key);
+        paths.push({ city: encodeURIComponent(rawCity.toLowerCase()), category: cat });
+      }
+    }
+
+    return paths;
+  } catch {
+    return [];
+  }
+}
+
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ city: string }>;
+  params: Promise<{ city: string; category: string }>;
 }): Promise<Metadata> {
-  const { city } = await params;
+  const { city, category } = await params;
   const cityName = toTitleCase(decodeURIComponent(city));
+  const catLabel = getCategoryLabel(category);
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.app";
   return {
-    title: `Top-Rated Businesses in ${cityName}`,
-    description: `Discover the highest-rated businesses in ${cityName}, ranked by verified customer reviews from Google, Yelp, and Facebook.`,
+    title: `Top ${catLabel} Businesses in ${cityName}`,
+    description: `Find the highest-rated ${catLabel.toLowerCase()} businesses in ${cityName}, ranked by verified customer reviews from Google, Yelp, and Facebook.`,
     alternates: {
-      canonical: `${process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.app"}/discover/${encodeURIComponent(city)}`,
+      canonical: `${siteUrl}/discover/${encodeURIComponent(city)}/${category}`,
     },
   };
 }
@@ -59,39 +102,37 @@ function StarRow({ rating }: { rating: number }) {
   );
 }
 
-export default async function CityDiscoverPage({
+export default async function CityCategoryPage({
   params,
 }: {
-  params: Promise<{ city: string }>;
+  params: Promise<{ city: string; category: string }>;
 }) {
-  const { city } = await params;
+  const { city, category } = await params;
   const citySlug = decodeURIComponent(city).toLowerCase();
   const cityName = toTitleCase(citySlug);
+  const catInfo = getCategoryBySlug(category);
+  const catLabel = catInfo?.label ?? category;
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.app";
 
   const supabase = getSupabase();
 
-  // Query locations matching this city — check explicit city column first,
-  // then fall back to address ILIKE for locations without city set
   const { data: locationsData } = await supabase
     .from("locations")
     .select("id, name, city, address, category, ranking_score, avg_rating, review_count")
     .neq("listed", false)
-    .or(
-      `city.ilike.${citySlug},address.ilike.%${citySlug}%`
-    );
+    .eq("category", category)
+    .or(`city.ilike.${citySlug},address.ilike.%${citySlug}%`);
 
-  // Filter more precisely: address match must actually have city in the city segment
+  // Precise city match
   const locations = (locationsData ?? []).filter((loc) => {
     const explicitCity = (loc.city as string | null)?.toLowerCase().trim();
     if (explicitCity) return explicitCity === citySlug;
-    // Fallback: parsed city from address
     return parseCityFromAddress(loc.address ?? "").toLowerCase() === citySlug;
   });
 
   if (locations.length === 0) notFound();
 
-  // Sort by ranking_score (Bayesian) if available, otherwise by avg_rating then review_count
+  // Sort by Bayesian ranking score
   const ranked = [...locations].sort((a, b) => {
     const scoreA = (a.ranking_score as number | null) ?? (a.avg_rating as number | null) ?? 0;
     const scoreB = (b.ranking_score as number | null) ?? (b.avg_rating as number | null) ?? 0;
@@ -99,24 +140,25 @@ export default async function CityDiscoverPage({
     return ((b.review_count as number) ?? 0) - ((a.review_count as number) ?? 0);
   });
 
-  // Active categories in this city
-  const activeCategorySlugs = [
-    ...new Set(
-      locations
-        .map((l) => l.category as string | null)
-        .filter((c): c is string => Boolean(c))
-    ),
-  ];
-  const activeCategories = CATEGORIES.filter((c) =>
-    activeCategorySlugs.includes(c.slug)
-  );
+  // Other categories in this city (for cross-linking)
+  const { data: siblingData } = await supabase
+    .from("locations")
+    .select("category")
+    .neq("listed", false)
+    .not("category", "is", null)
+    .or(`city.ilike.${citySlug},address.ilike.%${citySlug}%`);
 
-  // JSON-LD ItemList for SEO
+  const siblingCategories = [
+    ...new Set(
+      (siblingData ?? []).map((l) => l.category as string).filter(Boolean)
+    ),
+  ].filter((c) => c !== category);
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: `Top Businesses in ${cityName}`,
-    url: `${siteUrl}/discover/${encodeURIComponent(citySlug)}`,
+    name: `Top ${catLabel} in ${cityName}`,
+    url: `${siteUrl}/discover/${encodeURIComponent(citySlug)}/${category}`,
     numberOfItems: ranked.length,
     itemListElement: ranked.slice(0, 10).map((biz, i) => ({
       "@type": "ListItem",
@@ -150,7 +192,7 @@ export default async function CityDiscoverPage({
       {/* Nav */}
       <nav className="glass sticky top-0 z-40">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-3">
-          <div className="flex items-center gap-2 text-sm text-[#797674]">
+          <div className="flex items-center gap-2 text-sm text-[#797674] flex-wrap">
             <Link href="/" className="flex items-center gap-1.5 text-[#302e2d] font-semibold">
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#aa2c32] to-[#ff7574]">
                 <MessageSquare className="h-3 w-3 text-white" />
@@ -162,7 +204,14 @@ export default async function CityDiscoverPage({
               Directory
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
-            <span className="text-[#302e2d] font-medium">{cityName}</span>
+            <Link
+              href={`/discover/${encodeURIComponent(citySlug)}`}
+              className="transition hover:text-[#302e2d]"
+            >
+              {cityName}
+            </Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <span className="text-[#302e2d] font-medium">{catLabel}</span>
           </div>
           <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-sm">
             List your business
@@ -173,9 +222,17 @@ export default async function CityDiscoverPage({
       <main className="mx-auto max-w-4xl px-6 py-14">
         {/* Header */}
         <div className="mb-10">
+          {catInfo && (
+            <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-[#e1dcd8] bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#797674]">
+              <span>{catInfo.icon}</span>
+              {catLabel}
+            </div>
+          )}
           <h1 className="font-headline mb-2 text-4xl font-bold italic text-[#302e2d] sm:text-5xl">
-            Top Businesses in{" "}
-            <span className="gradient-text not-italic">{cityName}</span>
+            Top{" "}
+            <span className="gradient-text not-italic">{catLabel}</span>
+            <br />
+            in {cityName}
           </h1>
           <p className="text-[#797674]">
             <span className="font-semibold text-[#302e2d]">{ranked.length}</span>{" "}
@@ -184,25 +241,32 @@ export default async function CityDiscoverPage({
           </p>
         </div>
 
-        {/* Category filter pills */}
-        {activeCategories.length > 0 && (
+        {/* Category sibling pills */}
+        {siblingCategories.length > 0 && (
           <div className="mb-8 flex flex-wrap gap-2">
             <Link
               href={`/discover/${encodeURIComponent(citySlug)}`}
-              className="inline-flex items-center gap-1.5 rounded-full border border-[#aa2c32] bg-[#aa2c32] px-4 py-1.5 text-xs font-semibold text-white"
+              className="inline-flex items-center gap-1.5 rounded-full border border-[#e1dcd8] bg-white px-4 py-1.5 text-xs font-semibold text-[#5d5b59] transition hover:border-[#aa2c32] hover:text-[#aa2c32]"
             >
               All
             </Link>
-            {activeCategories.map((cat) => (
-              <Link
-                key={cat.slug}
-                href={`/discover/${encodeURIComponent(citySlug)}/${cat.slug}`}
-                className="inline-flex items-center gap-1.5 rounded-full border border-[#e1dcd8] bg-white px-4 py-1.5 text-xs font-semibold text-[#5d5b59] transition hover:border-[#aa2c32] hover:text-[#aa2c32]"
-              >
-                <span>{cat.icon}</span>
-                {cat.label}
-              </Link>
-            ))}
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#aa2c32] bg-[#aa2c32] px-4 py-1.5 text-xs font-semibold text-white">
+              {catInfo?.icon} {catLabel}
+            </span>
+            {siblingCategories.slice(0, 6).map((slug) => {
+              const cat = CATEGORIES.find((c) => c.slug === slug);
+              if (!cat) return null;
+              return (
+                <Link
+                  key={slug}
+                  href={`/discover/${encodeURIComponent(citySlug)}/${slug}`}
+                  className="inline-flex items-center gap-1.5 rounded-full border border-[#e1dcd8] bg-white px-4 py-1.5 text-xs font-semibold text-[#5d5b59] transition hover:border-[#aa2c32] hover:text-[#aa2c32]"
+                >
+                  <span>{cat.icon}</span>
+                  {cat.label}
+                </Link>
+              );
+            })}
           </div>
         )}
 
@@ -211,15 +275,9 @@ export default async function CityDiscoverPage({
           {ranked.map((biz, i) => {
             const avgRating = biz.avg_rating as number | null;
             const reviewCount = (biz.review_count as number) ?? 0;
-            const categoryLabel = biz.category
-              ? getCategoryLabel(biz.category as string)
-              : null;
 
             return (
-              <div
-                key={biz.id}
-                className="bento flex items-center gap-4 p-5"
-              >
+              <div key={biz.id} className="bento flex items-center gap-4 p-5">
                 {/* Rank badge */}
                 <div
                   className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-bold ${
@@ -237,17 +295,9 @@ export default async function CityDiscoverPage({
 
                 {/* Info */}
                 <div className="min-w-0 flex-1">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <h2 className="font-headline font-semibold text-[#302e2d] leading-tight">
-                      {biz.name}
-                    </h2>
-                    {categoryLabel && (
-                      <span className="inline-flex items-center gap-1 rounded-full border border-[#e1dcd8] bg-[#f5f0ed] px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-[#797674]">
-                        <Tag className="h-2.5 w-2.5" />
-                        {categoryLabel}
-                      </span>
-                    )}
-                  </div>
+                  <h2 className="font-headline font-semibold text-[#302e2d] leading-tight">
+                    {biz.name}
+                  </h2>
                   {biz.address && (
                     <div className="mt-1 flex items-center gap-1 text-xs text-[#797674]">
                       <MapPin className="h-3 w-3 shrink-0" />
@@ -285,48 +335,14 @@ export default async function CityDiscoverPage({
           })}
         </div>
 
-        {/* Category cards (if categories exist but none active-filtered) */}
-        {activeCategories.length > 0 && (
-          <div className="mt-12">
-            <h3 className="font-headline mb-4 text-lg font-bold text-[#302e2d]">
-              Browse by Category in {cityName}
-            </h3>
-            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {activeCategories.map((cat) => {
-                const count = locations.filter(
-                  (l) => l.category === cat.slug
-                ).length;
-                return (
-                  <Link
-                    key={cat.slug}
-                    href={`/discover/${encodeURIComponent(citySlug)}/${cat.slug}`}
-                    className="bento flex items-center gap-3 p-4 group"
-                  >
-                    <span className="text-2xl">{cat.icon}</span>
-                    <div className="flex-1 min-w-0">
-                      <p className="text-sm font-semibold text-[#302e2d] group-hover:text-[#aa2c32] transition-colors">
-                        {cat.label}
-                      </p>
-                      <p className="text-xs text-[#797674]">
-                        {count} {count === 1 ? "business" : "businesses"}
-                      </p>
-                    </div>
-                    <ChevronRight className="h-4 w-4 text-[#b0acaa] group-hover:text-[#aa2c32] transition" />
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* CTA banner */}
+        {/* CTA */}
         <div className="mt-12 rounded-3xl bg-[#f5f0ed] p-8 text-center">
           <Building2 className="mx-auto mb-3 h-8 w-8 text-[#aa2c32]" />
           <h3 className="font-headline mb-1 text-lg font-bold text-[#302e2d]">
-            Is your {cityName} business here?
+            Own a {catLabel.toLowerCase()} business in {cityName}?
           </h3>
           <p className="mb-5 text-sm text-[#5d5b59]">
-            Get listed and manage your online reputation with ReviewPulse. Free to start.
+            Get listed and climb the rankings with ReviewPulse. Free to start.
           </p>
           <Link
             href="/signup"
