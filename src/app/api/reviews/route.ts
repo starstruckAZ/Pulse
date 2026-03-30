@@ -20,10 +20,9 @@ export async function GET(request: NextRequest) {
     const locationId = searchParams.get("location_id");
     const sentiment = searchParams.get("sentiment");
     const source = searchParams.get("source");
-    const status = searchParams.get("status");
     const rating = searchParams.get("rating");
     const sort = searchParams.get("sort") || "newest";
-    const limit = parseInt(searchParams.get("limit") || "25", 10);
+    const limit = Math.min(parseInt(searchParams.get("limit") || "25", 10), 100);
     const offset = parseInt(searchParams.get("offset") || "0", 10);
 
     // Join with locations to ensure we only return reviews for user's locations
@@ -41,9 +40,6 @@ export async function GET(request: NextRequest) {
     if (source) {
       query = query.eq("source", source);
     }
-    if (status) {
-      query = query.eq("status", status);
-    }
     if (rating) {
       query = query.eq("rating", parseInt(rating, 10));
     }
@@ -51,7 +47,7 @@ export async function GET(request: NextRequest) {
     // Sorting
     switch (sort) {
       case "oldest":
-        query = query.order("created_at", { ascending: true });
+        query = query.order("fetched_at", { ascending: true });
         break;
       case "rating-high":
         query = query.order("rating", { ascending: false });
@@ -61,7 +57,7 @@ export async function GET(request: NextRequest) {
         break;
       case "newest":
       default:
-        query = query.order("created_at", { ascending: false });
+        query = query.order("fetched_at", { ascending: false });
         break;
     }
 
@@ -98,11 +94,9 @@ export async function PATCH(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { id, status, response_text, responded_at } = body as {
+    const { id, response_text } = body as {
       id: string;
-      status?: "new" | "responded" | "archived";
       response_text?: string;
-      responded_at?: string;
     };
 
     if (!id) {
@@ -129,9 +123,10 @@ export async function PATCH(request: NextRequest) {
 
     // Build update payload with only provided fields
     const updates: Record<string, unknown> = {};
-    if (status !== undefined) updates.status = status;
-    if (response_text !== undefined) updates.response_text = response_text;
-    if (responded_at !== undefined) updates.responded_at = responded_at;
+    if (response_text !== undefined) {
+      updates.response_text = response_text;
+      updates.responded = true;
+    }
 
     if (Object.keys(updates).length === 0) {
       return NextResponse.json(

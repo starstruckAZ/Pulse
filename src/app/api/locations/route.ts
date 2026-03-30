@@ -51,28 +51,32 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json();
-    const { name, address, google_place_id, yelp_business_id } = body as {
+    const { name, address, google_place_id } = body as {
       name: string;
       address?: string;
       google_place_id?: string;
-      yelp_business_id?: string;
     };
 
-    if (!name) {
+    if (!name || typeof name !== "string" || name.trim().length === 0) {
       return NextResponse.json(
         { error: "name is required" },
         { status: 400 }
       );
+    }
+    if (name.length > 200) {
+      return NextResponse.json({ error: "name must be 200 characters or fewer" }, { status: 400 });
+    }
+    if (address && address.length > 500) {
+      return NextResponse.json({ error: "address must be 500 characters or fewer" }, { status: 400 });
     }
 
     const { data, error } = await supabase
       .from("locations")
       .insert({
         user_id: user.id,
-        name,
-        address: address || null,
+        name: name.trim(),
+        address: address?.trim() || null,
         google_place_id: google_place_id || null,
-        yelp_business_id: yelp_business_id || null,
       })
       .select()
       .single();

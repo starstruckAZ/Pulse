@@ -91,6 +91,8 @@ function buildSvg({
 </svg>`;
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
 export async function GET(
   request: Request,
   { params }: { params: Promise<{ locationId: string }> }
@@ -98,6 +100,15 @@ export async function GET(
   const { locationId } = await params;
   const { searchParams } = new URL(request.url);
   const style = searchParams.get("style") === "light" ? "light" : "dark";
+
+  // Reject non-UUID locationId before hitting the DB
+  if (!UUID_RE.test(locationId)) {
+    const svg = buildSvg({ name: "Business", avgRating: null, reviewCount: 0, style });
+    return new Response(svg, {
+      status: 400,
+      headers: { "Content-Type": "image/svg+xml" },
+    });
+  }
 
   // Fetch location
   const locations = await fetchFromSupabase(

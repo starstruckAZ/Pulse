@@ -10,6 +10,13 @@ function getServiceClient() {
   );
 }
 
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+/** Strip all HTML/script tags to prevent stored XSS */
+function stripHtml(str: string): string {
+  return str.replace(/<[^>]*>/g, "").replace(/&[a-z]+;/gi, " ").trim();
+}
+
 export async function POST(request: Request) {
   try {
     const body = await request.json();
@@ -20,16 +27,29 @@ export async function POST(request: Request) {
       review_text?: string;
     };
 
-    // Validate
-    if (!locationId) {
-      return NextResponse.json({ error: "locationId is required" }, { status: 400 });
+    // Validate locationId format before touching the DB
+    if (!locationId || !UUID_RE.test(locationId)) {
+      return NextResponse.json({ error: "Invalid locationId" }, { status: 400 });
     }
-    if (!rating || rating < 1 || rating > 5) {
-      return NextResponse.json({ error: "Rating must be between 1 and 5" }, { status: 400 });
+
+    // Rating must be a whole number 1–5
+    if (!rating || !Number.isInteger(rating) || rating < 1 || rating > 5) {
+      return NextResponse.json({ error: "Rating must be a whole number between 1 and 5" }, { status: 400 });
     }
-    if (!review_text || review_text.trim().length < 10) {
+
+    // Sanitize & validate text fields
+    const cleanName = stripHtml(reviewer_name ?? "").slice(0, 100) || "Anonymous";
+    const cleanText = stripHtml(review_text ?? "");
+
+    if (cleanText.length < 10) {
       return NextResponse.json(
         { error: "Review text must be at least 10 characters" },
+        { status: 400 }
+      );
+    }
+    if (cleanText.length > 2000) {
+      return NextResponse.json(
+        { error: "Review text must be 2000 characters or fewer" },
         { status: 400 }
       );
     }
@@ -53,9 +73,9 @@ export async function POST(request: Request) {
 
     const { error: insertError } = await supabase.from("reviews").insert({
       location_id: locationId,
-      reviewer_name: reviewer_name?.trim() || "Anonymous",
+      reviewer_name: cleanName,
       rating,
-      review_text: review_text.trim(),
+      review_text: cleanText,
       source: "direct",
       sentiment,
       responded: false,

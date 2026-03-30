@@ -22,14 +22,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json().catch(() => ({}));
     const interval: "monthly" | "yearly" = body.interval === "yearly" ? "yearly" : "monthly";
 
+    // Prefer private env vars (no NEXT_PUBLIC_ prefix), fall back to public ones for legacy support
     const priceId =
       interval === "yearly"
-        ? process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_YEARLY
-        : process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY;
+        ? (process.env.STRIPE_PRICE_ID_YEARLY || process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_YEARLY)
+        : (process.env.STRIPE_PRICE_ID_MONTHLY || process.env.NEXT_PUBLIC_STRIPE_PRICE_ID_MONTHLY);
 
     if (!priceId) {
+      console.error(`Stripe ${interval} price ID env var is not set`);
       return NextResponse.json(
-        { error: `Stripe ${interval} price ID is not configured` },
+        { error: "Payment configuration error. Please contact support." },
         { status: 500 }
       );
     }
