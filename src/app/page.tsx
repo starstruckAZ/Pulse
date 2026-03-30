@@ -380,14 +380,16 @@ export default function Home() {
               <ul className="space-y-2.5 text-[13px] text-[#8b8b9e]">
                 <li><Link href="/signup" className="transition hover:text-white">Sign Up</Link></li>
                 <li><Link href="/login" className="transition hover:text-white">Log In</Link></li>
+                <li><Link href="/privacy" className="transition hover:text-white">Privacy Policy</Link></li>
+                <li><Link href="/terms" className="transition hover:text-white">Terms of Service</Link></li>
               </ul>
             </div>
           </div>
           <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-white/[0.04] pt-8 md:flex-row">
             <p className="text-[11px] text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewPulse. All rights reserved.</p>
             <div className="flex gap-6 text-[11px] text-[#4a4a5e]">
-              <a href="#" className="transition hover:text-white">Privacy</a>
-              <a href="#" className="transition hover:text-white">Terms</a>
+              <Link href="/privacy" className="transition hover:text-white">Privacy Policy</Link>
+              <Link href="/terms" className="transition hover:text-white">Terms of Service</Link>
             </div>
           </div>
         </div>

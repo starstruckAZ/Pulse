@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import CookieBanner from "@/components/cookie-banner";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.app";
 
@@ -122,6 +123,7 @@ export default function RootLayout({
       </head>
       <body className="dot-grid noise font-body antialiased">
         {children}
+        <CookieBanner />
       </body>
     </html>
   );
