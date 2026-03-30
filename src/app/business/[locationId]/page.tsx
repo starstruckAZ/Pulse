@@ -31,8 +31,6 @@ interface Location {
   id: string;
   name: string;
   address?: string | null;
-  city?: string | null;
-  state?: string | null;
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ locationId: string }> }) {
@@ -41,7 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locationI
 
   const { data: location } = await supabase
     .from("locations")
-    .select("name, address, city, state")
+    .select("name, address")
     .eq("id", locationId)
     .single();
 
@@ -85,7 +83,7 @@ export default async function BusinessProfilePage({
   // Fetch location
   const { data: location } = await supabase
     .from("locations")
-    .select("id, name, address, city, state")
+    .select("id, name, address")
     .eq("id", locationId)
     .single<Location>();
 
@@ -155,9 +153,7 @@ export default async function BusinessProfilePage({
     facebook: { label: "Facebook", letter: "F", gradient: "from-indigo-500 to-indigo-600" },
   };
 
-  const addressLine = [location.address, location.city, location.state]
-    .filter(Boolean)
-    .join(", ");
+  const addressLine = location.address ?? "";
 
   return (
     <div className="min-h-screen dot-grid">
