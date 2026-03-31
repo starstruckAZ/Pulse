@@ -4,10 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/client";
 import { MessageSquare } from "lucide-react";
-import { useRouter } from "next/navigation";
-
 export default function LoginPage() {
-  const router = useRouter();
   const supabase = createClient();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -18,14 +15,24 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+
     if (error) {
       setError(error.message);
       setLoading(false);
-    } else {
-      router.refresh();
-      router.push("/dashboard");
+      return;
     }
+
+    if (!data.session) {
+      setError("Login succeeded but no session was created. Please try again.");
+      setLoading(false);
+      return;
+    }
+
+    // Full page navigation to ensure cookies are sent on the server request.
+    // router.push() does a soft navigation that can miss newly-set auth cookies.
+    window.location.href = "/dashboard";
   };
 
   const handleGoogleLogin = async () => {
