@@ -8,7 +8,7 @@ import {
   MessageSquare, Star, TrendingUp, Clock, LogOut, Link2, ChevronRight,
   ExternalLink, ThumbsUp, Minus, ThumbsDown, X, FileText,
   BarChart3, Filter, ChevronDown, MapPin, Settings, LayoutDashboard, Code2, Bookmark,
-  User, Share2, Check,
+  User, Share2, Check, Flame, Trophy, Zap,
 } from "lucide-react";
 
 interface Review {
@@ -47,12 +47,31 @@ interface DashboardClientProps {
   avgRating: string;
   responseRate: number;
   templates: Template[];
+  streak?: number;
+  xp?: number;
+  totalResponses?: number;
 }
 
 type SortKey = "newest" | "oldest" | "rating-high" | "rating-low";
 
+/** XP needed to level up at each level */
+function xpForLevel(level: number): number { return level * 100; }
+function levelFromXP(xp: number): number {
+  let level = 1;
+  let remaining = xp;
+  while (remaining >= xpForLevel(level)) { remaining -= xpForLevel(level); level++; }
+  return level;
+}
+function xpProgressInLevel(xp: number): number {
+  let remaining = xp;
+  let level = 1;
+  while (remaining >= xpForLevel(level)) { remaining -= xpForLevel(level); level++; }
+  return remaining;
+}
+
 export default function DashboardClient({
   user, profile, locations, reviews: initialReviews, avgRating, responseRate, templates,
+  streak = 0, xp = 0, totalResponses = 0,
 }: DashboardClientProps) {
   const router = useRouter();
   const supabase = createClient();
@@ -139,6 +158,10 @@ export default function DashboardClient({
     setReplySaving(true);
     await supabase.from("reviews").update({ responded: true, response_text: replyText.trim() }).eq("id", replyingTo.id);
     setReviews((prev) => prev.map((r) => r.id === replyingTo.id ? { ...r, responded: true, response_text: replyText.trim() } : r));
+
+    // Award XP + update streak via RPC
+    await supabase.rpc("award_response_xp", { xp_amount: 10 }).catch(() => null);
+
     setReplySaving(false);
     setReplyingTo(null);
     setReplyText("");
@@ -195,7 +218,7 @@ export default function DashboardClient({
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
                 <MessageSquare className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="font-display hidden sm:inline">ReviewPulse</span>
+              <span className="font-display hidden sm:inline">ReviewHype</span>
             </Link>
             <div className="hidden items-center gap-1 md:flex">
               <Link href="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm font-medium text-white bg-white/5">
@@ -274,6 +297,65 @@ export default function DashboardClient({
             <Link href="/dashboard/settings" className="btn-ghost rounded-xl p-2"><Settings className="h-4 w-4" /></Link>
           </div>
         </div>
+
+        {/* Gamification bar */}
+        {(() => {
+          const level = levelFromXP(xp);
+          const progressXP = xpProgressInLevel(xp);
+          const neededXP = xpForLevel(level);
+          const progressPct = Math.round((progressXP / neededXP) * 100);
+          const pendingResponses = reviews.filter(r => !r.responded).length;
+          return (
+            <div className="bento mb-6 p-4 flex flex-wrap items-center gap-4">
+              {/* Level */}
+              <div className="flex items-center gap-3 flex-1 min-w-[180px]">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b4a]/20 to-[#ff3d71]/20">
+                  <Trophy className="h-5 w-5 text-[#ff6b4a]" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center justify-between mb-1">
+                    <span className="text-xs font-semibold text-zinc-300">Level {level}</span>
+                    <span className="text-[10px] text-zinc-600">{progressXP}/{neededXP} XP</span>
+                  </div>
+                  <div className="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-[#ff6b4a] to-[#ff3d71] transition-all duration-500"
+                      style={{ width: `${progressPct}%` }}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Streak */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5">
+                <Flame className={`h-4 w-4 ${streak > 0 ? "text-orange-400" : "text-zinc-600"}`} />
+                <div>
+                  <p className="text-sm font-bold text-zinc-200">{streak}d</p>
+                  <p className="text-[10px] text-zinc-600">streak</p>
+                </div>
+              </div>
+
+              {/* Responses */}
+              <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-white/5">
+                <Zap className="h-4 w-4 text-yellow-400" />
+                <div>
+                  <p className="text-sm font-bold text-zinc-200">{totalResponses}</p>
+                  <p className="text-[10px] text-zinc-600">responses</p>
+                </div>
+              </div>
+
+              {/* Pending nudge */}
+              {pendingResponses > 0 && (
+                <div className="flex items-center gap-2 rounded-xl border border-[#ff6b4a]/20 bg-[#ff6b4a]/5 px-3 py-2">
+                  <span className="text-[10px] font-semibold text-[#ff6b4a]">
+                    +{Math.min(pendingResponses * 10, 50)} XP ready
+                  </span>
+                  <span className="text-[10px] text-zinc-500">— respond to {pendingResponses} review{pendingResponses !== 1 ? "s" : ""}</span>
+                </div>
+              )}
+            </div>
+          );
+        })()}
 
         {/* Connect CTA */}
         {locations.length === 0 && (

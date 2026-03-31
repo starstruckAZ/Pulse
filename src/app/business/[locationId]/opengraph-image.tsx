@@ -141,7 +141,7 @@ export default async function Image({
                 letterSpacing: "-0.3px",
               }}
             >
-              ReviewPulse
+              ReviewHype
             </span>
           </div>
 

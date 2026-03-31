@@ -81,6 +81,9 @@ export default async function DashboardPage() {
       avgRating={avgRating}
       responseRate={responseRate}
       templates={templates || []}
+      streak={profile?.response_streak ?? 0}
+      xp={profile?.xp ?? 0}
+      totalResponses={profile?.total_responses ?? 0}
     />
   );
 }

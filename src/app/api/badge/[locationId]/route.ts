@@ -85,8 +85,8 @@ function buildSvg({
   <!-- Divider -->
   <line x1="115" y1="10" x2="115" y2="38" stroke="${border}" stroke-width="1"/>
 
-  <!-- ReviewPulse branding -->
-  <text x="122" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="600" fill="url(#coral)">ReviewPulse</text>
+  <!-- ReviewHype branding -->
+  <text x="122" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="8.5" font-weight="600" fill="url(#coral)">ReviewHype</text>
   <text x="122" y="34" font-family="system-ui, -apple-system, sans-serif" font-size="8" fill="${subColor}">Verified Reviews</text>
 </svg>`;
 }

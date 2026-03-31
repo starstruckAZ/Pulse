@@ -33,8 +33,8 @@ const articles: Record<
       "This means that actively managing your reviews isn't just about reputation — it's a **direct driver of visibility**. More visibility means more foot traffic, more calls, and more revenue.",
       "## What High-Performing Businesses Do Differently",
       "The businesses that dominate their local markets share a common approach to reviews:\n\n- **They respond to every review** — positive and negative — within 24-48 hours\n- **They personalize responses** rather than using generic templates\n- **They actively encourage reviews** from satisfied customers\n- **They monitor reviews across all platforms**, not just Google\n- **They track sentiment trends** to identify and fix recurring issues",
-      "## How ReviewPulse Helps",
-      "Managing reviews across Google, Yelp, and Facebook manually is time-consuming. ReviewPulse consolidates all your reviews into a single dashboard, uses AI to help you draft personalized responses in seconds, and tracks sentiment trends so you can stay ahead of issues. Whether you're a single-location shop or managing multiple locations, ReviewPulse makes review management effortless.",
+      "## How ReviewHype Helps",
+      "Managing reviews across Google, Yelp, and Facebook manually is time-consuming. ReviewHype consolidates all your reviews into a single dashboard, uses AI to help you draft personalized responses in seconds, and tracks sentiment trends so you can stay ahead of issues. Whether you're a single-location shop or managing multiple locations, ReviewHype makes review management effortless.",
     ],
   },
   "how-to-respond-negative-reviews": {
@@ -60,7 +60,7 @@ const articles: Record<
       "## Common Mistakes to Avoid",
       "- **Don't be defensive.** Even if you disagree, arguing publicly never looks good.\n- **Don't copy-paste the same response** to every negative review. Customers (and Google) notice.\n- **Don't ignore the review.** Silence reads as indifference.\n- **Don't offer incentives publicly.** Offering discounts in a public reply can encourage fake negative reviews.\n- **Don't delay.** Respond within 24-48 hours while the experience is fresh.",
       "## Using AI to Draft Better Responses",
-      "AI tools like ReviewPulse's response generator can help you craft personalized responses in seconds. The AI reads the review text, understands the sentiment, and drafts a response following best practices. You review, tweak, and post — turning a 15-minute task into a 30-second one.",
+      "AI tools like ReviewHype's response generator can help you craft personalized responses in seconds. The AI reads the review text, understands the sentiment, and drafts a response following best practices. You review, tweak, and post — turning a 15-minute task into a 30-second one.",
     ],
   },
   "google-review-management-guide": {
@@ -84,7 +84,7 @@ const articles: Record<
       "## Handling Fake or Inappropriate Reviews",
       "If you receive a review that violates Google's policies (spam, fake, offensive content):\n\n1. Flag the review through your GBP dashboard\n2. Provide evidence of why it violates policies\n3. Respond publicly and professionally while the dispute is pending\n4. Follow up with Google support if the review isn't removed within a week",
       "## Scaling Google Review Management",
-      "For businesses with multiple locations or high review volumes, manual management becomes impossible. Tools like ReviewPulse aggregate all your Google reviews into a single dashboard, alert you to new reviews instantly, and use AI to help you draft personalized responses at scale — so no review goes unanswered.",
+      "For businesses with multiple locations or high review volumes, manual management becomes impossible. Tools like ReviewHype aggregate all your Google reviews into a single dashboard, alert you to new reviews instantly, and use AI to help you draft personalized responses at scale — so no review goes unanswered.",
     ],
   },
   "ai-review-responses-best-practices": {
@@ -105,7 +105,7 @@ const articles: Record<
       "Not all AI review tools are created equal. The best ones:\n\n- Analyze the review's sentiment and context, not just the text\n- Allow you to adjust tone (professional, friendly, apologetic)\n- Learn from your editing patterns to improve over time\n- Generate unique responses for each review, not templates\n- Let you save and reuse your best responses as templates",
       "## The Human + AI Sweet Spot",
       "The most effective approach is **AI-assisted, human-approved**. Let AI handle the heavy lifting of drafting, then add your personal touch before posting. This workflow lets you respond to 10x more reviews in the same amount of time, without sacrificing the authenticity that customers value.",
-      "ReviewPulse is built around this philosophy. Our AI generates context-aware response drafts that you review, customize, and approve — ensuring every response represents your brand authentically while saving you hours each week.",
+      "ReviewHype is built around this philosophy. Our AI generates context-aware response drafts that you review, customize, and approve — ensuring every response represents your brand authentically while saving you hours each week.",
     ],
   },
   "reputation-management-roi": {
@@ -121,14 +121,14 @@ const articles: Record<
       "## The Numbers Behind Review Management",
       "Let's look at the data:\n\n- **88% of consumers** trust online reviews as much as personal recommendations\n- Businesses responding to reviews see **33% higher conversion rates**\n- A half-star rating difference can mean **19% more or fewer seats filled** during peak hours\n- **72% of consumers** say positive reviews make them trust a local business more\n- Businesses with 4+ star ratings earn **28% more annual revenue** than those below 4 stars",
       "## Case Study: Local Restaurant Chain",
-      "A regional restaurant chain with 12 locations started using ReviewPulse to manage their reviews across Google and Yelp. Within 6 months:\n\n- **Response rate went from 15% to 94%** — nearly every review got a personalized response\n- **Average response time dropped from 5 days to 4 hours**\n- **Average Google rating improved from 3.8 to 4.3 stars**\n- **Monthly reservations increased by 22%**\n- **Estimated monthly revenue increase: $18,000 across all locations**",
+      "A regional restaurant chain with 12 locations started using ReviewHype to manage their reviews across Google and Yelp. Within 6 months:\n\n- **Response rate went from 15% to 94%** — nearly every review got a personalized response\n- **Average response time dropped from 5 days to 4 hours**\n- **Average Google rating improved from 3.8 to 4.3 stars**\n- **Monthly reservations increased by 22%**\n- **Estimated monthly revenue increase: $18,000 across all locations**",
       "## Case Study: Home Services Company",
       "A plumbing and HVAC company serving a metro area struggled with a 3.2-star Google rating due to unaddressed negative reviews. After implementing systematic review management:\n\n- **Responded to all 47 unanswered negative reviews** within the first week\n- **23 of those reviewers updated their ratings** after receiving a response\n- **Google rating improved from 3.2 to 4.1 in 3 months**\n- **Inbound call volume increased by 35%**\n- **Cost per lead from Google decreased by 41%**",
       "## Calculating Your Own ROI",
       "Here's a simple framework:\n\n1. **Estimate your customer lifetime value (CLV)** — how much is a customer worth over their relationship with your business?\n2. **Count reviews you're not responding to** — each one is a potential lost customer or missed re-engagement\n3. **Measure your current conversion rate** from search to customer, then project the impact of a higher rating\n4. **Factor in time saved** — if you're spending 5+ hours per week on review management, that's time better spent on your core business",
       "## The Cost of Doing Nothing",
       "The biggest risk isn't spending money on reputation management — it's the invisible cost of reviews you never see, customers you lose before they walk in the door, and negative sentiment that compounds over time without a response.",
-      "Tools like ReviewPulse make professional reputation management accessible to any local business for less than the cost of a single lost customer per month. With a free plan to start, there's no barrier to seeing the impact firsthand.",
+      "Tools like ReviewHype make professional reputation management accessible to any local business for less than the cost of a single lost customer per month. With a free plan to start, there's no barrier to seeing the impact firsthand.",
     ],
   },
 };
@@ -176,8 +176,8 @@ export default async function BlogArticlePage({
     headline: article.title,
     description: article.description,
     datePublished: article.date,
-    author: { "@type": "Organization", name: "ReviewPulse" },
-    publisher: { "@type": "Organization", name: "ReviewPulse" },
+    author: { "@type": "Organization", name: "ReviewHype" },
+    publisher: { "@type": "Organization", name: "ReviewHype" },
   };
 
   return (
@@ -193,7 +193,7 @@ export default async function BlogArticlePage({
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-lg font-bold">ReviewPulse</span>
+            <span className="font-display text-lg font-bold">ReviewHype</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/how-it-works" className="text-[13px] text-[#8b8b9e] transition hover:text-white">How It Works</Link>
@@ -242,7 +242,7 @@ export default async function BlogArticlePage({
           {/* CTA */}
           <div className="mt-16 glass rounded-3xl p-10 text-center">
             <h3 className="mb-2 font-display text-xl font-bold">Ready to manage reviews smarter?</h3>
-            <p className="mb-6 text-sm text-[#8b8b9e]">Join 500+ businesses using ReviewPulse. Free to start.</p>
+            <p className="mb-6 text-sm text-[#8b8b9e]">Join 500+ businesses using ReviewHype. Free to start.</p>
             <Link href="/signup" className="btn-primary inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm">
               Get Started Free <ArrowRight className="h-4 w-4" />
             </Link>
@@ -257,14 +257,14 @@ export default async function BlogArticlePage({
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3 w-3 text-white" />
             </div>
-            <span className="font-display text-sm font-bold">ReviewPulse</span>
+            <span className="font-display text-sm font-bold">ReviewHype</span>
           </Link>
           <div className="flex gap-6 text-sm text-[#8b8b9e]">
             <Link href="/how-it-works" className="transition hover:text-white">How It Works</Link>
             <Link href="/faq" className="transition hover:text-white">FAQ</Link>
             <Link href="/blog" className="transition hover:text-white">Blog</Link>
           </div>
-          <p className="text-xs text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewPulse</p>
+          <p className="text-xs text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewHype</p>
         </div>
       </footer>
     </div>

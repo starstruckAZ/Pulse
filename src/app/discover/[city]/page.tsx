@@ -155,7 +155,7 @@ export default async function CityDiscoverPage({
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#aa2c32] to-[#ff7574]">
                 <MessageSquare className="h-3 w-3 text-white" />
               </div>
-              ReviewPulse
+              ReviewHype
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <Link href="/discover" className="transition hover:text-[#302e2d]">
@@ -326,7 +326,7 @@ export default async function CityDiscoverPage({
             Is your {cityName} business here?
           </h3>
           <p className="mb-5 text-sm text-[#5d5b59]">
-            Get listed and manage your online reputation with ReviewPulse. Free to start.
+            Get listed and manage your online reputation with ReviewHype. Free to start.
           </p>
           <Link
             href="/signup"
@@ -345,7 +345,7 @@ export default async function CityDiscoverPage({
           <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-[#aa2c32] to-[#ff7574]">
             <MessageSquare className="h-3 w-3 text-white" />
           </div>
-          Powered by ReviewPulse
+          Powered by ReviewHype
         </Link>
       </footer>
     </div>

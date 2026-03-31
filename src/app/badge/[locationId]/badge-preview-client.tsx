@@ -98,7 +98,7 @@ export default function BadgePreviewClient({
           <img
             key={badgeSrc}
             src={badgeSrc}
-            alt={`${locationName} reviews on ReviewPulse`}
+            alt={`${locationName} reviews on ReviewHype`}
             width={200}
             height={48}
             className="block"

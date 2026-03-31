@@ -13,7 +13,7 @@ export default function Home() {
       <nav className="fixed top-0 left-0 right-0 z-50 border-b border-[#e1dcd8] bg-[rgba(250,245,242,0.85)] backdrop-blur-md">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-0 h-20">
           <Link href="/" className="flex items-center gap-2">
-            <span className="font-headline text-2xl font-bold tracking-tight text-primary">ReviewPulse</span>
+            <span className="font-headline text-2xl font-bold tracking-tight text-primary">ReviewHype</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/search" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d] inline-flex items-center gap-1.5">
@@ -213,7 +213,7 @@ export default function Home() {
           <div className="mb-20">
             <p className="mb-4 text-[11px] font-bold uppercase tracking-[0.15em] text-[#aa2c32]">Testimonials</p>
             <h2 className="font-headline text-5xl font-bold tracking-tight text-[#302e2d] md:text-6xl">
-              Businesses love <span className="italic text-[#aa2c32]">ReviewPulse</span>
+              Businesses love <span className="italic text-[#aa2c32]">ReviewHype</span>
             </h2>
           </div>
 
@@ -227,7 +227,7 @@ export default function Home() {
                 accentText: "text-[#aa2c32]",
               },
               {
-                quote: "Our Google rating went from 3.6 to 4.4 in four months. ReviewPulse made responding to every review possible.",
+                quote: "Our Google rating went from 3.6 to 4.4 in four months. ReviewHype made responding to every review possible.",
                 name: "James T.",
                 role: "Precision Auto Care",
                 accentBg: "bg-[#40606d]/8",
@@ -266,7 +266,7 @@ export default function Home() {
             <span className="absolute -top-4 -left-2 font-headline text-[160px] font-extrabold leading-none text-[#735801]/10 select-none">&ldquo;</span>
             <blockquote className="relative z-10 max-w-3xl">
               <p className="font-headline text-3xl font-bold italic leading-tight text-[#302e2d] md:text-4xl">
-                ReviewPulse isn&apos;t just a dashboard — it&apos;s the difference between a business that listens and one that doesn&apos;t.
+                ReviewHype isn&apos;t just a dashboard — it&apos;s the difference between a business that listens and one that doesn&apos;t.
               </p>
               <p className="mt-6 text-sm font-bold text-[#735801]">— Sarah K., Multi-location Practice Owner</p>
             </blockquote>
@@ -302,7 +302,7 @@ export default function Home() {
                 Your reputation<br />can&apos;t wait
               </h2>
               <p className="mb-10 text-base text-[#5d5b59]">
-                Every unanswered review is a customer lost. Set up ReviewPulse in under 2 minutes.
+                Every unanswered review is a customer lost. Set up ReviewHype in under 2 minutes.
               </p>
               <Link href="/search" className="btn-primary inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
                 Search Your Business <ArrowRight className="h-4 w-4" />
@@ -318,7 +318,7 @@ export default function Home() {
           <div className="grid gap-12 md:grid-cols-4">
             <div>
               <Link href="/" className="mb-5 block font-headline text-xl font-bold italic text-[#302e2d]">
-                ReviewPulse.
+                ReviewHype.
               </Link>
               <p className="text-sm leading-relaxed text-[#797674]">
                 Review management for<br />local businesses.
@@ -352,7 +352,7 @@ export default function Home() {
             </div>
           </div>
           <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#e1dcd8] pt-8 md:flex-row">
-            <p className="text-xs text-[#b0acaa]">&copy; {new Date().getFullYear()} ReviewPulse. All rights reserved.</p>
+            <p className="text-xs text-[#b0acaa]">&copy; {new Date().getFullYear()} ReviewHype. All rights reserved.</p>
             <div className="flex gap-6 text-xs text-[#b0acaa]">
               <Link href="/privacy" className="transition hover:text-[#302e2d]">Privacy Policy</Link>
               <Link href="/terms" className="transition hover:text-[#302e2d]">Terms of Service</Link>

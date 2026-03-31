@@ -18,6 +18,8 @@ import {
   ChevronRight,
   ArrowRight,
   BadgeCheck,
+  Trophy,
+  TrendingUp,
 } from "lucide-react";
 
 // Extend Window for Google Identity Services
@@ -73,6 +75,19 @@ function StarRow({ rating }: { rating: number }) {
       ))}
     </div>
   );
+}
+
+/** Reputation tier based on rating × volume */
+function reputationTier(rating: number | null, reviewCount: number): {
+  label: string; color: string; bg: string; border: string;
+} | null {
+  if (!rating || reviewCount < 5) return null;
+  const score = rating * Math.log10(reviewCount + 1);
+  if (score >= 14)  return { label: "🏆 Elite",  color: "text-yellow-600", bg: "bg-yellow-50",  border: "border-yellow-200" };
+  if (score >= 10)  return { label: "🥇 Gold",   color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200"  };
+  if (score >= 6)   return { label: "🥈 Silver", color: "text-slate-600",  bg: "bg-slate-50",   border: "border-slate-200"  };
+  if (score >= 3)   return { label: "🥉 Bronze", color: "text-orange-700", bg: "bg-orange-50",  border: "border-orange-200" };
+  return null;
 }
 
 /** Format Google place types into readable labels */
@@ -282,7 +297,7 @@ export default function SearchClient() {
               "Please sign out and sign back in using the correct Google account."
           );
         } else if (data.code === "ALREADY_CLAIMED") {
-          setClaimError("This business has already been claimed on ReviewPulse.");
+          setClaimError("This business has already been claimed on ReviewHype.");
         } else {
           setClaimError(data.error || "Failed to claim business.");
         }
@@ -325,7 +340,7 @@ export default function SearchClient() {
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#aa2c32] to-[#ff7574]">
                 <MessageSquare className="h-3 w-3 text-white" />
               </div>
-              ReviewPulse
+              ReviewHype
             </Link>
             <ChevronRight className="h-3.5 w-3.5" />
             <span className="text-[#302e2d] font-medium">Search</span>
@@ -442,8 +457,8 @@ export default function SearchClient() {
 
         {results.length > 0 && (
           <div className="space-y-3">
-            {results.map((place) => (
-              <div key={place.place_id} className="bento p-5">
+            {results.map((place, index) => (
+              <div key={place.place_id} className="bento p-5 relative">
                 <div className="flex items-start gap-4">
                   {/* Photo */}
                   {place.photo_reference ? (
@@ -464,13 +479,31 @@ export default function SearchClient() {
                   {/* Info */}
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
+                      {/* Rank position */}
+                      <span className={`shrink-0 inline-flex items-center justify-center h-6 w-6 rounded-full text-[11px] font-bold ${
+                        index === 0 ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
+                        index === 1 ? "bg-slate-100 text-slate-600 border border-slate-200" :
+                        index === 2 ? "bg-orange-100 text-orange-700 border border-orange-200" :
+                        "bg-[#f5f0ed] text-[#797674] border border-[#e1dcd8]"
+                      }`}>
+                        {index === 0 ? <Trophy className="h-3 w-3" /> : index + 1}
+                      </span>
                       <h2 className="font-headline text-lg font-semibold text-[#302e2d] leading-tight">
                         {place.name}
                       </h2>
+                      {/* Reputation tier */}
+                      {(() => {
+                        const tier = reputationTier(place.rating, place.review_count);
+                        return tier ? (
+                          <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${tier.color} ${tier.bg} ${tier.border}`}>
+                            {tier.label}
+                          </span>
+                        ) : null;
+                      })()}
                       {place.claimed && (
                         <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
                           <CheckCircle className="h-2.5 w-2.5" />
-                          On ReviewPulse
+                          On ReviewHype
                         </span>
                       )}
                       {place.business_status === "CLOSED_TEMPORARILY" && (
@@ -581,20 +614,33 @@ export default function SearchClient() {
           </div>
         )}
 
-        {/* Security note */}
-        <div className="mt-10 rounded-2xl bg-[#f5f0ed] p-6 text-center">
-          <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white">
-            <Shield className="h-5 w-5 text-[#aa2c32]" />
+        {/* Info cards */}
+        <div className="mt-10 grid gap-4 sm:grid-cols-2">
+          <div className="rounded-2xl bg-[#f5f0ed] p-6 text-center">
+            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white">
+              <TrendingUp className="h-5 w-5 text-[#aa2c32]" />
+            </div>
+            <h3 className="font-headline mb-1 text-base font-bold text-[#302e2d]">
+              How Rankings Work
+            </h3>
+            <p className="text-sm text-[#5d5b59]">
+              Results are ranked by a score combining star rating and review
+              volume. Businesses verified on ReviewHype get a boost for actively
+              managing their reputation.
+            </p>
           </div>
-          <h3 className="font-headline mb-1 text-lg font-bold text-[#302e2d]">
-            Verified Business Claims
-          </h3>
-          <p className="mx-auto max-w-md text-sm text-[#5d5b59]">
-            Claiming a business requires signing in with Google. We verify
-            ownership through your Google Business Profile account — no
-            postcards, no waiting. Claims that can&apos;t be auto-verified are
-            reviewed manually.
-          </p>
+          <div className="rounded-2xl bg-[#f5f0ed] p-6 text-center">
+            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white">
+              <Shield className="h-5 w-5 text-[#aa2c32]" />
+            </div>
+            <h3 className="font-headline mb-1 text-base font-bold text-[#302e2d]">
+              Verified Business Claims
+            </h3>
+            <p className="text-sm text-[#5d5b59]">
+              Claiming requires signing in with Google. We verify ownership
+              through your Google Business Profile — no postcards, no waiting.
+            </p>
+          </div>
         </div>
       </main>
 
@@ -606,7 +652,7 @@ export default function SearchClient() {
           <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-[#aa2c32] to-[#ff7574]">
             <MessageSquare className="h-3 w-3 text-white" />
           </div>
-          Powered by ReviewPulse
+          Powered by ReviewHype
         </Link>
       </footer>
 

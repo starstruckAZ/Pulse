@@ -2,8 +2,13 @@
  * GET /api/search?q=pizza+near+Phoenix
  *
  * Searches Google Places API (Text Search) server-side so the API key
- * stays private. Cross-references results against ReviewPulse locations
+ * stays private. Cross-references results against ReviewHype locations
  * to badge claimed businesses.
+ *
+ * Results are sorted by a composite score:
+ *   score = rating × log10(reviewCount + 1)
+ * Rewards high ratings with volume. Claimed ReviewHype businesses get
+ * a +0.5 boost so actively-managed profiles surface higher.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -13,6 +18,13 @@ export const dynamic = "force-dynamic";
 
 const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
 const PLACES_URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
+
+/** Composite ranking score — higher rating × more reviews = higher rank */
+function rankScore(rating: number | null, reviewCount: number, claimed: boolean): number {
+  const r = rating ?? 0;
+  const base = r * Math.log10(Math.max(reviewCount, 0) + 1);
+  return claimed ? base + 0.5 : base;
+}
 
 function getServiceClient() {
   return createClient(
@@ -73,14 +85,15 @@ export async function GET(request: NextRequest) {
       rating: (place.rating as number) ?? null,
       review_count: (place.user_ratings_total as number) ?? 0,
       types: (place.types as string[]) ?? [],
-      business_status: place.business_status as string ?? "UNKNOWN",
+      business_status: (place.business_status as string) ?? "UNKNOWN",
       open_now: (place.opening_hours as Record<string, unknown>)?.open_now ?? null,
       location: (place.geometry as Record<string, unknown>)?.location ?? null,
       photo_reference:
         ((place.photos as Record<string, unknown>[]) ?? [])[0]?.photo_reference ?? null,
+      claimed: false,
     }));
 
-    // 3. Cross-reference with ReviewPulse locations to find claimed businesses
+    // 3. Cross-reference with ReviewHype locations to find claimed businesses
     const placeIds = results
       .map((r: { place_id: string }) => r.place_id)
       .filter(Boolean);
@@ -98,11 +111,19 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // 4. Attach claimed flag
-    const enrichedResults = results.map((r: { place_id: string }) => ({
-      ...r,
-      claimed: claimedSet.has(r.place_id),
-    }));
+    // 4. Attach claimed flag, compute rank score, sort highest first
+    const enrichedResults = results
+      .map((r: { place_id: string; rating: number | null; review_count: number }) => ({
+        ...r,
+        claimed: claimedSet.has(r.place_id),
+      }))
+      .sort((
+        a: { rating: number | null; review_count: number; claimed: boolean },
+        b: { rating: number | null; review_count: number; claimed: boolean }
+      ) =>
+        rankScore(b.rating, b.review_count, b.claimed) -
+        rankScore(a.rating, a.review_count, a.claimed)
+      );
 
     return NextResponse.json({
       results: enrichedResults,

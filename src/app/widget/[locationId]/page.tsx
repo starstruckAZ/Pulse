@@ -305,7 +305,7 @@ export default async function WidgetEmbedPage({ params, searchParams }: PageProp
                   color: t.accent,
                 }}
               >
-                ReviewPulse
+                ReviewHype
               </span>
             </a>
           </div>

@@ -62,7 +62,7 @@ const FAQS = [
   },
   {
     q: "Is there a free trial?",
-    a: "We don't currently offer a free trial, but the Free plan gives you a solid taste of what ReviewPulse can do. Upgrade when you're ready to unlock the full power.",
+    a: "We don't currently offer a free trial, but the Free plan gives you a solid taste of what ReviewHype can do. Upgrade when you're ready to unlock the full power.",
   },
   {
     q: "Can I switch between monthly and yearly?",
@@ -161,7 +161,7 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
                 <MessageSquare className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="font-display hidden sm:inline">ReviewPulse</span>
+              <span className="font-display hidden sm:inline">ReviewHype</span>
             </Link>
             <div className="hidden items-center gap-1 md:flex">
               <Link href="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-[#8b8b9e] transition hover:text-white hover:bg-white/5">
@@ -225,8 +225,8 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
           </h1>
           <p className="text-sm text-[#8b8b9e]">
             {isPro
-              ? "You have access to all ReviewPulse features."
-              : "Unlock the full power of ReviewPulse for your business."}
+              ? "You have access to all ReviewHype features."
+              : "Unlock the full power of ReviewHype for your business."}
           </p>
         </div>
 
@@ -237,7 +237,7 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
             </div>
             <h2 className="font-display text-xl font-bold mb-2">You&apos;re a Pro member</h2>
             <p className="text-sm text-[#8b8b9e] mb-6 max-w-md mx-auto">
-              You have full access to all ReviewPulse features. Manage your subscription through the Stripe portal.
+              You have full access to all ReviewHype features. Manage your subscription through the Stripe portal.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
               <Link href="/dashboard" className="btn-primary inline-flex items-center gap-2 rounded-2xl px-6 py-3 text-sm">

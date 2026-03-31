@@ -3,13 +3,13 @@ import { MessageSquare, FileText } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Terms of Service — ReviewPulse",
+  title: "Terms of Service — ReviewHype",
   description:
-    "Read the Terms of Service for ReviewPulse. Your use of the platform is subject to these terms.",
+    "Read the Terms of Service for ReviewHype. Your use of the platform is subject to these terms.",
 };
 
 const LAST_UPDATED = "March 30, 2026";
-const COMPANY = "ReviewPulse";
+const COMPANY = "ReviewHype";
 const EMAIL = "legal@reviewpulse.app";
 const SITE = "https://reviewpulse.app";
 
@@ -27,7 +27,7 @@ export default function TermsPage() {
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="font-display">ReviewPulse</span>
+            <span className="font-display">ReviewHype</span>
           </Link>
           <Link href="/signup" className="btn-primary rounded-2xl px-5 py-2 text-sm">
             Get Started Free
@@ -95,7 +95,7 @@ export default function TermsPage() {
             </p>
             <ul>
               <li>Such data is owned by the respective platforms and their users.</li>
-              <li>ReviewPulse does not guarantee the accuracy, completeness, or timeliness of third-party review data.</li>
+              <li>ReviewHype does not guarantee the accuracy, completeness, or timeliness of third-party review data.</li>
               <li>Your use of third-party platform data through our Service must comply with each platform&apos;s own terms of service.</li>
               <li>We may not be able to retrieve or display all reviews if platform APIs are restricted or unavailable.</li>
             </ul>
@@ -103,7 +103,7 @@ export default function TermsPage() {
 
           <Section title="5. AI-Generated Content">
             <p>
-              ReviewPulse offers AI-powered response suggestions. You acknowledge that:
+              ReviewHype offers AI-powered response suggestions. You acknowledge that:
             </p>
             <ul>
               <li>AI-generated responses are suggestions only and must be reviewed by you before publishing.</li>

@@ -253,7 +253,7 @@ export async function POST(request: NextRequest) {
     if (existing) {
       return NextResponse.json(
         {
-          error: "This business has already been claimed on ReviewPulse.",
+          error: "This business has already been claimed on ReviewHype.",
           code: "ALREADY_CLAIMED",
         },
         { status: 409 }

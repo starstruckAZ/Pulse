@@ -43,7 +43,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     title: `${location.name} Reviews`,
     description: `Read ${reviewCount} review${reviewCount !== 1 ? "s" : ""} for ${location.name}${location.address ? ` at ${location.address}` : ""}. See ratings, feedback, and customer experiences.`,
     openGraph: {
-      title: `${location.name} Reviews | ReviewPulse`,
+      title: `${location.name} Reviews | ReviewHype`,
       description: `${reviewCount} review${reviewCount !== 1 ? "s" : ""} for ${location.name}. See what customers are saying.`,
     },
   };
@@ -120,7 +120,7 @@ export default async function PublicReviewsPage({ params }: PageProps) {
             href="/signup"
             className="btn-primary rounded-xl px-4 py-2 text-sm"
           >
-            Get ReviewPulse Free
+            Get ReviewHype Free
           </Link>
         </div>
       </nav>

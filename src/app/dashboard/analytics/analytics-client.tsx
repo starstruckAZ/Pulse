@@ -238,7 +238,7 @@ export default function AnalyticsClient({
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500">
                 <MessageSquare className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="font-display hidden sm:inline">ReviewPulse</span>
+              <span className="font-display hidden sm:inline">ReviewHype</span>
             </Link>
             <div className="hidden items-center gap-1 md:flex">
               <Link href="/dashboard" className="inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-sm text-zinc-500 transition hover:text-white hover:bg-white/5">

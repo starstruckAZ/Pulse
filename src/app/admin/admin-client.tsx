@@ -335,7 +335,7 @@ export default function AdminClient({
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
                 <MessageSquare className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="font-display hidden sm:inline">ReviewPulse</span>
+              <span className="font-display hidden sm:inline">ReviewHype</span>
             </Link>
             {/* Admin badge */}
             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#ff6b4a]/25 bg-[#ff6b4a]/10 px-2.5 py-0.5 text-xs font-semibold text-[#ff6b4a]">

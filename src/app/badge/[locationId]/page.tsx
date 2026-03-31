@@ -27,10 +27,10 @@ export async function generateMetadata({
     .eq("id", locationId)
     .single();
 
-  if (!location) return { title: "Badge — ReviewPulse" };
+  if (!location) return { title: "Badge — ReviewHype" };
 
   return {
-    title: `${location.name} — Embed Badge | ReviewPulse`,
+    title: `${location.name} — Embed Badge | ReviewHype`,
     description: `Add a live review badge for ${location.name} to your website in seconds.`,
   };
 }
@@ -54,11 +54,11 @@ export default async function BadgePage({
   const badgeUrl = `${BASE_URL}/api/badge/${locationId}`;
   const profileUrl = `${BASE_URL}/business/${locationId}`;
 
-  const embedHtml = `<a href="${profileUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${badgeUrl}" alt="${location.name} reviews on ReviewPulse" width="200" height="48" />\n</a>`;
+  const embedHtml = `<a href="${profileUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${badgeUrl}" alt="${location.name} reviews on ReviewHype" width="200" height="48" />\n</a>`;
 
-  const embedWordPress = `<!-- Add this to a Custom HTML block in your WordPress page/post -->\n<a href="${profileUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${badgeUrl}" alt="${location.name} reviews on ReviewPulse" width="200" height="48" />\n</a>`;
+  const embedWordPress = `<!-- Add this to a Custom HTML block in your WordPress page/post -->\n<a href="${profileUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${badgeUrl}" alt="${location.name} reviews on ReviewHype" width="200" height="48" />\n</a>`;
 
-  const embedSquarespace = `1. In the Squarespace editor, click the (+) block button.\n2. Choose "Embed" from the block list.\n3. Switch to the "Code" tab.\n4. Paste the HTML snippet below, then click "Apply".\n\n<a href="${profileUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${badgeUrl}" alt="${location.name} reviews on ReviewPulse" width="200" height="48" />\n</a>`;
+  const embedSquarespace = `1. In the Squarespace editor, click the (+) block button.\n2. Choose "Embed" from the block list.\n3. Switch to the "Code" tab.\n4. Paste the HTML snippet below, then click "Apply".\n\n<a href="${profileUrl}" target="_blank" rel="noopener noreferrer">\n  <img src="${badgeUrl}" alt="${location.name} reviews on ReviewHype" width="200" height="48" />\n</a>`;
 
   return (
     <div className="min-h-screen dot-grid">
@@ -73,7 +73,7 @@ export default async function BadgePage({
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="font-display hidden sm:inline">ReviewPulse</span>
+            <span className="font-display hidden sm:inline">ReviewHype</span>
           </Link>
           <Link href="/signup" className="btn-primary rounded-2xl px-5 py-2 text-sm">
             Get your free badge
@@ -119,7 +119,7 @@ export default async function BadgePage({
             target="_blank"
             rel="noopener noreferrer"
           >
-            View {location.name} on ReviewPulse
+            View {location.name} on ReviewHype
           </Link>
         </div>
       </main>
@@ -129,7 +129,7 @@ export default async function BadgePage({
           <div className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
             <MessageSquare className="h-2.5 w-2.5 text-white" />
           </div>
-          Powered by ReviewPulse
+          Powered by ReviewHype
         </Link>
       </footer>
     </div>

@@ -7,8 +7,8 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.info";
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "ReviewPulse — Review Management for Local Businesses",
-    template: "%s | ReviewPulse",
+    default: "ReviewHype — Review Management for Local Businesses",
+    template: "%s | ReviewHype",
   },
   description:
     "See every review from Google, Yelp, and Facebook in one place. Reply with AI-powered responses. Track sentiment. Never miss a review again.",
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
     "review monitoring",
     "reputation management software",
   ],
-  authors: [{ name: "ReviewPulse" }],
-  creator: "ReviewPulse",
+  authors: [{ name: "ReviewHype" }],
+  creator: "ReviewHype",
   robots: {
     index: true,
     follow: true,
@@ -41,8 +41,8 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: siteUrl,
-    siteName: "ReviewPulse",
-    title: "ReviewPulse — Review Management for Local Businesses",
+    siteName: "ReviewHype",
+    title: "ReviewHype — Review Management for Local Businesses",
     description:
       "Google, Yelp, Facebook — all your reviews in one dashboard. AI-powered responses. Sentiment tracking.",
     images: [
@@ -50,13 +50,13 @@ export const metadata: Metadata = {
         url: `${siteUrl}/og-image.png`,
         width: 1200,
         height: 630,
-        alt: "ReviewPulse — All your reviews in one dashboard",
+        alt: "ReviewHype — All your reviews in one dashboard",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ReviewPulse — Review Management for Local Businesses",
+    title: "ReviewHype — Review Management for Local Businesses",
     description:
       "Google, Yelp, Facebook — all reviews in one dashboard. Sentiment tracking. Business search.",
     images: [`${siteUrl}/og-image.png`],
@@ -74,7 +74,7 @@ export default function RootLayout({
       {
         "@type": "Organization",
         "@id": `${siteUrl}/#organization`,
-        name: "ReviewPulse",
+        name: "ReviewHype",
         url: siteUrl,
         logo: `${siteUrl}/logo.png`,
         description:
@@ -84,12 +84,12 @@ export default function RootLayout({
         "@type": "WebSite",
         "@id": `${siteUrl}/#website`,
         url: siteUrl,
-        name: "ReviewPulse",
+        name: "ReviewHype",
         publisher: { "@id": `${siteUrl}/#organization` },
       },
       {
         "@type": "SoftwareApplication",
-        name: "ReviewPulse",
+        name: "ReviewHype",
         applicationCategory: "BusinessApplication",
         operatingSystem: "Web",
         url: siteUrl,

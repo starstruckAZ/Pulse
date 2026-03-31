@@ -54,7 +54,7 @@ export default function LoginPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-xl font-bold">ReviewPulse</span>
+            <span className="font-display text-xl font-bold">ReviewHype</span>
           </Link>
           <h1 className="mt-4 font-display text-2xl font-bold tracking-tight">Welcome back</h1>
           <p className="mt-2 text-sm text-[#8b8b9e]">Sign in to your account</p>

@@ -4,7 +4,7 @@ import { MessageSquare, ArrowRight, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "FAQ — Frequently Asked Questions",
-  description: "Answers to common questions about ReviewPulse — pricing, integrations, features, and more.",
+  description: "Answers to common questions about ReviewHype — pricing, integrations, features, and more.",
   alternates: { canonical: "/faq" },
 };
 
@@ -12,16 +12,16 @@ const faqs = [
   {
     category: "Getting Started",
     questions: [
-      { q: "What is ReviewPulse?", a: "ReviewPulse pulls all your Google, Yelp, and Facebook reviews into a single dashboard. Track sentiment trends, respond faster, and never miss a review." },
+      { q: "What is ReviewHype?", a: "ReviewHype pulls all your Google, Yelp, and Facebook reviews into a single dashboard. Track sentiment trends, respond faster, and never miss a review." },
       { q: "How long does setup take?", a: "Less than 2 minutes. Sign up, connect your Google Business Profile (and optionally Yelp and Facebook on Pro), and your reviews start flowing in immediately." },
-      { q: "Do I need technical skills?", a: "Not at all. If you can use email, you can use ReviewPulse. The interface is designed for busy business owners." },
-      { q: "Can I manage multiple locations?", a: "Yes! Add and manage multiple business locations from a single ReviewPulse account. Each location gets its own review feed and analytics." },
+      { q: "Do I need technical skills?", a: "Not at all. If you can use email, you can use ReviewHype. The interface is designed for busy business owners." },
+      { q: "Can I manage multiple locations?", a: "Yes! Add and manage multiple business locations from a single ReviewHype account. Each location gets its own review feed and analytics." },
     ],
   },
   {
     category: "Pricing & Plans",
     questions: [
-      { q: "Is ReviewPulse really free?", a: "Yes. The Free plan gives you Google review monitoring for up to 10 reviews, basic analytics, and a weekly email digest. No credit card required." },
+      { q: "Is ReviewHype really free?", a: "Yes. The Free plan gives you Google review monitoring for up to 10 reviews, basic analytics, and a weekly email digest. No credit card required." },
       { q: "What does the Pro plan include?", a: "Pro ($39/month) unlocks all three platforms, unlimited review tracking, instant alerts, sentiment analytics, response templates, and monthly reports." },
       { q: "Can I cancel anytime?", a: "Absolutely. No contracts or cancellation fees. Cancel anytime and keep Pro access through the end of your billing period." },
     ],
@@ -29,9 +29,9 @@ const faqs = [
   {
     category: "Reviews & Responses",
     questions: [
-      { q: "Can I respond to reviews from ReviewPulse?", a: "Yes. Use our response templates to craft quick, professional replies to any review. Save your best replies as reusable templates." },
-      { q: "What about negative reviews?", a: "ReviewPulse alerts you instantly when a negative review comes in so you can respond fast. Use response templates to craft empathetic, professional replies." },
-      { q: "How do I claim my business?", a: "Search for your business on ReviewPulse. Sign in with the Google account associated with your business. If your email domain matches the business website, verification is instant." },
+      { q: "Can I respond to reviews from ReviewHype?", a: "Yes. Use our response templates to craft quick, professional replies to any review. Save your best replies as reusable templates." },
+      { q: "What about negative reviews?", a: "ReviewHype alerts you instantly when a negative review comes in so you can respond fast. Use response templates to craft empathetic, professional replies." },
+      { q: "How do I claim my business?", a: "Search for your business on ReviewHype. Sign in with the Google account associated with your business. If your email domain matches the business website, verification is instant." },
     ],
   },
   {
@@ -66,7 +66,7 @@ export default function FAQPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-lg font-bold">ReviewPulse</span>
+            <span className="font-display text-lg font-bold">ReviewHype</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/how-it-works" className="text-[13px] text-[#8b8b9e] transition hover:text-white">How It Works</Link>
@@ -87,7 +87,7 @@ export default function FAQPage() {
             Frequently Asked <span className="gradient-text">Questions</span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-[#8b8b9e]">
-            Everything you need to know about ReviewPulse.
+            Everything you need to know about ReviewHype.
           </p>
         </div>
       </section>
@@ -123,7 +123,7 @@ export default function FAQPage() {
         <div className="mx-auto max-w-3xl px-6 text-center">
           <div className="glass rounded-[2rem] p-12">
             <h2 className="mb-4 font-display text-3xl font-bold">Still have questions?</h2>
-            <p className="mb-8 text-[#8b8b9e]">Start free and see ReviewPulse in action.</p>
+            <p className="mb-8 text-[#8b8b9e]">Start free and see ReviewHype in action.</p>
             <Link href="/signup" className="btn-primary inline-flex items-center gap-2 rounded-2xl px-8 py-4 text-base">
               Get Started Free <ArrowRight className="h-4 w-4" />
             </Link>
@@ -138,14 +138,14 @@ export default function FAQPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3 w-3 text-white" />
             </div>
-            <span className="font-display text-sm font-bold">ReviewPulse</span>
+            <span className="font-display text-sm font-bold">ReviewHype</span>
           </Link>
           <div className="flex gap-6 text-sm text-[#8b8b9e]">
             <Link href="/how-it-works" className="transition hover:text-white">How It Works</Link>
             <Link href="/faq" className="transition hover:text-white">FAQ</Link>
             <Link href="/blog" className="transition hover:text-white">Blog</Link>
           </div>
-          <p className="text-xs text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewPulse</p>
+          <p className="text-xs text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewHype</p>
         </div>
       </footer>
     </div>

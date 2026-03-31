@@ -37,7 +37,7 @@ export default function BlogPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-lg font-bold">ReviewPulse</span>
+            <span className="font-display text-lg font-bold">ReviewHype</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/how-it-works" className="text-[13px] text-[#8b8b9e] transition hover:text-white">How It Works</Link>
@@ -55,7 +55,7 @@ export default function BlogPage() {
             <Sparkles className="h-3.5 w-3.5" /> Insights & guides
           </div>
           <h1 className="mb-6 font-display text-4xl font-bold tracking-tight md:text-6xl">
-            The ReviewPulse <span className="gradient-text">Blog</span>
+            The ReviewHype <span className="gradient-text">Blog</span>
           </h1>
           <p className="mx-auto max-w-2xl text-lg text-[#8b8b9e]">
             Expert guides on review management, customer engagement, and local SEO.
@@ -101,14 +101,14 @@ export default function BlogPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3 w-3 text-white" />
             </div>
-            <span className="font-display text-sm font-bold">ReviewPulse</span>
+            <span className="font-display text-sm font-bold">ReviewHype</span>
           </Link>
           <div className="flex gap-6 text-sm text-[#8b8b9e]">
             <Link href="/how-it-works" className="transition hover:text-white">How It Works</Link>
             <Link href="/faq" className="transition hover:text-white">FAQ</Link>
             <Link href="/blog" className="transition hover:text-white">Blog</Link>
           </div>
-          <p className="text-xs text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewPulse</p>
+          <p className="text-xs text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewHype</p>
         </div>
       </footer>
     </div>

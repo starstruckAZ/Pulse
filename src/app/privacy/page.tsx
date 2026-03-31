@@ -3,13 +3,13 @@ import { MessageSquare, Shield } from "lucide-react";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — ReviewPulse",
+  title: "Privacy Policy — ReviewHype",
   description:
-    "Learn how ReviewPulse collects, uses, and protects your personal information.",
+    "Learn how ReviewHype collects, uses, and protects your personal information.",
 };
 
 const LAST_UPDATED = "March 30, 2026";
-const COMPANY = "ReviewPulse";
+const COMPANY = "ReviewHype";
 const EMAIL = "privacy@reviewpulse.app";
 const SITE = "https://reviewpulse.app";
 
@@ -27,7 +27,7 @@ export default function PrivacyPage() {
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="font-display">ReviewPulse</span>
+            <span className="font-display">ReviewHype</span>
           </Link>
           <Link href="/signup" className="btn-primary rounded-2xl px-5 py-2 text-sm">
             Get Started Free
@@ -150,7 +150,7 @@ export default function PrivacyPage() {
             <p>We do <strong>not</strong> sell your personal information. We may share it only in these circumstances:</p>
             <ul>
               <li><strong>Service providers:</strong> Supabase (database & auth), Stripe (payments), Vercel (hosting), and similar vendors who process data on our behalf under data processing agreements.</li>
-              <li><strong>Business transfers:</strong> if ReviewPulse is acquired or merged, your data may transfer as a business asset. We will notify you beforehand.</li>
+              <li><strong>Business transfers:</strong> if ReviewHype is acquired or merged, your data may transfer as a business asset. We will notify you beforehand.</li>
               <li><strong>Legal requirements:</strong> when required by law, court order, or to protect the rights and safety of our users or the public.</li>
               <li><strong>With your consent:</strong> in any other case, only with your explicit permission.</li>
             </ul>

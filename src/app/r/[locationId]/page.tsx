@@ -80,7 +80,7 @@ export default async function ReviewRequestPage({
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="font-display">ReviewPulse</span>
+            <span className="font-display">ReviewHype</span>
           </Link>
         </div>
       </nav>
@@ -218,7 +218,7 @@ export default async function ReviewRequestPage({
                 href="/"
                 className="text-zinc-500 hover:text-[#ff6b4a] transition"
               >
-                ReviewPulse
+                ReviewHype
               </Link>{" "}
               &mdash;{" "}
               <Link

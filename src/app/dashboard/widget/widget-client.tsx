@@ -116,14 +116,14 @@ export default function WidgetClient({
       ? `${window.location.origin}/widget/${selectedLocation}?theme=${config.theme}&limit=${config.limit}&minRating=${config.minRating}&showStars=${config.showStars}&showDates=${config.showDates}`
       : "";
 
-  const embedCode = `<!-- ReviewPulse Widget -->
+  const embedCode = `<!-- ReviewHype Widget -->
 <div id="reviewpulse-widget" style="width:100%;max-width:600px;"></div>
 <script>
 (function(){
   var d=document,f=d.createElement('iframe');
   f.src='${embedUrl}';
   f.style.cssText='width:100%;border:none;min-height:500px;border-radius:16px;';
-  f.title='Reviews powered by ReviewPulse';
+  f.title='Reviews powered by ReviewHype';
   d.getElementById('reviewpulse-widget').appendChild(f);
   window.addEventListener('message',function(e){
     if(e.data&&e.data.type==='reviewpulse-resize'){
@@ -179,7 +179,7 @@ export default function WidgetClient({
               <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-orange-500 to-amber-500">
                 <MessageSquare className="h-3.5 w-3.5 text-white" />
               </div>
-              <span className="font-display hidden sm:inline">ReviewPulse</span>
+              <span className="font-display hidden sm:inline">ReviewHype</span>
             </Link>
             <div className="hidden items-center gap-1 md:flex">
               <Link
@@ -611,7 +611,7 @@ export default function WidgetClient({
                     >
                       Powered by{" "}
                       <span className="font-semibold text-orange-400">
-                        ReviewPulse
+                        ReviewHype
                       </span>
                     </span>
                   </div>

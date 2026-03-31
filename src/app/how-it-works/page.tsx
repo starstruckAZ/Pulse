@@ -4,7 +4,7 @@ import { ArrowRight, MessageSquare, Link2, Zap, BarChart3, Bell, CheckCircle2, S
 
 export const metadata: Metadata = {
   title: "How It Works",
-  description: "See how ReviewPulse helps local businesses manage reviews from Google, Yelp, and Facebook in 3 simple steps.",
+  description: "See how ReviewHype helps local businesses manage reviews from Google, Yelp, and Facebook in 3 simple steps.",
   alternates: { canonical: "/how-it-works" },
 };
 
@@ -42,8 +42,8 @@ export default function HowItWorksPage() {
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "HowTo",
-    name: "How to Manage Online Reviews with ReviewPulse",
-    description: "A step-by-step guide to managing your business reviews using ReviewPulse.",
+    name: "How to Manage Online Reviews with ReviewHype",
+    description: "A step-by-step guide to managing your business reviews using ReviewHype.",
     step: steps.map((step, i) => ({ "@type": "HowToStep", position: i + 1, name: step.title, text: step.description })),
   };
 
@@ -61,7 +61,7 @@ export default function HowItWorksPage() {
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-lg font-bold">ReviewPulse</span>
+            <span className="font-display text-lg font-bold">ReviewHype</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
             <Link href="/#features" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Features</Link>
@@ -79,7 +79,7 @@ export default function HowItWorksPage() {
             <Sparkles className="h-3.5 w-3.5" /> 3 simple steps
           </div>
           <h1 className="mb-6 font-display text-display-md md:text-display-lg">
-            How <span className="gradient-text">ReviewPulse</span> works
+            How <span className="gradient-text">ReviewHype</span> works
           </h1>
           <p className="mx-auto max-w-2xl text-base text-[#8b8b9e] md:text-lg">
             Go from scattered reviews to a single AI-powered dashboard in under 2 minutes.
@@ -147,7 +147,7 @@ export default function HowItWorksPage() {
             <div className="relative z-10">
               <Bell className="mx-auto mb-6 h-10 w-10 text-[#ff6b4a]" />
               <h2 className="mb-4 font-display text-display-sm">Ready to take control?</h2>
-              <p className="mb-8 text-[15px] text-[#8b8b9e]">Join 500+ businesses already using ReviewPulse.</p>
+              <p className="mb-8 text-[15px] text-[#8b8b9e]">Join 500+ businesses already using ReviewHype.</p>
               <Link href="/signup" className="btn-primary inline-flex items-center gap-2.5 rounded-2xl px-8 py-4 text-[15px]">
                 Get Started Free <ArrowRight className="h-4 w-4" />
               </Link>
@@ -165,14 +165,14 @@ export default function HowItWorksPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3 w-3 text-white" />
             </div>
-            <span className="font-display text-sm font-bold">ReviewPulse</span>
+            <span className="font-display text-sm font-bold">ReviewHype</span>
           </Link>
           <div className="flex gap-6 text-[13px] text-[#8b8b9e]">
             <Link href="/how-it-works" className="transition hover:text-white">How It Works</Link>
             <Link href="/faq" className="transition hover:text-white">FAQ</Link>
             <Link href="/blog" className="transition hover:text-white">Blog</Link>
           </div>
-          <p className="text-[11px] text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewPulse</p>
+          <p className="text-[11px] text-[#4a4a5e]">&copy; {new Date().getFullYear()} ReviewHype</p>
         </div>
       </footer>
     </div>

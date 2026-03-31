@@ -44,7 +44,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locationI
     .single();
 
   if (!location) {
-    return { title: "Business Not Found — ReviewPulse" };
+    return { title: "Business Not Found — ReviewHype" };
   }
 
   const { data: reviews } = await supabase
@@ -59,8 +59,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locationI
       : null;
 
   const description = avg
-    ? `${location.name} has a ${avg}-star average rating based on ${count} review${count !== 1 ? "s" : ""}. See all reviews on ReviewPulse.`
-    : `See reviews for ${location.name} on ReviewPulse.`;
+    ? `${location.name} has a ${avg}-star average rating based on ${count} review${count !== 1 ? "s" : ""}. See all reviews on ReviewHype.`
+    : `See reviews for ${location.name} on ReviewHype.`;
 
   return {
     title: `${location.name} — Reviews`,
@@ -204,7 +204,7 @@ export default async function BusinessProfilePage({
             <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
               <MessageSquare className="h-3.5 w-3.5 text-white" />
             </div>
-            <span className="font-display hidden sm:inline">ReviewPulse</span>
+            <span className="font-display hidden sm:inline">ReviewHype</span>
           </Link>
           <Link
             href="/signup"
@@ -251,7 +251,7 @@ export default async function BusinessProfilePage({
               <> · <span className="text-emerald-400">{respondedCount} responded</span></>
             )}
           </p>
-          <p className="text-xs text-zinc-600">Powered by ReviewPulse</p>
+          <p className="text-xs text-zinc-600">Powered by ReviewHype</p>
         </div>
 
         {/* ── Platform Breakdown + Rating Distribution ─────────────────────── */}
@@ -362,7 +362,7 @@ export default async function BusinessProfilePage({
         <div className="mt-12 glass rounded-3xl border-[rgba(255,107,74,0.1)] p-10 text-center">
           <h3 className="font-display mb-2 text-xl font-bold">Is this your business?</h3>
           <p className="mb-6 text-zinc-400">
-            Claim your profile on ReviewPulse and start responding to reviews, tracking sentiment, and growing your reputation.
+            Claim your profile on ReviewHype and start responding to reviews, tracking sentiment, and growing your reputation.
           </p>
           <Link
             href="/signup"
@@ -379,7 +379,7 @@ export default async function BusinessProfilePage({
           <div className="flex h-4 w-4 items-center justify-center rounded bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71]">
             <MessageSquare className="h-2.5 w-2.5 text-white" />
           </div>
-          Powered by ReviewPulse
+          Powered by ReviewHype
         </Link>
       </footer>
     </div>

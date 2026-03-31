@@ -48,7 +48,7 @@ export default function SignupPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-xl font-bold">ReviewPulse</span>
+            <span className="font-display text-xl font-bold">ReviewHype</span>
           </Link>
           <div className="rounded-[1.5rem] border border-white/[0.05] bg-white/[0.02] p-10 backdrop-blur-xl">
             <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-[#ff6b4a]/[0.08] ring-1 ring-[#ff6b4a]/15 text-2xl">
@@ -80,7 +80,7 @@ export default function SignupPage() {
             <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-[#ff6b4a] to-[#ff3d71] shadow-lg shadow-[#ff6b4a]/20">
               <MessageSquare className="h-4 w-4 text-white" />
             </div>
-            <span className="font-display text-xl font-bold">ReviewPulse</span>
+            <span className="font-display text-xl font-bold">ReviewHype</span>
           </Link>
           <h1 className="mt-4 font-display text-2xl font-bold tracking-tight">Create your account</h1>
           <p className="mt-2 text-sm text-[#8b8b9e]">Start managing reviews for free</p>

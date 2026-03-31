@@ -122,7 +122,7 @@ export default async function DiscoverPage() {
               <MessageSquare className="h-3.5 w-3.5 text-white" />
             </div>
             <span className="font-headline italic text-lg font-semibold text-[#302e2d]">
-              ReviewPulse
+              ReviewHype
             </span>
           </Link>
           <Link
@@ -251,7 +251,7 @@ export default async function DiscoverPage() {
             Is your business missing?
           </h3>
           <p className="mb-6 text-[#5d5b59]">
-            Join ReviewPulse to manage your reviews, respond with AI, and get listed in this directory.
+            Join ReviewHype to manage your reviews, respond with AI, and get listed in this directory.
           </p>
           <Link
             href="/signup"
@@ -270,7 +270,7 @@ export default async function DiscoverPage() {
           <div className="flex h-5 w-5 items-center justify-center rounded-md bg-gradient-to-br from-[#aa2c32] to-[#ff7574]">
             <MessageSquare className="h-3 w-3 text-white" />
           </div>
-          Powered by ReviewPulse
+          Powered by ReviewHype
         </Link>
       </footer>
     </div>
