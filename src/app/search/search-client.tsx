@@ -33,6 +33,10 @@ declare global {
               access_token?: string;
               error?: string;
             }) => void;
+            error_callback?: (err: {
+              type: string;
+              message?: string;
+            }) => void;
           }) => { requestAccessToken: (opts?: { prompt?: string }) => void };
         };
       };
@@ -201,12 +205,23 @@ export default function SearchClient() {
     }
 
     setGbpVerifying(true);
+
+    // Safety timeout — reset if popup is blocked or never responds
+    const timeout = setTimeout(() => {
+      setGbpVerifying(false);
+      setClaimError(
+        "Google verification timed out. The popup may have been blocked — " +
+          "please allow popups for this site and try again, or use \"Submit for manual review\"."
+      );
+    }, 30000);
+
     try {
       await loadGIS();
       const client = window.google!.accounts.oauth2.initTokenClient({
         client_id: clientId,
         scope: "https://www.googleapis.com/auth/business.manage",
         callback: (tokenResponse) => {
+          clearTimeout(timeout);
           setGbpVerifying(false);
           if (tokenResponse.access_token) {
             confirmClaim(tokenResponse.access_token);
@@ -217,9 +232,19 @@ export default function SearchClient() {
             );
           }
         },
+        error_callback: (err) => {
+          clearTimeout(timeout);
+          setGbpVerifying(false);
+          const msg =
+            err.type === "popup_blocked_by_browser"
+              ? "The Google popup was blocked. Please allow popups for this site and try again."
+              : `Google verification failed (${err.type}). Try "Submit for manual review" instead.`;
+          setClaimError(msg);
+        },
       });
       client.requestAccessToken();
     } catch {
+      clearTimeout(timeout);
       setGbpVerifying(false);
       setClaimError(
         "Could not load Google verification. Try submitting for manual review."

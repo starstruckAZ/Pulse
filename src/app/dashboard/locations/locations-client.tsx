@@ -8,8 +8,34 @@ import {
   MapPin, Plus, Edit3, Trash2, Globe, X,
   LogOut, MessageSquare, BarChart3, FileText, Settings, LayoutDashboard,
   ExternalLink, Award, Share2, Check, BarChart2, Eye, EyeOff,
+  BadgeCheck, Loader2, AlertCircle,
 } from "lucide-react";
 import { CATEGORIES } from "@/lib/categories";
+
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: {
+            client_id: string;
+            scope: string;
+            callback: (r: { access_token?: string; error?: string }) => void;
+            error_callback?: (e: { type: string; message?: string }) => void;
+          }) => { requestAccessToken: (opts?: { prompt?: string }) => void };
+        };
+      };
+    };
+  }
+}
+
+interface GBPLocation {
+  gbp_name: string;
+  title: string;
+  address: string | null;
+  place_id: string | null;
+  maps_uri: string | null;
+}
 
 interface Location {
   id: string;
@@ -51,6 +77,14 @@ export default function LocationsClient({ user, profile, locations: initialLocat
   const [saving, setSaving] = useState(false);
   const [showUserMenu, setShowUserMenu] = useState(false);
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // GBP import state
+  const [gbpLoading, setGbpLoading] = useState(false);
+  const [gbpError, setGbpError] = useState<string | null>(null);
+  const [gbpLocations, setGbpLocations] = useState<GBPLocation[] | null>(null);
+  const [gbpSelected, setGbpSelected] = useState<Set<string>>(new Set());
+  const [gbpImporting, setGbpImporting] = useState(false);
+  const [gbpToken, setGbpToken] = useState<string | null>(null);
 
   const copyReviewLink = (locId: string) => {
     const url = `${window.location.origin}/r/${locId}`;
@@ -163,6 +197,113 @@ export default function LocationsClient({ user, profile, locations: initialLocat
   const truncate = (str: string, len = 20) =>
     str.length > len ? str.slice(0, len) + "..." : str;
 
+  // ── GBP import ──────────────────────────────────────────────────────────────
+
+  const loadGIS = (): Promise<void> =>
+    new Promise((resolve, reject) => {
+      if (window.google?.accounts?.oauth2) { resolve(); return; }
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = () => reject(new Error("Failed to load GIS"));
+      document.head.appendChild(script);
+    });
+
+  const handleImportFromGBP = async () => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      setGbpError("Google Client ID is not configured. Contact support.");
+      return;
+    }
+    setGbpLoading(true);
+    setGbpError(null);
+
+    const timeout = setTimeout(() => {
+      setGbpLoading(false);
+      setGbpError("Timed out waiting for Google — the popup may have been blocked.");
+    }, 30000);
+
+    try {
+      await loadGIS();
+      window.google!.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "https://www.googleapis.com/auth/business.manage",
+        callback: async (tokenResponse) => {
+          clearTimeout(timeout);
+          if (!tokenResponse.access_token) {
+            setGbpLoading(false);
+            setGbpError("Google verification was cancelled.");
+            return;
+          }
+          setGbpToken(tokenResponse.access_token);
+          try {
+            const res = await fetch("/api/gbp/locations", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ access_token: tokenResponse.access_token }),
+            });
+            const data = await res.json();
+            setGbpLocations(data.locations || []);
+            setGbpSelected(new Set((data.locations || []).map((l: GBPLocation) => l.gbp_name)));
+          } catch {
+            setGbpError("Failed to fetch your Google Business Profile listings.");
+          } finally {
+            setGbpLoading(false);
+          }
+        },
+        error_callback: (err) => {
+          clearTimeout(timeout);
+          setGbpLoading(false);
+          setGbpError(
+            err.type === "popup_blocked_by_browser"
+              ? "Popup was blocked — please allow popups for this site and try again."
+              : `Google sign-in failed (${err.type}).`
+          );
+        },
+      }).requestAccessToken();
+    } catch {
+      clearTimeout(timeout);
+      setGbpLoading(false);
+      setGbpError("Could not load Google verification.");
+    }
+  };
+
+  const handleGBPImportConfirm = async () => {
+    if (!gbpLocations || !gbpToken) return;
+    const toImport = gbpLocations.filter((l) => gbpSelected.has(l.gbp_name));
+    if (toImport.length === 0) return;
+
+    setGbpImporting(true);
+    const added: Location[] = [];
+
+    for (const loc of toImport) {
+      if (!loc.place_id) continue; // skip if no Place ID found
+      try {
+        const res = await fetch("/api/claim", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            place_id: loc.place_id,
+            name: loc.title,
+            address: loc.address || "",
+            google_access_token: gbpToken,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok && data.location) added.push(data.location);
+      } catch {
+        // skip failed imports
+      }
+    }
+
+    setLocations((prev) => [...added, ...prev]);
+    setGbpLocations(null);
+    setGbpToken(null);
+    setGbpSelected(new Set());
+    setGbpImporting(false);
+  };
+
   return (
     <div className="min-h-screen">
       {/* Nav */}
@@ -226,9 +367,23 @@ export default function LocationsClient({ user, profile, locations: initialLocat
             <h1 className="font-display text-2xl font-bold">Locations</h1>
             <p className="text-sm text-zinc-500">Manage your business locations and connect review sources.</p>
           </div>
-          <button onClick={openNew} className="btn-primary inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm">
-            <Plus className="h-4 w-4" /> Add Location
-          </button>
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleImportFromGBP}
+              disabled={gbpLoading}
+              className="btn-ghost inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm disabled:opacity-60"
+            >
+              {gbpLoading ? (
+                <Loader2 className="h-4 w-4 animate-spin" />
+              ) : (
+                <BadgeCheck className="h-4 w-4" />
+              )}
+              {gbpLoading ? "Connecting…" : "Import from Google"}
+            </button>
+            <button onClick={openNew} className="btn-primary inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm">
+              <Plus className="h-4 w-4" /> Add Location
+            </button>
+          </div>
         </div>
 
         {/* Content */}
@@ -369,6 +524,111 @@ export default function LocationsClient({ user, profile, locations: initialLocat
           </div>
         )}
       </main>
+
+      {/* GBP error banner */}
+      {gbpError && (
+        <div className="fixed bottom-6 left-1/2 z-50 -translate-x-1/2 flex items-center gap-3 rounded-2xl border border-red-500/20 bg-zinc-900 px-5 py-3 shadow-2xl text-sm text-red-400 max-w-md">
+          <AlertCircle className="h-4 w-4 shrink-0" />
+          <span>{gbpError}</span>
+          <button onClick={() => setGbpError(null)} className="ml-2 text-zinc-500 hover:text-white">
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
+      {/* GBP import modal */}
+      {gbpLocations !== null && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
+          <div className="w-full max-w-lg glass rounded-3xl p-8 shadow-2xl mx-4 max-h-[90vh] flex flex-col">
+            <div className="mb-4 flex items-center justify-between">
+              <div>
+                <h2 className="font-display text-lg font-bold">Your Google Business Listings</h2>
+                <p className="text-xs text-zinc-500 mt-0.5">Select locations to add to ReviewPulse</p>
+              </div>
+              <button onClick={() => { setGbpLocations(null); setGbpToken(null); }} className="rounded-xl p-1 text-zinc-500 transition hover:bg-white/5 hover:text-white">
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            {gbpLocations.length === 0 ? (
+              <div className="py-10 text-center text-zinc-500">
+                <BadgeCheck className="mx-auto mb-3 h-10 w-10 text-zinc-700" />
+                <p className="text-sm">No Google Business Profile listings found, or all are already added.</p>
+              </div>
+            ) : (
+              <div className="flex-1 overflow-y-auto space-y-2 pr-1 mb-5">
+                {gbpLocations.map((loc) => {
+                  const selected = gbpSelected.has(loc.gbp_name);
+                  const noPlaceId = !loc.place_id;
+                  return (
+                    <button
+                      key={loc.gbp_name}
+                      onClick={() => {
+                        if (noPlaceId) return;
+                        setGbpSelected((prev) => {
+                          const next = new Set(prev);
+                          if (next.has(loc.gbp_name)) next.delete(loc.gbp_name);
+                          else next.add(loc.gbp_name);
+                          return next;
+                        });
+                      }}
+                      disabled={noPlaceId}
+                      className={`w-full text-left rounded-2xl border px-4 py-3 transition ${
+                        noPlaceId
+                          ? "border-white/5 bg-white/2 opacity-40 cursor-not-allowed"
+                          : selected
+                          ? "border-orange-500/30 bg-orange-500/5"
+                          : "border-white/8 bg-white/3 hover:bg-white/5"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="font-medium text-sm text-zinc-200 truncate">{loc.title}</p>
+                          {loc.address && (
+                            <p className="text-xs text-zinc-500 truncate mt-0.5">{loc.address}</p>
+                          )}
+                          {noPlaceId && (
+                            <p className="text-[10px] text-zinc-600 mt-0.5">Could not find Google Maps listing</p>
+                          )}
+                        </div>
+                        {!noPlaceId && (
+                          <div className={`h-5 w-5 shrink-0 rounded-full border flex items-center justify-center ${selected ? "border-orange-500 bg-orange-500" : "border-zinc-600"}`}>
+                            {selected && <Check className="h-3 w-3 text-white" />}
+                          </div>
+                        )}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+
+            {gbpLocations.length > 0 && (
+              <div className="flex items-center justify-between gap-3 pt-2 border-t border-white/5">
+                <span className="text-xs text-zinc-500">
+                  {gbpSelected.size} of {gbpLocations.filter(l => l.place_id).length} selected
+                </span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => { setGbpLocations(null); setGbpToken(null); }}
+                    className="btn-ghost rounded-2xl px-4 py-2.5 text-sm"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    onClick={handleGBPImportConfirm}
+                    disabled={gbpImporting || gbpSelected.size === 0}
+                    className="btn-primary inline-flex items-center gap-2 rounded-2xl px-5 py-2.5 text-sm disabled:opacity-50"
+                  >
+                    {gbpImporting && <Loader2 className="h-4 w-4 animate-spin" />}
+                    {gbpImporting ? "Adding…" : `Add ${gbpSelected.size} Location${gbpSelected.size !== 1 ? "s" : ""}`}
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Add/Edit Modal */}
       {showModal && (
