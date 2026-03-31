@@ -159,8 +159,8 @@ export default function DashboardClient({
     await supabase.from("reviews").update({ responded: true, response_text: replyText.trim() }).eq("id", replyingTo.id);
     setReviews((prev) => prev.map((r) => r.id === replyingTo.id ? { ...r, responded: true, response_text: replyText.trim() } : r));
 
-    // Award XP + update streak via RPC
-    await supabase.rpc("award_response_xp", { xp_amount: 10 }).catch(() => null);
+    // Award XP + update streak via RPC (fire and forget)
+    supabase.rpc("award_response_xp", { xp_amount: 10 }).then(() => null, () => null);
 
     setReplySaving(false);
     setReplyingTo(null);
