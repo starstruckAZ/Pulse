@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const origin = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+    const origin = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.info";
     const stripe = getStripe();
 
     const session = await stripe.checkout.sessions.create({

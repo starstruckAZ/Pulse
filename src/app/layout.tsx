@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import CookieBanner from "@/components/cookie-banner";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.app";
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.info";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

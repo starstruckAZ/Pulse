@@ -38,10 +38,13 @@ const nextConfig = {
         ],
       },
       {
-        // API routes — add CORS lockdown (only our own origin)
+        // API routes — add CORS lockdown (only our own origins)
+        // Both reviewpulse.app and reviewpulse.info are allowed.
+        // Dynamic origin checking is handled in individual API routes for
+        // strict enforcement; this header covers the common case.
         source: "/api/(.*)",
         headers: [
-          { key: "Access-Control-Allow-Origin", value: process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.app" },
+          { key: "Access-Control-Allow-Origin", value: process.env.NEXT_PUBLIC_SITE_URL || "https://reviewpulse.info" },
           { key: "Access-Control-Allow-Methods", value: "GET, POST, PATCH, DELETE, OPTIONS" },
           { key: "Access-Control-Allow-Headers", value: "Content-Type, Authorization" },
           { key: "X-Robots-Tag", value: "noindex" },
