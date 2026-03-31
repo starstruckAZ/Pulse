@@ -53,7 +53,7 @@ export default function PricingToggle() {
             <span className="text-[#797674]">/mo</span>
           </div>
           <ul className="mb-10 space-y-3.5 text-sm text-[#5d5b59]">
-            {["Google Reviews", "10 reviews tracked", "5 AI responses / month", "Weekly email digest"].map((f) => (
+            {["Google Reviews", "10 reviews tracked", "Basic analytics", "Weekly email digest"].map((f) => (
               <li key={f} className="flex items-center gap-3">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#ece7e4]">
                   <Check className="h-3 w-3 text-[#5d5b59]" />
@@ -86,7 +86,7 @@ export default function PricingToggle() {
             </p>
           )}
           <ul className={`space-y-3.5 text-sm text-[#5d5b59] ${interval === "yearly" ? "mb-10" : "mb-10 mt-8"}`}>
-            {["Google, Yelp & Facebook", "Unlimited reviews", "Unlimited AI responses", "Instant email alerts", "Sentiment analytics", "Response templates"].map((f) => (
+            {["Google, Yelp & Facebook", "Unlimited reviews", "Instant email alerts", "Sentiment analytics", "Response templates", "Monthly reports"].map((f) => (
               <li key={f} className="flex items-center gap-3">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#aa2c32]/10">
                   <Check className="h-3 w-3 text-[#aa2c32]" />

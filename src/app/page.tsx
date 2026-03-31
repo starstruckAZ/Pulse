@@ -1,8 +1,9 @@
 import Link from "next/link";
 import PricingToggle from "./pricing-toggle";
+import HomepageSearch from "./homepage-search";
 import {
-  Star, MessageSquare, Bell, ArrowRight, Zap, BarChart3,
-  Shield, Globe, Clock, ChevronRight, Layers,
+  Star, MessageSquare, Bell, ArrowRight,
+  Shield, Globe, Clock, ChevronRight, Layers, BarChart3, Search,
 } from "lucide-react";
 
 export default function Home() {
@@ -15,9 +16,12 @@ export default function Home() {
             <span className="font-headline text-2xl font-bold tracking-tight text-primary">ReviewPulse</span>
           </Link>
           <div className="hidden items-center gap-8 md:flex">
+            <Link href="/search" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d] inline-flex items-center gap-1.5">
+              <Search className="h-3.5 w-3.5" />Search
+            </Link>
+            <Link href="/discover" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Discover</Link>
             <a href="#features" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Features</a>
             <a href="#pricing" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Pricing</a>
-            <Link href="/how-it-works" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">How It Works</Link>
             <Link href="/blog" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Blog</Link>
             <Link href="/login" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Log In</Link>
             <Link href="/signup" className="btn-primary rounded-xl px-5 py-2.5 text-[13px]">
@@ -42,23 +46,17 @@ export default function Home() {
             </div>
 
             <h1 className="font-headline mb-6 text-6xl font-extrabold tracking-tight leading-[0.95] text-[#302e2d] md:text-7xl lg:text-8xl">
-              Every review.{" "}
-              <span className="italic text-[#aa2c32]">One dashboard.</span>
+              Find &amp; manage{" "}
+              <span className="italic text-[#aa2c32]">your reviews.</span>
             </h1>
 
-            <p className="mb-12 max-w-xl text-lg leading-relaxed text-[#5d5b59]">
-              Pull in reviews from Google, Yelp, and Facebook automatically.
-              Respond with AI in seconds. Track sentiment over time.
+            <p className="mb-10 max-w-xl text-lg leading-relaxed text-[#5d5b59]">
+              Search any business. Claim yours. Pull in reviews from Google, Yelp,
+              and Facebook — all in one dashboard.
             </p>
 
-            <div className="flex flex-wrap items-center gap-4">
-              <Link href="/signup" className="btn-primary inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
-                Start Free — No Card Needed <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link href="/how-it-works" className="btn-ghost inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
-                See How It Works
-              </Link>
-            </div>
+            {/* Search bar */}
+            <HomepageSearch />
 
             {/* Trust signals */}
             <div className="mt-14 flex flex-wrap items-center gap-8 text-[13px] text-[#797674]">
@@ -128,23 +126,23 @@ export default function Home() {
             <div className="bento flex flex-col justify-between p-8 md:row-span-2 md:p-10">
               <div>
                 <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f9d377]/60">
-                  <Zap className="h-5 w-5 text-[#735801]" />
+                  <Search className="h-5 w-5 text-[#735801]" />
                 </div>
-                <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">AI Responses</h3>
+                <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">Business Search</h3>
                 <p className="text-sm leading-relaxed text-[#5d5b59]">
-                  One click generates a personalized, tone-aware reply draft.
-                  Save your best replies as reusable templates.
+                  Search for any business by name or location. See Google ratings
+                  at a glance. Claim your business in one click to start managing reviews.
                 </p>
               </div>
               <div className="mt-8 space-y-2">
                 {[
-                  { tone: "Professional", bg: "bg-[#aa2c32]/8", text: "text-[#aa2c32]" },
-                  { tone: "Friendly",     bg: "bg-[#40606d]/8", text: "text-[#40606d]" },
-                  { tone: "Apologetic",   bg: "bg-[#735801]/8", text: "text-[#735801]" },
-                ].map(({ tone, bg, text }) => (
-                  <div key={tone} className={`flex items-center gap-3 rounded-lg ${bg} px-4 py-3 text-[13px] font-medium ${text}`}>
+                  { step: "Search", desc: "Find any business", bg: "bg-[#aa2c32]/8", text: "text-[#aa2c32]" },
+                  { step: "Verify", desc: "Sign in with Google", bg: "bg-[#40606d]/8", text: "text-[#40606d]" },
+                  { step: "Claim",  desc: "Start managing reviews", bg: "bg-[#735801]/8", text: "text-[#735801]" },
+                ].map(({ step, desc, bg, text }) => (
+                  <div key={step} className={`flex items-center gap-3 rounded-lg ${bg} px-4 py-3 text-[13px] font-medium ${text}`}>
                     <span className="h-2 w-2 shrink-0 rounded-full bg-current opacity-60" />
-                    {tone} tone
+                    <span className="font-bold">{step}</span> — {desc}
                   </div>
                 ))}
               </div>
@@ -222,7 +220,7 @@ export default function Home() {
           <div className="grid gap-6 md:grid-cols-3">
             {[
               {
-                quote: "We went from spending 3 hours a week on reviews to 15 minutes. The AI responses are shockingly good.",
+                quote: "We went from spending 3 hours a week on reviews to 15 minutes. Having everything in one place changed the game.",
                 name: "Maria C.",
                 role: "Bella's Italian Kitchen",
                 accentBg: "bg-[#aa2c32]/8",
@@ -306,8 +304,8 @@ export default function Home() {
               <p className="mb-10 text-base text-[#5d5b59]">
                 Every unanswered review is a customer lost. Set up ReviewPulse in under 2 minutes.
               </p>
-              <Link href="/signup" className="btn-primary inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
-                Get Started Free <ArrowRight className="h-4 w-4" />
+              <Link href="/search" className="btn-primary inline-flex items-center gap-2.5 rounded-xl px-8 py-4 text-[15px]">
+                Search Your Business <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
@@ -337,9 +335,10 @@ export default function Home() {
             <div>
               <h4 className="mb-5 text-[11px] font-bold uppercase tracking-[0.15em] text-[#302e2d]">Resources</h4>
               <ul className="space-y-3 text-sm text-[#797674]">
+                <li><Link href="/search" className="transition hover:text-[#302e2d]">Search Businesses</Link></li>
+                <li><Link href="/discover" className="transition hover:text-[#302e2d]">Business Directory</Link></li>
                 <li><Link href="/blog" className="transition hover:text-[#302e2d]">Blog</Link></li>
                 <li><Link href="/faq" className="transition hover:text-[#302e2d]">FAQ</Link></li>
-                <li><Link href="/discover" className="transition hover:text-[#302e2d]">Business Directory</Link></li>
               </ul>
             </div>
             <div>

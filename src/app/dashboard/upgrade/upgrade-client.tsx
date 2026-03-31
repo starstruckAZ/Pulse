@@ -39,8 +39,8 @@ interface UpgradeClientProps {
 const FREE_FEATURES = [
   { name: "Locations", free: "1", pro: "Unlimited" },
   { name: "Review monitoring", free: "50/mo", pro: "Unlimited" },
-  { name: "AI response suggestions", free: "10/mo", pro: "Unlimited" },
   { name: "Response templates", free: "3", pro: "Unlimited" },
+  { name: "Monthly reports", free: false, pro: true },
   { name: "Analytics dashboard", free: "Basic", pro: "Advanced" },
   { name: "Sentiment analysis", free: false, pro: true },
   { name: "Competitor benchmarking", free: false, pro: true },

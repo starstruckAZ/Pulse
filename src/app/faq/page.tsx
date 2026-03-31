@@ -4,7 +4,7 @@ import { MessageSquare, ArrowRight, Sparkles } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "FAQ — Frequently Asked Questions",
-  description: "Answers to common questions about ReviewPulse — pricing, integrations, AI responses, and more.",
+  description: "Answers to common questions about ReviewPulse — pricing, integrations, features, and more.",
   alternates: { canonical: "/faq" },
 };
 
@@ -12,7 +12,7 @@ const faqs = [
   {
     category: "Getting Started",
     questions: [
-      { q: "What is ReviewPulse?", a: "ReviewPulse pulls all your Google, Yelp, and Facebook reviews into a single dashboard. It uses AI to help you respond faster, track sentiment trends, and never miss a review." },
+      { q: "What is ReviewPulse?", a: "ReviewPulse pulls all your Google, Yelp, and Facebook reviews into a single dashboard. Track sentiment trends, respond faster, and never miss a review." },
       { q: "How long does setup take?", a: "Less than 2 minutes. Sign up, connect your Google Business Profile (and optionally Yelp and Facebook on Pro), and your reviews start flowing in immediately." },
       { q: "Do I need technical skills?", a: "Not at all. If you can use email, you can use ReviewPulse. The interface is designed for busy business owners." },
       { q: "Can I manage multiple locations?", a: "Yes! Add and manage multiple business locations from a single ReviewPulse account. Each location gets its own review feed and analytics." },
@@ -21,17 +21,17 @@ const faqs = [
   {
     category: "Pricing & Plans",
     questions: [
-      { q: "Is ReviewPulse really free?", a: "Yes. The Free plan gives you Google review monitoring for up to 10 reviews, 5 AI responses per month, and a weekly email digest. No credit card required." },
-      { q: "What does the Pro plan include?", a: "Pro ($49/month) unlocks all three platforms, unlimited review tracking, unlimited AI responses, instant alerts, sentiment analytics, and response templates." },
+      { q: "Is ReviewPulse really free?", a: "Yes. The Free plan gives you Google review monitoring for up to 10 reviews, basic analytics, and a weekly email digest. No credit card required." },
+      { q: "What does the Pro plan include?", a: "Pro ($39/month) unlocks all three platforms, unlimited review tracking, instant alerts, sentiment analytics, response templates, and monthly reports." },
       { q: "Can I cancel anytime?", a: "Absolutely. No contracts or cancellation fees. Cancel anytime and keep Pro access through the end of your billing period." },
     ],
   },
   {
-    category: "AI & Responses",
+    category: "Reviews & Responses",
     questions: [
-      { q: "How does AI response generation work?", a: "Click 'Reply' on a review — our AI reads the text, sentiment, and rating to generate a personalized draft. Adjust the tone, edit, and post." },
-      { q: "Can the AI respond automatically?", a: "No, by design. Every response gets your review and approval before posting. The AI drafts, you decide." },
-      { q: "What about negative reviews?", a: "ReviewPulse's AI generates empathetic, professional responses that acknowledge concerns and offer resolution — turning negatives into opportunities." },
+      { q: "Can I respond to reviews from ReviewPulse?", a: "Yes. Use our response templates to craft quick, professional replies to any review. Save your best replies as reusable templates." },
+      { q: "What about negative reviews?", a: "ReviewPulse alerts you instantly when a negative review comes in so you can respond fast. Use response templates to craft empathetic, professional replies." },
+      { q: "How do I claim my business?", a: "Search for your business on ReviewPulse. Sign in with the Google account associated with your business. If your email domain matches the business website, verification is instant." },
     ],
   },
   {

@@ -24,8 +24,8 @@ const steps = [
     iconBg: "bg-[#6366f1]/[0.08] ring-1 ring-[#6366f1]/15",
     iconColor: "text-[#818cf8]",
     title: "Monitor & Analyze",
-    description: "Every review appears in your unified dashboard. AI analyzes sentiment so you can spot trends before they escalate.",
-    details: ["Real-time review notifications", "AI-powered sentiment analysis", "Rating trends and analytics over time", "Filter by platform, rating, or sentiment"],
+    description: "Every review appears in your unified dashboard. Sentiment analysis helps you spot trends before they escalate.",
+    details: ["Real-time review notifications", "Sentiment analysis on every review", "Rating trends and analytics over time", "Filter by platform, rating, or sentiment"],
   },
   {
     number: "03",
@@ -33,8 +33,8 @@ const steps = [
     iconBg: "bg-[#2dd4bf]/[0.08] ring-1 ring-[#2dd4bf]/15",
     iconColor: "text-[#2dd4bf]",
     title: "Respond in Seconds",
-    description: "Generate professional, personalized responses with one click. Customize tone and details, then post. Save your best replies as templates.",
-    details: ["AI-generated drafts tailored to each review", "Adjust tone: professional, friendly, apologetic", "Save and reuse response templates", "Track which reviews you've responded to"],
+    description: "Use response templates to craft professional replies fast. Save your best replies and reuse them across reviews.",
+    details: ["One-click reply with saved templates", "Adjust tone: professional, friendly, apologetic", "Save and reuse response templates", "Track which reviews you've responded to"],
   },
 ];
 

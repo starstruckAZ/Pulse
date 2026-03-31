@@ -2,17 +2,70 @@
  * POST /api/claim
  *
  * Claims a business by creating a location entry linked to the user's
- * account. Requires:
- *   1. Authenticated user
- *   2. User must have signed in with Google OAuth (verified via identity)
- *   3. Business must not already be claimed (unique google_place_id)
+ * account. Security pipeline:
  *
- * Body: { place_id, name, address, city? }
+ *   1. Authenticated user (JWT)
+ *   2. User must have signed in with Google OAuth
+ *   3. User's Google email domain is cross-checked against the business
+ *      website domain (from Google Places) when available. If the business
+ *      has no website, or the domains don't match, the claim goes into
+ *      "pending" status for manual review.
+ *   4. Business must not already be claimed (unique google_place_id)
+ *   5. User is within their location quota
+ *
+ * Body: { place_id, name, address, city?, category? }
  */
 
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
 import { cookies } from "next/headers";
+
+const PLACES_API_KEY = process.env.GOOGLE_PLACES_API_KEY;
+
+/** Fetch the business website + name from Google Places Details API */
+async function getPlaceDetails(placeId: string) {
+  if (!PLACES_API_KEY) return null;
+
+  try {
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${encodeURIComponent(
+      placeId
+    )}&fields=name,website,url&key=${PLACES_API_KEY}`;
+
+    const res = await fetch(url, { cache: "no-store" });
+    const data = await res.json();
+
+    if (data.status !== "OK") return null;
+    return data.result as { name?: string; website?: string; url?: string };
+  } catch {
+    return null;
+  }
+}
+
+/** Extract domain from URL: "https://www.joespizza.com/menu" → "joespizza.com" */
+function extractDomain(url: string): string | null {
+  try {
+    const host = new URL(url).hostname.toLowerCase();
+    // Strip "www." prefix
+    return host.replace(/^www\./, "");
+  } catch {
+    return null;
+  }
+}
+
+/** Extract domain from email: "owner@joespizza.com" → "joespizza.com" */
+function emailDomain(email: string): string | null {
+  const parts = email.toLowerCase().split("@");
+  if (parts.length !== 2) return null;
+  return parts[1];
+}
+
+/** Check if the user's email domain matches the business website domain */
+function domainsMatch(userEmail: string, businessWebsite: string): boolean {
+  const emailDom = emailDomain(userEmail);
+  const bizDom = extractDomain(businessWebsite);
+  if (!emailDom || !bizDom) return false;
+  return emailDom === bizDom;
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,14 +83,14 @@ export async function POST(request: NextRequest) {
     }
 
     // 2. Verify Google OAuth identity
-    const hasGoogleIdentity = user.identities?.some(
+    const googleIdentity = user.identities?.find(
       (identity) => identity.provider === "google"
     );
     const providerIsGoogle =
       user.app_metadata?.provider === "google" ||
       user.app_metadata?.providers?.includes("google");
 
-    if (!hasGoogleIdentity && !providerIsGoogle) {
+    if (!googleIdentity && !providerIsGoogle) {
       return NextResponse.json(
         {
           error:
@@ -48,6 +101,26 @@ export async function POST(request: NextRequest) {
         { status: 403 }
       );
     }
+
+    // Get the user's Google email (from identity data or user email)
+    const googleEmail =
+      (googleIdentity?.identity_data?.email as string) || user.email || "";
+
+    // Reject free email domains (gmail, yahoo, etc.) from auto-verification
+    const freeEmailDomains = [
+      "gmail.com",
+      "googlemail.com",
+      "yahoo.com",
+      "hotmail.com",
+      "outlook.com",
+      "aol.com",
+      "icloud.com",
+      "mail.com",
+      "protonmail.com",
+      "live.com",
+    ];
+    const userDomain = emailDomain(googleEmail);
+    const isFreeDomain = freeEmailDomains.includes(userDomain || "");
 
     // 3. Parse and validate body
     const body = await request.json();
@@ -97,7 +170,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 5. Check user's location quota (free plan: 3 locations)
+    // 5. Check user's location quota
     const { count: locationCount } = await supabase
       .from("locations")
       .select("id", { count: "exact", head: true })
@@ -122,20 +195,45 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // 6. Parse city from address if not provided
+    // 6. Verify ownership via domain matching
+    //    - Fetch business website from Google Places
+    //    - Compare the user's email domain to the business website domain
+    //    - If they match → auto-verified
+    //    - If no website, or domains don't match, or user has free email → pending review
+    const placeDetails = await getPlaceDetails(place_id);
+    const businessWebsite = placeDetails?.website || null;
+
+    let verified = false;
+    let verificationNote = "";
+
+    if (businessWebsite && !isFreeDomain) {
+      // User has a business email — check if it matches the website domain
+      if (domainsMatch(googleEmail, businessWebsite)) {
+        verified = true;
+        verificationNote = `Email domain (${userDomain}) matches business website (${extractDomain(businessWebsite)})`;
+      } else {
+        verificationNote = `Email domain (${userDomain}) does not match business website (${extractDomain(businessWebsite)})`;
+      }
+    } else if (isFreeDomain) {
+      verificationNote = `User has a free email provider (${userDomain}). Manual verification needed.`;
+    } else {
+      verificationNote = "Business has no website listed on Google. Manual verification needed.";
+    }
+
+    // 7. Parse city from address if not provided
     let parsedCity = city?.trim() || null;
     if (!parsedCity && address) {
       const parts = address.split(",").map((p) => p.trim());
       if (parts.length >= 3) {
-        // "123 Main St, Phoenix, AZ 85001, USA" → "Phoenix"
-        // Try second-to-last segment (skip country if present)
         parsedCity = parts[parts.length - 3] || parts[parts.length - 2] || null;
       } else if (parts.length === 2) {
         parsedCity = parts[0];
       }
     }
 
-    // 7. Create the location
+    // 8. Create the location
+    const claimStatus = verified ? "verified" : "pending";
+
     const { data: location, error: insertError } = await supabase
       .from("locations")
       .insert({
@@ -145,7 +243,10 @@ export async function POST(request: NextRequest) {
         city: parsedCity,
         category: category || null,
         google_place_id: place_id,
-        listed: true,
+        listed: verified, // Only show in directory if auto-verified
+        claim_status: claimStatus,
+        claim_email: googleEmail,
+        claim_note: verificationNote,
       })
       .select()
       .single();
@@ -158,11 +259,16 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    const message = verified
+      ? `Successfully claimed "${name.trim()}"! Your email domain matches the business website — you're verified.`
+      : `Claim submitted for "${name.trim()}"! Since we couldn't automatically verify ownership, your claim is pending review. You can still access your dashboard.`;
+
     return NextResponse.json(
       {
         success: true,
         location,
-        message: `Successfully claimed "${name.trim()}"! You can now manage reviews from your dashboard.`,
+        verified,
+        message,
       },
       { status: 201 }
     );

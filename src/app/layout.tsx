@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ReviewPulse — Review Management for Local Businesses",
     description:
-      "Google, Yelp, Facebook — all reviews in one dashboard. AI responses. Sentiment tracking.",
+      "Google, Yelp, Facebook — all reviews in one dashboard. Sentiment tracking. Business search.",
     images: [`${siteUrl}/og-image.png`],
   },
   alternates: { canonical: siteUrl },

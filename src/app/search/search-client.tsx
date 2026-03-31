@@ -74,6 +74,7 @@ export default function SearchClient() {
   const [claimError, setClaimError] = useState<string | null>(null);
   const [showCategoryModal, setShowCategoryModal] = useState<PlaceResult | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [pendingMessage, setPendingMessage] = useState<string | null>(null);
 
   const supabase = createClient();
 
@@ -179,7 +180,8 @@ export default function SearchClient() {
       if (!res.ok) {
         if (data.code === "GOOGLE_AUTH_REQUIRED") {
           setClaimError(
-            "Google sign-in required. Please sign out and sign back in with Google to claim a business."
+            "You must sign in with the Google account associated with this business. " +
+              "Please sign out and sign back in using the correct Google account."
           );
         } else if (data.code === "ALREADY_CLAIMED") {
           setClaimError("This business has already been claimed on ReviewPulse.");
@@ -194,6 +196,16 @@ export default function SearchClient() {
             r.place_id === place.place_id ? { ...r, claimed: true } : r
           )
         );
+
+        // Show different message for pending vs verified
+        if (!data.verified) {
+          setClaimError(null); // clear any previous error
+          setPendingMessage(
+            "Claim submitted! Since we couldn't automatically verify ownership " +
+              "via your email domain, your claim is pending manual review. " +
+              "You'll still have access to your dashboard."
+          );
+        }
       }
     } catch {
       setClaimError("Network error. Please try again.");
@@ -298,6 +310,24 @@ export default function SearchClient() {
               >
                 Go to Dashboard →
               </Link>
+            </div>
+          </div>
+        )}
+
+        {/* Pending verification */}
+        {pendingMessage && (
+          <div className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+            <div className="flex items-start gap-2">
+              <Clock className="h-4 w-4 mt-0.5 shrink-0" />
+              <div>
+                {pendingMessage}
+                <Link
+                  href="/dashboard/locations"
+                  className="ml-2 font-semibold underline"
+                >
+                  Go to Dashboard →
+                </Link>
+              </div>
             </div>
           </div>
         )}
@@ -462,8 +492,10 @@ export default function SearchClient() {
             Verified Business Claims
           </h3>
           <p className="mx-auto max-w-md text-sm text-[#5d5b59]">
-            To claim a business, you must sign in with your Google account.
-            This helps verify your identity and prevents unauthorized claims.
+            To claim a business, you must sign in with the Google account
+            associated with that business. If your email domain matches the
+            business website, you&apos;re verified instantly. Otherwise, claims
+            are reviewed manually.
           </p>
         </div>
       </main>
@@ -513,9 +545,10 @@ export default function SearchClient() {
               <div className="flex items-start gap-2">
                 <Shield className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#aa2c32]" />
                 <span>
-                  By claiming this business, you confirm that you are an
-                  authorized representative. Your Google account identity is
-                  recorded with this claim.
+                  By claiming this business, you confirm you are an authorized
+                  representative. Your Google email is recorded with this claim.
+                  If your email domain matches the business website, verification
+                  is instant. Otherwise your claim will be reviewed manually.
                 </span>
               </div>
             </div>
