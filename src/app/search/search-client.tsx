@@ -17,7 +17,28 @@ import {
   Clock,
   ChevronRight,
   ArrowRight,
+  BadgeCheck,
 } from "lucide-react";
+
+// Extend Window for Google Identity Services
+declare global {
+  interface Window {
+    google?: {
+      accounts: {
+        oauth2: {
+          initTokenClient: (config: {
+            client_id: string;
+            scope: string;
+            callback: (response: {
+              access_token?: string;
+              error?: string;
+            }) => void;
+          }) => { requestAccessToken: (opts?: { prompt?: string }) => void };
+        };
+      };
+    };
+  }
+}
 import { CATEGORIES } from "@/lib/categories";
 
 interface PlaceResult {
@@ -75,6 +96,7 @@ export default function SearchClient() {
   const [showCategoryModal, setShowCategoryModal] = useState<PlaceResult | null>(null);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [pendingMessage, setPendingMessage] = useState<string | null>(null);
+  const [gbpVerifying, setGbpVerifying] = useState(false);
 
   const supabase = createClient();
 
@@ -155,7 +177,57 @@ export default function SearchClient() {
     setSelectedCategory("");
   };
 
-  const confirmClaim = async () => {
+  /** Load the Google Identity Services script on demand */
+  const loadGIS = (): Promise<void> =>
+    new Promise((resolve) => {
+      if (window.google?.accounts?.oauth2) {
+        resolve();
+        return;
+      }
+      const script = document.createElement("script");
+      script.src = "https://accounts.google.com/gsi/client";
+      script.async = true;
+      script.onload = () => resolve();
+      document.head.appendChild(script);
+    });
+
+  /** Trigger Google OAuth popup for business.manage scope, then claim */
+  const handleVerifyWithGBP = async () => {
+    const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+    if (!clientId) {
+      // Client ID not configured — fall back to pending claim
+      confirmClaim(null);
+      return;
+    }
+
+    setGbpVerifying(true);
+    try {
+      await loadGIS();
+      const client = window.google!.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: "https://www.googleapis.com/auth/business.manage",
+        callback: (tokenResponse) => {
+          setGbpVerifying(false);
+          if (tokenResponse.access_token) {
+            confirmClaim(tokenResponse.access_token);
+          } else {
+            setClaimError(
+              "Google Business Profile verification was cancelled. " +
+                "You can still submit for manual review."
+            );
+          }
+        },
+      });
+      client.requestAccessToken();
+    } catch {
+      setGbpVerifying(false);
+      setClaimError(
+        "Could not load Google verification. Try submitting for manual review."
+      );
+    }
+  };
+
+  const confirmClaim = async (googleToken: string | null) => {
     const place = showCategoryModal;
     if (!place) return;
 
@@ -172,6 +244,7 @@ export default function SearchClient() {
           name: place.name,
           address: place.address,
           category: selectedCategory || null,
+          ...(googleToken ? { google_access_token: googleToken } : {}),
         }),
       });
 
@@ -492,10 +565,10 @@ export default function SearchClient() {
             Verified Business Claims
           </h3>
           <p className="mx-auto max-w-md text-sm text-[#5d5b59]">
-            To claim a business, you must sign in with the Google account
-            associated with that business. If your email domain matches the
-            business website, you&apos;re verified instantly. Otherwise, claims
-            are reviewed manually.
+            Claiming a business requires signing in with Google. We verify
+            ownership through your Google Business Profile account — no
+            postcards, no waiting. Claims that can&apos;t be auto-verified are
+            reviewed manually.
           </p>
         </div>
       </main>
@@ -541,31 +614,47 @@ export default function SearchClient() {
               </select>
             </div>
 
-            <div className="mb-4 rounded-xl bg-[#f5f0ed] p-3 text-xs text-[#5d5b59]">
+            <div className="mb-5 rounded-xl border border-[#d1e7dd] bg-[#f0faf4] p-3 text-xs text-[#2a6a44]">
               <div className="flex items-start gap-2">
-                <Shield className="h-3.5 w-3.5 mt-0.5 shrink-0 text-[#aa2c32]" />
+                <BadgeCheck className="h-3.5 w-3.5 mt-0.5 shrink-0" />
                 <span>
-                  By claiming this business, you confirm you are an authorized
-                  representative. Your Google email is recorded with this claim.
-                  If your email domain matches the business website, verification
-                  is instant. Otherwise your claim will be reviewed manually.
+                  Click <strong>Verify with Google Business Profile</strong> to
+                  instantly confirm ownership — Google will ask for permission to
+                  check your managed business listings. No password needed.
                 </span>
               </div>
             </div>
 
-            <div className="flex justify-end gap-3">
+            <div className="flex flex-col gap-2">
               <button
-                onClick={() => setShowCategoryModal(null)}
-                className="btn-ghost rounded-xl px-5 py-2.5 text-sm"
+                onClick={handleVerifyWithGBP}
+                disabled={gbpVerifying}
+                className="btn-primary flex w-full items-center justify-center gap-2 rounded-xl px-6 py-2.5 text-sm disabled:opacity-60"
               >
-                Cancel
+                {gbpVerifying ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <BadgeCheck className="h-4 w-4" />
+                )}
+                {gbpVerifying
+                  ? "Opening Google…"
+                  : "Verify with Google Business Profile"}
               </button>
-              <button
-                onClick={confirmClaim}
-                className="btn-primary rounded-xl px-6 py-2.5 text-sm"
-              >
-                Confirm Claim
-              </button>
+
+              <div className="flex items-center justify-between gap-3 pt-1">
+                <button
+                  onClick={() => setShowCategoryModal(null)}
+                  className="text-xs text-[#797674] hover:text-[#302e2d] transition"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => confirmClaim(null)}
+                  className="text-xs text-[#797674] underline hover:text-[#302e2d] transition"
+                >
+                  Submit for manual review instead
+                </button>
+              </div>
             </div>
           </div>
         </div>
