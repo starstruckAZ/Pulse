@@ -685,32 +685,45 @@ export default function SearchClient() {
               </select>
             </div>
 
-            <div className="mb-5 rounded-xl border border-[#d1e7dd] bg-[#f0faf4] p-3 text-xs text-[#2a6a44]">
-              <div className="flex items-start gap-2">
-                <BadgeCheck className="h-3.5 w-3.5 mt-0.5 shrink-0" />
-                <span>
-                  Click <strong>Verify with Google Business Profile</strong> to
-                  instantly confirm ownership — Google will ask for permission to
-                  check your managed business listings. No password needed.
-                </span>
-              </div>
-            </div>
+            {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
+              <>
+                <div className="mb-5 rounded-xl border border-[#d1e7dd] bg-[#f0faf4] p-3 text-xs text-[#2a6a44]">
+                  <div className="flex items-start gap-2">
+                    <BadgeCheck className="h-3.5 w-3.5 mt-0.5 shrink-0" />
+                    <span>
+                      Click <strong>Verify with Google Business Profile</strong> to
+                      instantly confirm ownership — Google will ask for permission to
+                      check your managed business listings. No password needed.
+                    </span>
+                  </div>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <button
+                    onClick={handleVerifyWithGBP}
+                    disabled={gbpVerifying}
+                    className="btn-primary flex w-full items-center justify-center gap-2 rounded-xl px-6 py-2.5 text-sm disabled:opacity-60"
+                  >
+                    {gbpVerifying ? (
+                      <Loader2 className="h-4 w-4 animate-spin" />
+                    ) : (
+                      <BadgeCheck className="h-4 w-4" />
+                    )}
+                    {gbpVerifying ? "Opening Google…" : "Verify with Google Business Profile"}
+                  </button>
+                </div>
+              </>
+            ) : null}
 
             <div className="flex flex-col gap-2">
-              <button
-                onClick={handleVerifyWithGBP}
-                disabled={gbpVerifying}
-                className="btn-primary flex w-full items-center justify-center gap-2 rounded-xl px-6 py-2.5 text-sm disabled:opacity-60"
-              >
-                {gbpVerifying ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <BadgeCheck className="h-4 w-4" />
-                )}
-                {gbpVerifying
-                  ? "Opening Google…"
-                  : "Verify with Google Business Profile"}
-              </button>
+              {!process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID && (
+                <button
+                  onClick={() => confirmClaim(null)}
+                  className="btn-primary flex w-full items-center justify-center gap-2 rounded-xl px-6 py-2.5 text-sm"
+                >
+                  <Shield className="h-4 w-4" />
+                  Claim Business
+                </button>
+              )}
 
               <div className="flex items-center justify-between gap-3 pt-1">
                 <button
