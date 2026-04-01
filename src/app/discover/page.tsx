@@ -251,7 +251,7 @@ export default async function DiscoverPage() {
             Is your business missing?
           </h3>
           <p className="mb-6 text-[#5d5b59]">
-            Join ReviewHype to manage your reviews, respond with AI, and get listed in this directory.
+            Join ReviewHype to manage your reviews, respond with templates, and get listed in this directory.
           </p>
           <Link
             href="/signup"

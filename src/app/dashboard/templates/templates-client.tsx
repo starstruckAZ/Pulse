@@ -16,6 +16,7 @@ interface Template {
   template_text: string;
   sentiment_filter: string | null;
   created_at: string;
+  is_system?: boolean;
 }
 
 interface Profile {
@@ -217,6 +218,11 @@ export default function TemplatesClient({ user, profile, templates: initialTempl
                 <div className="mb-3 flex items-center justify-between">
                   <div className="flex items-center gap-3 flex-wrap">
                     <h3 className="font-display font-semibold">{t.name}</h3>
+                    {t.is_system && (
+                      <span className="inline-flex items-center rounded-lg px-2 py-0.5 text-xs font-medium bg-[#ff6b4a]/10 text-[#ff6b4a] border border-[#ff6b4a]/20">
+                        Pre-made
+                      </span>
+                    )}
                     {sentimentBadge(t.sentiment_filter && t.sentiment_filter !== "all" ? t.sentiment_filter : null)}
                   </div>
                   <div className="flex items-center gap-1">
@@ -234,8 +240,12 @@ export default function TemplatesClient({ user, profile, templates: initialTempl
                         </span>
                       )}
                     </div>
-                    <button onClick={() => openEdit(t)} className="rounded-xl p-2 text-zinc-600 transition hover:bg-white/5 hover:text-white"><Edit3 className="h-4 w-4" /></button>
-                    <button onClick={() => handleDelete(t.id)} className="rounded-xl p-2 text-zinc-600 transition hover:bg-red-500/10 hover:text-red-400"><Trash2 className="h-4 w-4" /></button>
+                    {!t.is_system && (
+                      <>
+                        <button onClick={() => openEdit(t)} className="rounded-xl p-2 text-zinc-600 transition hover:bg-white/5 hover:text-white"><Edit3 className="h-4 w-4" /></button>
+                        <button onClick={() => handleDelete(t.id)} className="rounded-xl p-2 text-zinc-600 transition hover:bg-red-500/10 hover:text-red-400"><Trash2 className="h-4 w-4" /></button>
+                      </>
+                    )}
                   </div>
                 </div>
                 <p className="text-sm leading-relaxed text-zinc-400 line-clamp-3">{t.template_text}</p>

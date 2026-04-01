@@ -83,7 +83,7 @@ export default function SignupPage() {
             <span className="font-display text-xl font-bold">ReviewHype</span>
           </Link>
           <h1 className="mt-4 font-display text-2xl font-bold tracking-tight">Create your account</h1>
-          <p className="mt-2 text-sm text-[#8b8b9e]">Start managing reviews for free</p>
+          <p className="mt-2 text-sm text-[#8b8b9e]">Start your 7-day free trial — no credit card required</p>
         </div>
 
         <div className="rounded-[1.5rem] border border-white/[0.05] bg-white/[0.02] p-8 backdrop-blur-xl">

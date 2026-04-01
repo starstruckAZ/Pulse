@@ -591,8 +591,8 @@ export default function DashboardClient({
         {/* Upgrade */}
         {plan === "free" && (
           <div className="mt-8 glass rounded-3xl border-[#ff6b4a]/10 p-8 text-center">
-            <h3 className="mb-1 font-display font-bold">Unlock Yelp, Facebook & Unlimited AI</h3>
-            <p className="mb-4 text-sm text-zinc-400">Upgrade to Pro for $49/mo.</p>
+            <h3 className="mb-1 font-display font-bold">Unlock Yelp, Facebook & All Templates</h3>
+            <p className="mb-4 text-sm text-zinc-400">Upgrade to Pro for $39/mo.</p>
             <Link href="/dashboard/upgrade" className="btn-primary inline-flex items-center rounded-2xl px-6 py-3 text-sm">Upgrade to Pro <ChevronRight className="inline h-4 w-4 ml-1" /></Link>
           </div>
         )}

@@ -30,7 +30,7 @@ export default function TermsPage() {
             <span className="font-display">ReviewHype</span>
           </Link>
           <Link href="/signup" className="btn-primary rounded-2xl px-5 py-2 text-sm">
-            Get Started Free
+            Start Free Trial
           </Link>
         </div>
       </nav>
@@ -101,15 +101,15 @@ export default function TermsPage() {
             </ul>
           </Section>
 
-          <Section title="5. AI-Generated Content">
+          <Section title="5. Response Templates">
             <p>
-              ReviewHype offers AI-powered response suggestions. You acknowledge that:
+              ReviewHype provides response templates to help you reply to reviews. You acknowledge that:
             </p>
             <ul>
-              <li>AI-generated responses are suggestions only and must be reviewed by you before publishing.</li>
+              <li>Response templates are suggestions only and must be reviewed and personalized by you before publishing.</li>
               <li>You are solely responsible for any content you publish to third-party review platforms.</li>
-              <li>We do not guarantee that AI suggestions are accurate, appropriate, or free from error.</li>
-              <li>You will not use AI features to generate deceptive, harassing, or misleading content.</li>
+              <li>Templates are provided as-is and may need customization for your specific situation.</li>
+              <li>You will not use templates to generate deceptive, harassing, or misleading content.</li>
             </ul>
           </Section>
 

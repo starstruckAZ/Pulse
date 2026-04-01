@@ -11,7 +11,7 @@ export const metadata: Metadata = {
     template: "%s | ReviewHype",
   },
   description:
-    "See every review from Google, Yelp, and Facebook in one place. Reply with AI-powered responses. Track sentiment. Never miss a review again.",
+    "See every review from Google, Yelp, and Facebook in one place. Respond faster with templates. Track sentiment. Never miss a review again.",
   keywords: [
     "review management",
     "online reputation management",
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
     "Yelp reviews",
     "Facebook reviews",
     "local business reviews",
-    "AI review responses",
+    "review response templates",
     "sentiment analysis",
     "review monitoring",
     "reputation management software",
@@ -44,7 +44,7 @@ export const metadata: Metadata = {
     siteName: "ReviewHype",
     title: "ReviewHype — Review Management for Local Businesses",
     description:
-      "Google, Yelp, Facebook — all your reviews in one dashboard. AI-powered responses. Sentiment tracking.",
+      "Google, Yelp, Facebook — all your reviews in one dashboard. Response templates. Sentiment tracking.",
     images: [
       {
         url: `${siteUrl}/og-image.png`,
@@ -58,7 +58,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "ReviewHype — Review Management for Local Businesses",
     description:
-      "Google, Yelp, Facebook — all reviews in one dashboard. Sentiment tracking. Business search.",
+      "Google, Yelp, Facebook — all reviews in one dashboard. Response templates. Sentiment tracking.",
     images: [`${siteUrl}/og-image.png`],
   },
   alternates: { canonical: siteUrl },
@@ -94,8 +94,8 @@ export default function RootLayout({
         operatingSystem: "Web",
         url: siteUrl,
         offers: [
-          { "@type": "Offer", name: "Free", price: "0", priceCurrency: "USD" },
-          { "@type": "Offer", name: "Pro", price: "49", priceCurrency: "USD" },
+          { "@type": "Offer", name: "Free Trial", price: "0", priceCurrency: "USD", description: "7-day free trial with full Pro access" },
+          { "@type": "Offer", name: "Pro", price: "39", priceCurrency: "USD" },
         ],
         aggregateRating: {
           "@type": "AggregateRating",

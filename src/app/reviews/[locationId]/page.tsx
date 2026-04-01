@@ -113,7 +113,7 @@ export default async function PublicReviewsPage({ params }: PageProps) {
               </svg>
             </div>
             <span className="font-display text-lg font-semibold tracking-tight">
-              Review<span className="gradient-text">Pulse</span>
+              Review<span className="gradient-text">Hype</span>
             </span>
           </Link>
           <Link
@@ -228,11 +228,11 @@ export default async function PublicReviewsPage({ params }: PageProps) {
           </p>
           <Link href="/" className="inline-flex items-center gap-2">
             <span className="font-display text-lg font-semibold tracking-tight">
-              Review<span className="gradient-text">Pulse</span>
+              Review<span className="gradient-text">Hype</span>
             </span>
           </Link>
           <p className="mt-4 text-sm text-[var(--text-secondary)]">
-            Manage all your reviews in one place. AI-powered responses. Sentiment tracking.
+            Manage all your reviews in one place. Response templates. Sentiment tracking.
           </p>
           <Link
             href="/signup"

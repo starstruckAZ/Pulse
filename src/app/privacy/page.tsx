@@ -30,7 +30,7 @@ export default function PrivacyPage() {
             <span className="font-display">ReviewHype</span>
           </Link>
           <Link href="/signup" className="btn-primary rounded-2xl px-5 py-2 text-sm">
-            Get Started Free
+            Start Free Trial
           </Link>
         </div>
       </nav>

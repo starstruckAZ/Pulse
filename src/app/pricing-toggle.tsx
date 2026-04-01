@@ -45,15 +45,16 @@ export default function PricingToggle() {
 
       {/* Cards */}
       <div className="grid gap-6 md:grid-cols-2">
-        {/* Free */}
+        {/* Trial */}
         <div className="bento p-8 md:p-10">
-          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#797674]">Free</p>
-          <div className="mb-8 flex items-baseline gap-1">
+          <p className="mb-1 text-xs font-bold uppercase tracking-widest text-[#797674]">Free Trial</p>
+          <div className="mb-2 flex items-baseline gap-1">
             <span className="font-headline text-5xl font-bold tracking-tight text-[#302e2d]">$0</span>
-            <span className="text-[#797674]">/mo</span>
+            <span className="text-[#797674]">/7 days</span>
           </div>
+          <p className="mb-8 text-xs text-[#797674]">Full Pro access, no credit card required</p>
           <ul className="mb-10 space-y-3.5 text-sm text-[#5d5b59]">
-            {["Google Reviews", "10 reviews tracked", "Basic analytics", "Weekly email digest"].map((f) => (
+            {["All review platforms", "Unlimited reviews", "Response templates", "Sentiment analytics", "7-day full access"].map((f) => (
               <li key={f} className="flex items-center gap-3">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#ece7e4]">
                   <Check className="h-3 w-3 text-[#5d5b59]" />
@@ -63,7 +64,7 @@ export default function PricingToggle() {
             ))}
           </ul>
           <Link href="/signup" className="btn-ghost block w-full rounded-xl py-3.5 text-center text-sm font-semibold">
-            Get Started Free
+            Start Free Trial
           </Link>
         </div>
 
@@ -82,11 +83,11 @@ export default function PricingToggle() {
           {interval === "yearly" && (
             <p className="mb-6 text-xs text-[#797674]">
               Billed <span className="font-semibold text-[#302e2d]">${YEARLY}/year</span>
-              {" "}— save <span className="font-semibold text-emerald-600">${annualSavings}</span>
+              {" "}&mdash; save <span className="font-semibold text-emerald-600">${annualSavings}</span>
             </p>
           )}
           <ul className={`space-y-3.5 text-sm text-[#5d5b59] ${interval === "yearly" ? "mb-10" : "mb-10 mt-8"}`}>
-            {["Google, Yelp & Facebook", "Unlimited reviews", "Instant email alerts", "Sentiment analytics", "Response templates", "Monthly reports"].map((f) => (
+            {["Google, Yelp & Facebook", "Unlimited reviews", "Instant email alerts", "Sentiment analytics", "Response templates", "Monthly reports", "Competitor benchmarking"].map((f) => (
               <li key={f} className="flex items-center gap-3">
                 <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-[#aa2c32]/10">
                   <Check className="h-3 w-3 text-[#aa2c32]" />

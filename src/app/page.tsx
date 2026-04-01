@@ -25,11 +25,11 @@ export default function Home() {
             <Link href="/blog" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Blog</Link>
             <Link href="/login" className="text-[13px] font-medium text-[#5d5b59] transition hover:text-[#302e2d]">Log In</Link>
             <Link href="/signup" className="btn-primary rounded-xl px-5 py-2.5 text-[13px]">
-              Get Started Free
+              Start Free Trial
             </Link>
           </div>
           <Link href="/signup" className="btn-primary rounded-xl px-4 py-2 text-[13px] md:hidden">
-            Start Free
+            Free Trial
           </Link>
         </div>
       </nav>
@@ -282,7 +282,7 @@ export default function Home() {
             <h2 className="font-headline text-5xl font-bold tracking-tight text-[#302e2d] md:text-6xl">
               Simple, transparent pricing
             </h2>
-            <p className="mt-5 text-base text-[#5d5b59]">Start free. Upgrade when you&apos;re ready.</p>
+            <p className="mt-5 text-base text-[#5d5b59]">Try free for 7 days. Upgrade when you&apos;re ready.</p>
           </div>
           <PricingToggle />
         </div>

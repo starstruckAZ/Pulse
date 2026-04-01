@@ -19,17 +19,34 @@ export async function GET(request: NextRequest) {
     const { searchParams } = request.nextUrl;
     const sentimentFilter = searchParams.get("sentiment_filter");
 
-    let query = supabase
+    // Fetch user templates
+    let userQuery = supabase
       .from("response_templates")
       .select("*")
       .eq("user_id", user.id)
       .order("created_at", { ascending: false });
 
     if (sentimentFilter) {
-      query = query.eq("sentiment_filter", sentimentFilter);
+      userQuery = userQuery.eq("sentiment_filter", sentimentFilter);
     }
 
-    const { data, error } = await query;
+    const { data: userTemplates, error: userError } = await userQuery;
+
+    // Fetch system templates
+    let systemQuery = supabase
+      .from("response_templates")
+      .select("*")
+      .eq("is_system", true)
+      .order("created_at", { ascending: true });
+
+    if (sentimentFilter) {
+      systemQuery = systemQuery.eq("sentiment_filter", sentimentFilter);
+    }
+
+    const { data: systemTemplates, error: systemError } = await systemQuery;
+
+    const error = userError || systemError;
+    const data = [...(userTemplates || []), ...(systemTemplates || [])];
 
     if (error) {
       return NextResponse.json({ error: error.message }, { status: 500 });

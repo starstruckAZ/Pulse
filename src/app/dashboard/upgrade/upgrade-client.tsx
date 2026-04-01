@@ -36,19 +36,19 @@ interface UpgradeClientProps {
   profile: Profile | null;
 }
 
-const FREE_FEATURES = [
-  { name: "Locations", free: "1", pro: "Unlimited" },
-  { name: "Review monitoring", free: "50/mo", pro: "Unlimited" },
-  { name: "Response templates", free: "3", pro: "Unlimited" },
-  { name: "Monthly reports", free: false, pro: true },
-  { name: "Analytics dashboard", free: "Basic", pro: "Advanced" },
-  { name: "Sentiment analysis", free: false, pro: true },
-  { name: "Competitor benchmarking", free: false, pro: true },
-  { name: "Custom review widgets", free: false, pro: true },
-  { name: "Priority support", free: false, pro: true },
-  { name: "Export reports (CSV/PDF)", free: false, pro: true },
-  { name: "Webhook integrations", free: false, pro: true },
-  { name: "White-label responses", free: false, pro: true },
+const PRO_FEATURES = [
+  { name: "Locations", trial: "3", pro: "Unlimited" },
+  { name: "Review monitoring", trial: "Unlimited", pro: "Unlimited" },
+  { name: "Response templates", trial: "10 included", pro: "Unlimited" },
+  { name: "Monthly reports", trial: true, pro: true },
+  { name: "Analytics dashboard", trial: "Full access", pro: "Full access" },
+  { name: "Sentiment analysis", trial: true, pro: true },
+  { name: "Competitor benchmarking", trial: false, pro: true },
+  { name: "Custom review widgets", trial: true, pro: true },
+  { name: "Priority support", trial: false, pro: true },
+  { name: "Export reports (CSV/PDF)", trial: false, pro: true },
+  { name: "Webhook integrations", trial: false, pro: true },
+  { name: "White-label responses", trial: false, pro: true },
 ];
 
 const FAQS = [
@@ -61,8 +61,8 @@ const FAQS = [
     a: "Your data is never deleted. If you downgrade to Free, you'll retain access to all your reviews and history. Some advanced features like sentiment analysis and competitor benchmarking will become read-only.",
   },
   {
-    q: "Is there a free trial?",
-    a: "We don't currently offer a free trial, but the Free plan gives you a solid taste of what ReviewHype can do. Upgrade when you're ready to unlock the full power.",
+    q: "How does the free trial work?",
+    a: "Every new account gets a 7-day free trial with full Pro-level access — no credit card required. After 7 days you can upgrade to Pro to keep all features, or your account will be limited to read-only access.",
   },
   {
     q: "Can I switch between monthly and yearly?",
@@ -187,7 +187,7 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
           <div className="flex items-center gap-3">
             {!isPro && (
               <span className="badge text-[#ff6b4a] border-[#ff6b4a]/20 bg-[#ff6b4a]/5 text-xs hidden sm:inline-flex">
-                Free Plan
+                Free Trial
               </span>
             )}
             <div className="relative">
@@ -288,24 +288,24 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
                     <Zap className="h-5 w-5 text-[#8b8b9e]" />
                   </div>
                   <div>
-                    <h2 className="font-display text-lg font-bold">Free</h2>
-                    <p className="text-xs text-[#8b8b9e]">Current plan</p>
+                    <h2 className="font-display text-lg font-bold">Free Trial</h2>
+                    <p className="text-xs text-[#8b8b9e]">7 days of Pro access</p>
                   </div>
                 </div>
                 <div className="mb-6">
                   <span className="font-display text-3xl font-bold">$0</span>
-                  <span className="text-sm text-[#8b8b9e]">/month</span>
+                  <span className="text-sm text-[#8b8b9e]"> / 7 days</span>
                 </div>
                 <ul className="space-y-2.5 mb-6">
-                  {FREE_FEATURES.slice(0, 5).map((f) => (
+                  {PRO_FEATURES.slice(0, 5).map((f) => (
                     <li key={f.name} className="flex items-center gap-2 text-sm text-[#8b8b9e]">
                       <Check className="h-4 w-4 shrink-0 text-[#4a4a5e]" />
-                      {f.name}: {typeof f.free === "string" ? f.free : ""}
+                      {f.name}: {typeof f.trial === "string" ? f.trial : ""}
                     </li>
                   ))}
                 </ul>
                 <button disabled className="btn-ghost w-full rounded-2xl border border-white/[0.08] py-3 text-sm opacity-50 cursor-not-allowed">
-                  Current Plan
+                  Current Trial
                 </button>
               </div>
 
@@ -353,13 +353,13 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
                   </div>
 
                   <ul className="space-y-2.5 mb-6 mt-5">
-                    {FREE_FEATURES.slice(0, 5).map((f) => (
+                    {PRO_FEATURES.slice(0, 5).map((f) => (
                       <li key={f.name} className="flex items-center gap-2 text-sm text-[#eeeef0]">
                         <Check className="h-4 w-4 shrink-0 text-[#ff6b4a]" />
                         {f.name}: {typeof f.pro === "string" ? f.pro : ""}
                       </li>
                     ))}
-                    {FREE_FEATURES.slice(5).map((f) => (
+                    {PRO_FEATURES.slice(5).map((f) => (
                       <li key={f.name} className="flex items-center gap-2 text-sm text-[#eeeef0]">
                         <Check className="h-4 w-4 shrink-0 text-[#ff6b4a]" />
                         {f.name}
@@ -401,18 +401,18 @@ export default function UpgradeClient({ user, profile }: UpgradeClientProps) {
                   <thead>
                     <tr className="border-b border-white/[0.04]">
                       <th className="px-6 py-3 text-left font-medium text-[#8b8b9e]">Feature</th>
-                      <th className="px-6 py-3 text-center font-medium text-[#8b8b9e]">Free</th>
+                      <th className="px-6 py-3 text-center font-medium text-[#8b8b9e]">Trial</th>
                       <th className="px-6 py-3 text-center font-medium text-[#ff6b4a]">Pro</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {FREE_FEATURES.map((f, i) => (
-                      <tr key={f.name} className={i < FREE_FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}>
+                    {PRO_FEATURES.map((f, i) => (
+                      <tr key={f.name} className={i < PRO_FEATURES.length - 1 ? "border-b border-white/[0.04]" : ""}>
                         <td className="px-6 py-3 text-[#eeeef0]">{f.name}</td>
                         <td className="px-6 py-3 text-center">
-                          {typeof f.free === "string" ? (
-                            <span className="text-[#8b8b9e]">{f.free}</span>
-                          ) : f.free ? (
+                          {typeof f.trial === "string" ? (
+                            <span className="text-[#8b8b9e]">{f.trial}</span>
+                          ) : f.trial ? (
                             <Check className="mx-auto h-4 w-4 text-[#8b8b9e]" />
                           ) : (
                             <X className="mx-auto h-4 w-4 text-[#4a4a5e]" />

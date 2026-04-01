@@ -67,7 +67,7 @@ export default function HowItWorksPage() {
             <Link href="/#features" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Features</Link>
             <Link href="/#pricing" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Pricing</Link>
             <Link href="/blog" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Blog</Link>
-            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">Get Started Free</Link>
+            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">Start Free Trial</Link>
           </div>
         </div>
       </nav>
@@ -82,7 +82,7 @@ export default function HowItWorksPage() {
             How <span className="gradient-text">ReviewHype</span> works
           </h1>
           <p className="mx-auto max-w-2xl text-base text-[#8b8b9e] md:text-lg">
-            Go from scattered reviews to a single AI-powered dashboard in under 2 minutes.
+            Go from scattered reviews to a single unified dashboard in under 2 minutes.
           </p>
         </div>
       </section>
@@ -149,9 +149,9 @@ export default function HowItWorksPage() {
               <h2 className="mb-4 font-display text-display-sm">Ready to take control?</h2>
               <p className="mb-8 text-[15px] text-[#8b8b9e]">Join 500+ businesses already using ReviewHype.</p>
               <Link href="/signup" className="btn-primary inline-flex items-center gap-2.5 rounded-2xl px-8 py-4 text-[15px]">
-                Get Started Free <ArrowRight className="h-4 w-4" />
+                Start Free Trial <ArrowRight className="h-4 w-4" />
               </Link>
-              <p className="mt-5 text-[13px] text-[#4a4a5e]">Free forever. No credit card required.</p>
+              <p className="mt-5 text-[13px] text-[#4a4a5e]">7-day free trial. No credit card required.</p>
             </div>
           </div>
         </div>

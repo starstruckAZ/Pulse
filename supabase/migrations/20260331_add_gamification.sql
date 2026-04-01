@@ -54,9 +54,19 @@ END;
 $$ LANGUAGE plpgsql IMMUTABLE;
 
 -- 6. Backfill existing locations with their reputation level
-UPDATE locations
-SET reputation_level = compute_reputation_level(avg_rating, review_count)
-WHERE avg_rating IS NOT NULL AND review_count IS NOT NULL;
+--    (only runs if avg_rating column exists — from the discovery migration)
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1 FROM information_schema.columns
+    WHERE table_name = 'locations' AND column_name = 'avg_rating'
+  ) THEN
+    UPDATE locations
+    SET reputation_level = compute_reputation_level(avg_rating, review_count)
+    WHERE avg_rating IS NOT NULL AND review_count IS NOT NULL;
+  END IF;
+END;
+$$;
 
 -- 7. RPC: award XP + update streak when user responds to a review
 --    Called as: supabase.rpc('award_response_xp', { xp_amount: 10 })

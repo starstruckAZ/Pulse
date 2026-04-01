@@ -21,7 +21,7 @@ const blogPosts: BlogPost[] = [
   { slug: "why-online-reviews-matter-local-business", title: "Why Online Reviews Matter More Than Ever for Local Businesses", excerpt: "93% of consumers say online reviews impact their purchasing decisions. Learn why managing reviews is no longer optional.", readTime: "6 min", date: "2026-03-15", category: "Reputation Management" },
   { slug: "how-to-respond-negative-reviews", title: "How to Respond to Negative Reviews (With Templates)", excerpt: "Negative reviews don't have to hurt your business. A proven framework for turning complaints into opportunities.", readTime: "8 min", date: "2026-03-10", category: "Response Strategy" },
   { slug: "google-review-management-guide", title: "The Complete Guide to Google Review Management in 2026", excerpt: "From claiming your profile to responding at scale — everything about managing Google reviews.", readTime: "12 min", date: "2026-03-05", category: "Google Reviews" },
-  { slug: "ai-review-responses-best-practices", title: "AI-Powered Review Responses: Best Practices for Authenticity", excerpt: "AI helps you respond faster, but authenticity still matters. How to use AI tools effectively.", readTime: "7 min", date: "2026-02-28", category: "AI & Automation" },
+  { slug: "review-response-templates-guide", title: "Review Response Templates: How to Reply Faster Without Sounding Generic", excerpt: "Learn how to use response templates effectively while keeping every reply personal and on-brand.", readTime: "7 min", date: "2026-02-28", category: "Response Strategy" },
   { slug: "reputation-management-roi", title: "The ROI of Online Reputation Management: Data & Case Studies", excerpt: "What's the actual return on investing in review management? Real numbers and case studies.", readTime: "10 min", date: "2026-02-20", category: "Business Strategy" },
 ];
 
@@ -43,7 +43,7 @@ export default function BlogPage() {
             <Link href="/how-it-works" className="text-[13px] text-[#8b8b9e] transition hover:text-white">How It Works</Link>
             <Link href="/#pricing" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Pricing</Link>
             <Link href="/faq" className="text-[13px] text-[#8b8b9e] transition hover:text-white">FAQ</Link>
-            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">Get Started Free</Link>
+            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">Start Free Trial</Link>
           </div>
         </div>
       </nav>
@@ -89,7 +89,7 @@ export default function BlogPage() {
           <h2 className="mb-4 font-display text-2xl font-bold">Get tips in your inbox</h2>
           <p className="mb-6 text-sm text-[#8b8b9e]">Weekly insights on review management and growing your local business.</p>
           <Link href="/signup" className="btn-primary inline-flex items-center gap-2 rounded-2xl px-8 py-4 text-base">
-            Get Started Free <ArrowRight className="h-4 w-4" />
+            Start Free Trial <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
       </section>

@@ -21,7 +21,7 @@ const faqs = [
   {
     category: "Pricing & Plans",
     questions: [
-      { q: "Is ReviewHype really free?", a: "Yes. The Free plan gives you Google review monitoring for up to 10 reviews, basic analytics, and a weekly email digest. No credit card required." },
+      { q: "Is there a free trial?", a: "Yes! Every new account gets a 7-day free trial with full Pro-level access — no credit card required. After 7 days you can upgrade to Pro to keep all features, or your account will be limited to read-only access." },
       { q: "What does the Pro plan include?", a: "Pro ($39/month) unlocks all three platforms, unlimited review tracking, instant alerts, sentiment analytics, response templates, and monthly reports." },
       { q: "Can I cancel anytime?", a: "Absolutely. No contracts or cancellation fees. Cancel anytime and keep Pro access through the end of your billing period." },
     ],
@@ -39,7 +39,7 @@ const faqs = [
     questions: [
       { q: "Which platforms are supported?", a: "Google Business Profile, Yelp, and Facebook. We're actively adding TripAdvisor and Trustpilot." },
       { q: "Is my data secure?", a: "Yes. Industry-standard encryption, secure OAuth (we never store passwords), and row-level security. Your data is only accessible to your account." },
-      { q: "How often do reviews sync?", a: "Pro: near real-time with instant notifications. Free: daily sync with weekly email digest." },
+      { q: "How often do reviews sync?", a: "Pro: near real-time with instant notifications. During your free trial you get full Pro-level sync speed." },
     ],
   },
 ];
@@ -72,7 +72,7 @@ export default function FAQPage() {
             <Link href="/how-it-works" className="text-[13px] text-[#8b8b9e] transition hover:text-white">How It Works</Link>
             <Link href="/#pricing" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Pricing</Link>
             <Link href="/blog" className="text-[13px] text-[#8b8b9e] transition hover:text-white">Blog</Link>
-            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">Get Started Free</Link>
+            <Link href="/signup" className="btn-primary rounded-xl px-5 py-2 text-[13px]">Start Free Trial</Link>
           </div>
         </div>
       </nav>
@@ -123,9 +123,9 @@ export default function FAQPage() {
         <div className="mx-auto max-w-3xl px-6 text-center">
           <div className="glass rounded-[2rem] p-12">
             <h2 className="mb-4 font-display text-3xl font-bold">Still have questions?</h2>
-            <p className="mb-8 text-[#8b8b9e]">Start free and see ReviewHype in action.</p>
+            <p className="mb-8 text-[#8b8b9e]">Try ReviewHype free for 7 days — no credit card required.</p>
             <Link href="/signup" className="btn-primary inline-flex items-center gap-2 rounded-2xl px-8 py-4 text-base">
-              Get Started Free <ArrowRight className="h-4 w-4" />
+              Start Free Trial <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>

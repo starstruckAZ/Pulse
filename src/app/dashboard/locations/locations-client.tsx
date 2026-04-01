@@ -368,20 +368,7 @@ export default function LocationsClient({ user, profile, locations: initialLocat
             <p className="text-sm text-zinc-500">Manage your business locations and connect review sources.</p>
           </div>
           <div className="flex items-center gap-2">
-            {process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ? (
-              <button
-                onClick={handleImportFromGBP}
-                disabled={gbpLoading}
-                className="btn-ghost inline-flex items-center gap-2 rounded-2xl px-4 py-3 text-sm disabled:opacity-60"
-              >
-                {gbpLoading ? (
-                  <Loader2 className="h-4 w-4 animate-spin" />
-                ) : (
-                  <BadgeCheck className="h-4 w-4" />
-                )}
-                {gbpLoading ? "Connecting…" : "Import from Google"}
-              </button>
-            ) : null}
+            {/* Import from Google — requires NEXT_PUBLIC_GOOGLE_CLIENT_ID + approved business.manage scope */}
             <button onClick={openNew} className="btn-primary inline-flex items-center gap-2 rounded-2xl px-5 py-3 text-sm">
               <Plus className="h-4 w-4" /> Add Location
             </button>

@@ -18,11 +18,20 @@ export default async function TemplatesPage() {
     .eq("id", user.id)
     .single();
 
-  const { data: templates } = await supabase
+  // Fetch user templates + system templates
+  const { data: userTemplates } = await supabase
     .from("response_templates")
     .select("*")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
+
+  const { data: systemTemplates } = await supabase
+    .from("response_templates")
+    .select("*")
+    .eq("is_system", true)
+    .order("created_at", { ascending: true });
+
+  const templates = [...(userTemplates || []), ...(systemTemplates || [])];
 
   return (
     <TemplatesClient

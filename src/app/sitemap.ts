@@ -37,7 +37,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "why-online-reviews-matter-local-business",
     "how-to-respond-negative-reviews",
     "google-review-management-guide",
-    "ai-review-responses-best-practices",
+    "review-response-templates-guide",
     "reputation-management-roi",
   ];
 
