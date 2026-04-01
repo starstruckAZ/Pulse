@@ -77,16 +77,23 @@ function StarRow({ rating }: { rating: number }) {
   );
 }
 
+/** Composite rank score: rating × log10(reviews + 1), claimed gets +0.5 */
+function rankScore(rating: number | null, reviewCount: number, claimed: boolean): number {
+  const r = rating ?? 0;
+  const base = r * Math.log10(Math.max(reviewCount, 0) + 1);
+  return claimed ? base + 0.5 : base;
+}
+
 /** Reputation tier based on rating × volume */
 function reputationTier(rating: number | null, reviewCount: number): {
-  label: string; color: string; bg: string; border: string;
+  label: string; color: string; bg: string; border: string; icon: string;
 } | null {
   if (!rating || reviewCount < 5) return null;
   const score = rating * Math.log10(reviewCount + 1);
-  if (score >= 14)  return { label: "🏆 Elite",  color: "text-yellow-600", bg: "bg-yellow-50",  border: "border-yellow-200" };
-  if (score >= 10)  return { label: "🥇 Gold",   color: "text-amber-600",  bg: "bg-amber-50",   border: "border-amber-200"  };
-  if (score >= 6)   return { label: "🥈 Silver", color: "text-slate-600",  bg: "bg-slate-50",   border: "border-slate-200"  };
-  if (score >= 3)   return { label: "🥉 Bronze", color: "text-orange-700", bg: "bg-orange-50",  border: "border-orange-200" };
+  if (score >= 14)  return { label: "Elite",  color: "text-yellow-700", bg: "bg-yellow-50",  border: "border-yellow-300", icon: "🏆" };
+  if (score >= 10)  return { label: "Gold",   color: "text-amber-700",  bg: "bg-amber-50",   border: "border-amber-300",  icon: "🥇" };
+  if (score >= 6)   return { label: "Silver", color: "text-slate-600",  bg: "bg-slate-100",  border: "border-slate-300",  icon: "🥈" };
+  if (score >= 3)   return { label: "Bronze", color: "text-orange-700", bg: "bg-orange-50",  border: "border-orange-300", icon: "🥉" };
   return null;
 }
 
@@ -177,21 +184,7 @@ export default function SearchClient() {
       return;
     }
 
-    // Check Google identity
-    const hasGoogle =
-      user.identities?.some((i) => i.provider === "google") ||
-      user.app_metadata?.provider === "google" ||
-      user.app_metadata?.providers?.includes("google");
-
-    if (!hasGoogle) {
-      setClaimError(
-        "You must sign in with a Google account to claim a business. " +
-          "Please sign out and sign back in using Google."
-      );
-      return;
-    }
-
-    // Show category selection modal
+    // Show category selection modal — any signed-in user can claim
     setShowCategoryModal(place);
     setSelectedCategory("");
   };
@@ -349,7 +342,7 @@ export default function SearchClient() {
             href="/signup"
             className="btn-primary rounded-xl px-5 py-2 text-sm"
           >
-            Get started free
+            Start Free Trial
           </Link>
         </div>
       </nav>
@@ -457,8 +450,17 @@ export default function SearchClient() {
 
         {results.length > 0 && (
           <div className="space-y-3">
-            {results.map((place, index) => (
-              <div key={place.place_id} className="bento p-5 relative">
+            {results.map((place, index) => {
+              const score = rankScore(place.rating, place.review_count, place.claimed);
+              const tier = reputationTier(place.rating, place.review_count);
+              const isTop = index === 0;
+              return (
+              <div key={place.place_id} className={`bento p-5 relative ${isTop ? "ring-2 ring-[#aa2c32]/20" : ""}`}>
+                {isTop && (
+                  <div className="absolute -top-3 left-5 inline-flex items-center gap-1.5 rounded-full bg-gradient-to-r from-[#aa2c32] to-[#ff7574] px-3 py-1 text-[11px] font-bold text-white shadow">
+                    <Trophy className="h-3 w-3" /> #1 Ranked in Results
+                  </div>
+                )}
                 <div className="flex items-start gap-4">
                   {/* Photo */}
                   {place.photo_reference ? (
@@ -479,27 +481,31 @@ export default function SearchClient() {
                   {/* Info */}
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
-                      {/* Rank position */}
-                      <span className={`shrink-0 inline-flex items-center justify-center h-6 w-6 rounded-full text-[11px] font-bold ${
-                        index === 0 ? "bg-yellow-100 text-yellow-700 border border-yellow-200" :
-                        index === 1 ? "bg-slate-100 text-slate-600 border border-slate-200" :
-                        index === 2 ? "bg-orange-100 text-orange-700 border border-orange-200" :
+                      {/* Rank position badge */}
+                      <span className={`shrink-0 inline-flex items-center justify-center h-7 w-7 rounded-full text-[12px] font-bold shadow-sm ${
+                        index === 0 ? "bg-gradient-to-br from-yellow-400 to-amber-500 text-white" :
+                        index === 1 ? "bg-gradient-to-br from-slate-300 to-slate-400 text-white" :
+                        index === 2 ? "bg-gradient-to-br from-orange-400 to-amber-600 text-white" :
                         "bg-[#f5f0ed] text-[#797674] border border-[#e1dcd8]"
                       }`}>
-                        {index === 0 ? <Trophy className="h-3 w-3" /> : index + 1}
+                        {index === 0 ? <Trophy className="h-3.5 w-3.5" /> : index + 1}
                       </span>
                       <h2 className="font-headline text-lg font-semibold text-[#302e2d] leading-tight">
                         {place.name}
                       </h2>
                       {/* Reputation tier */}
-                      {(() => {
-                        const tier = reputationTier(place.rating, place.review_count);
-                        return tier ? (
-                          <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-semibold ${tier.color} ${tier.bg} ${tier.border}`}>
-                            {tier.label}
-                          </span>
-                        ) : null;
-                      })()}
+                      {tier && (
+                        <span className={`inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-[10px] font-bold ${tier.color} ${tier.bg} ${tier.border}`}>
+                          {tier.icon} {tier.label}
+                        </span>
+                      )}
+                      {/* Reputation score */}
+                      {score > 0 && (
+                        <span className="inline-flex items-center gap-1 rounded-full border border-[#e1dcd8] bg-white px-2.5 py-0.5 text-[10px] font-semibold text-[#5d5b59]">
+                          <TrendingUp className="h-2.5 w-2.5 text-[#aa2c32]" />
+                          Score {score.toFixed(1)}
+                        </span>
+                      )}
                       {place.claimed && (
                         <span className="inline-flex items-center gap-1 rounded-full border border-emerald-200 bg-emerald-50 px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-emerald-700">
                           <CheckCircle className="h-2.5 w-2.5" />
@@ -610,36 +616,57 @@ export default function SearchClient() {
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
 
-        {/* Info cards */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-2xl bg-[#f5f0ed] p-6 text-center">
-            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white">
-              <TrendingUp className="h-5 w-5 text-[#aa2c32]" />
+        {/* Rankings explainer + CTA */}
+        <div className="mt-10 space-y-4">
+          {/* How rankings work */}
+          <div className="rounded-2xl border border-[#e1dcd8] bg-white p-6">
+            <div className="flex items-center gap-3 mb-4">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#aa2c32]/10">
+                <TrendingUp className="h-5 w-5 text-[#aa2c32]" />
+              </div>
+              <div>
+                <h3 className="font-headline text-base font-bold text-[#302e2d]">How Rankings Work</h3>
+                <p className="text-xs text-[#797674]">Results sorted by Reputation Score</p>
+              </div>
             </div>
-            <h3 className="font-headline mb-1 text-base font-bold text-[#302e2d]">
-              How Rankings Work
-            </h3>
-            <p className="text-sm text-[#5d5b59]">
-              Results are ranked by a score combining star rating and review
-              volume. Businesses verified on ReviewHype get a boost for actively
-              managing their reputation.
+            <p className="text-sm text-[#5d5b59] mb-4">
+              Every business is scored on <strong className="text-[#302e2d]">Rating × Review Volume</strong>. More reviews and a higher rating = a higher score. Businesses actively managing their reputation on ReviewHype get an additional boost.
             </p>
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+              {[
+                { icon: "🥉", label: "Bronze", desc: "Score 3–5", color: "bg-orange-50 border-orange-200 text-orange-700" },
+                { icon: "🥈", label: "Silver",  desc: "Score 6–9", color: "bg-slate-50 border-slate-200 text-slate-600" },
+                { icon: "🥇", label: "Gold",    desc: "Score 10–13", color: "bg-amber-50 border-amber-200 text-amber-700" },
+                { icon: "🏆", label: "Elite",   desc: "Score 14+", color: "bg-yellow-50 border-yellow-300 text-yellow-700" },
+              ].map((tier) => (
+                <div key={tier.label} className={`rounded-xl border p-3 text-center ${tier.color}`}>
+                  <div className="text-xl mb-1">{tier.icon}</div>
+                  <div className="text-xs font-bold">{tier.label}</div>
+                  <div className="text-[10px] opacity-75">{tier.desc}</div>
+                </div>
+              ))}
+            </div>
           </div>
-          <div className="rounded-2xl bg-[#f5f0ed] p-6 text-center">
-            <div className="mx-auto mb-3 flex h-10 w-10 items-center justify-center rounded-xl bg-white">
-              <Shield className="h-5 w-5 text-[#aa2c32]" />
+
+          {/* Claim CTA */}
+          <div className="rounded-2xl bg-[#f5f0ed] p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-white shrink-0">
+                <Shield className="h-5 w-5 text-[#aa2c32]" />
+              </div>
+              <div>
+                <h3 className="font-headline text-base font-bold text-[#302e2d]">Is this your business?</h3>
+                <p className="text-sm text-[#5d5b59]">Claim it to manage reviews and boost your ranking.</p>
+              </div>
             </div>
-            <h3 className="font-headline mb-1 text-base font-bold text-[#302e2d]">
-              Verified Business Claims
-            </h3>
-            <p className="text-sm text-[#5d5b59]">
-              Claiming requires signing in with Google. We verify ownership
-              through your Google Business Profile — no postcards, no waiting.
-            </p>
+            <Link href="/signup" className="btn-primary shrink-0 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm">
+              Start Free Trial <ArrowRight className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </main>

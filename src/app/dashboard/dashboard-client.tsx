@@ -361,11 +361,11 @@ export default function DashboardClient({
         {locations.length === 0 && (
           <div className="bento mb-8 flex flex-col items-center justify-between gap-4 p-8 sm:flex-row">
             <div>
-              <h2 className="mb-1 font-display text-lg font-bold">Connect your Google Business Profile</h2>
-              <p className="text-sm text-zinc-400">Start pulling in reviews automatically. Takes 2 minutes.</p>
+              <h2 className="mb-1 font-display text-lg font-bold">Add your first location</h2>
+              <p className="text-sm text-zinc-400">Add a business location to start tracking reviews and monitoring your reputation.</p>
             </div>
             <Link href="/dashboard/locations" className="btn-primary inline-flex items-center gap-2 shrink-0 rounded-2xl px-6 py-3 text-sm">
-              <Link2 className="h-4 w-4" /> Connect Google
+              <MapPin className="h-4 w-4" /> Add Location
             </Link>
           </div>
         )}

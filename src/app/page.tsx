@@ -165,7 +165,7 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Bottom center */}
+            {/* Bottom center — Rankings */}
             <div className="bento p-8 md:p-10">
               <div className="mb-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#f9d377]/60">
                 <Bell className="h-5 w-5 text-[#735801]" />
@@ -183,6 +183,59 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          {/* Rankings feature — full width below bento grid */}
+          <div className="mt-4 bento p-8 md:p-10">
+            <div className="grid gap-8 md:grid-cols-2 items-center">
+              <div>
+                <div className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl bg-[#aa2c32]/10">
+                  <Star className="h-5 w-5 text-[#aa2c32]" />
+                </div>
+                <h3 className="mb-3 font-headline text-2xl font-bold text-[#302e2d]">Reputation Rankings</h3>
+                <p className="text-sm leading-relaxed text-[#5d5b59]">
+                  Every business gets a <strong>Reputation Score</strong> based on star rating and review volume.
+                  The higher your score, the higher you rank when customers search — driving more foot traffic
+                  to businesses that earn and manage their reviews.
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {[
+                    { icon: "🥉", label: "Bronze", color: "bg-orange-50 text-orange-700 border-orange-200" },
+                    { icon: "🥈", label: "Silver",  color: "bg-slate-50 text-slate-600 border-slate-200" },
+                    { icon: "🥇", label: "Gold",    color: "bg-amber-50 text-amber-700 border-amber-200" },
+                    { icon: "🏆", label: "Elite",   color: "bg-yellow-50 text-yellow-700 border-yellow-200" },
+                  ].map((t) => (
+                    <span key={t.label} className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold ${t.color}`}>
+                      {t.icon} {t.label}
+                    </span>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-2">
+                {[
+                  { rank: 1, name: "Sunrise Café", score: "16.2", tier: "🏆 Elite", bar: 100, color: "bg-[#aa2c32]" },
+                  { rank: 2, name: "Harbor Grill",  score: "11.8", tier: "🥇 Gold",  bar: 73,  color: "bg-amber-500" },
+                  { rank: 3, name: "The Nook",      score: "8.4",  tier: "🥈 Silver", bar: 52, color: "bg-slate-400" },
+                  { rank: 4, name: "Bay Bistro",    score: "5.1",  tier: "🥉 Bronze", bar: 32, color: "bg-orange-400" },
+                ].map((item) => (
+                  <div key={item.rank} className="flex items-center gap-3 rounded-xl border border-[#e1dcd8] bg-[#f9f7f6] px-4 py-3">
+                    <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold text-white ${item.rank === 1 ? "bg-gradient-to-br from-yellow-400 to-amber-500" : item.rank === 2 ? "bg-gradient-to-br from-slate-400 to-slate-500" : item.rank === 3 ? "bg-gradient-to-br from-orange-400 to-amber-500" : "bg-[#e1dcd8] text-[#797674]"}`}>
+                      {item.rank}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center justify-between mb-1">
+                        <span className="text-xs font-semibold text-[#302e2d] truncate">{item.name}</span>
+                        <span className="text-[10px] text-[#797674] ml-2 shrink-0">{item.tier} · {item.score}</span>
+                      </div>
+                      <div className="h-1.5 w-full rounded-full bg-[#e1dcd8] overflow-hidden">
+                        <div className={`h-full rounded-full ${item.color}`} style={{ width: `${item.bar}%` }} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
         </div>
       </section>
 
