@@ -178,13 +178,34 @@ export default function SearchClient() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      // Redirect to signup with return URL
-      const returnUrl = `/search?q=${encodeURIComponent(query)}`;
-      router.push(`/signup?redirect=${encodeURIComponent(returnUrl)}`);
+      // Not signed in — redirect to signup, then back to this search
+      const next = `/search?q=${encodeURIComponent(query)}`;
+      router.push(`/signup?redirect=${encodeURIComponent(next)}`);
       return;
     }
 
-    // Show category selection modal — any signed-in user can claim
+    // Check Google identity — required to safely verify business ownership
+    const hasGoogle =
+      user.identities?.some((i) => i.provider === "google") ||
+      user.app_metadata?.provider === "google" ||
+      user.app_metadata?.providers?.includes("google");
+
+    if (!hasGoogle) {
+      // Signed in with email only — trigger Google OAuth to link Google identity.
+      // After sign-in, /auth/callback?next=... returns user to this search page.
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || window.location.origin;
+      const next = `/search?q=${encodeURIComponent(query)}`;
+      await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: `${siteUrl}/auth/callback?next=${encodeURIComponent(next)}`,
+          queryParams: { prompt: "select_account" },
+        },
+      });
+      return;
+    }
+
+    // Google identity confirmed — show category + claim modal
     setShowCategoryModal(place);
     setSelectedCategory("");
   };

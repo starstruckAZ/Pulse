@@ -32,5 +32,11 @@ export async function GET(request: Request) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
+  // Support ?next= for post-auth redirects (must be a relative path)
+  const next = requestUrl.searchParams.get("next");
+  if (next && next.startsWith("/") && !next.startsWith("//")) {
+    return NextResponse.redirect(`${origin}${next}`);
+  }
+
   return NextResponse.redirect(`${origin}/dashboard`);
 }

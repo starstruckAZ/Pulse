@@ -72,6 +72,12 @@ export default async function DashboardPage() {
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
+  const hasGoogle =
+    user.identities?.some((i) => i.provider === "google") ||
+    user.app_metadata?.provider === "google" ||
+    (user.app_metadata?.providers as string[] | undefined)?.includes("google") ||
+    false;
+
   return (
     <DashboardClient
       user={user}
@@ -84,6 +90,7 @@ export default async function DashboardPage() {
       streak={profile?.response_streak ?? 0}
       xp={profile?.xp ?? 0}
       totalResponses={profile?.total_responses ?? 0}
+      hasGoogle={hasGoogle}
     />
   );
 }
