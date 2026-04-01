@@ -33,10 +33,13 @@ export async function GET(request: Request) {
   }
 
   // Support ?next= for post-auth redirects (must be a relative path)
+  // Used by the claim flow to return users to their search after Google sign-in
   const next = requestUrl.searchParams.get("next");
   if (next && next.startsWith("/") && !next.startsWith("//")) {
     return NextResponse.redirect(`${origin}${next}`);
   }
 
-  return NextResponse.redirect(`${origin}/dashboard`);
+  // New users go to onboarding to find & claim their business.
+  // Onboarding redirects to /dashboard automatically if they already have locations.
+  return NextResponse.redirect(`${origin}/onboarding`);
 }
